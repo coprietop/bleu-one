@@ -19,11 +19,19 @@ function calcOrden(){
   if(dep>=min){alerta.className='alert ok'; alerta.textContent='Depósito correcto. Cumple con el mínimo requerido del 5%.'}
   else{alerta.className='alert bad'; alerta.textContent=`Depósito insuficiente. Debe ser mínimo ${fmtCOP(min)}.`}
 }
-for(let i=2;i<=27;i++){const o=document.createElement('option'); o.value=i; o.textContent=`${i} cuotas — ${porcentajes[i].toFixed(2)}%`; if(i===12)o.selected=true; $('cuotas').appendChild(o)}
+for(let i=2;i<=27;i++){const o=document.createElement('option'); o.value=i; o.textContent=`${i} cuotas — ${porcentajes[i].toFixed(2)}%`; if(i===27)o.selected=true; $('cuotas').appendChild(o)}
 ['total','deposito'].forEach(id=>bindMoney(id, calcOrden)); $('cuotas').addEventListener('change',calcOrden); calcOrden();
 
-function calcCuota(){const v=n($('cuotaValor').value); $('cuotaVenta').textContent=fmtCOP(v*20)}
-bindMoney('cuotaValor', calcCuota);
+for(let i=2;i<=27;i++){const o=document.createElement('option'); o.value=i; o.textContent=`${i} meses — ${porcentajes[i].toFixed(2)}%`; if(i===27)o.selected=true; const sel=$('cuotaMeses'); if(sel) sel.appendChild(o)}
+function calcCuota(){
+  const v=n($('cuotaValor').value);
+  const meses=Number($('cuotaMeses')?.value || 27);
+  const p=porcentajes[meses]||5;
+  const venta=p ? v/(p/100) : 0;
+  $('cuotaVenta').textContent=fmtCOP(venta);
+  const f=$('cuotaFormula'); if(f) f.textContent=`${meses} meses usa ${p.toFixed(2)}% según tabla. Venta aproximada = cuota ÷ ${p.toFixed(2)}%.`;
+}
+bindMoney('cuotaValor', calcCuota); const cuotaMeses=$('cuotaMeses'); if(cuotaMeses) cuotaMeses.addEventListener('change',calcCuota); calcCuota();
 function calcNombres(){const v=n($('metaNombres').value); $('nombresOut').textContent=numFmt.format(Math.ceil(v/185));}
 bindMoney('metaNombres', calcNombres);
 
@@ -92,7 +100,7 @@ function calcAscenso(){
   $('ascensoMensual').textContent=fmtUSD(mensual);
   $('ascensoExtra').textContent=isJD ? nivel.nota : `Meta anual en compras: ${fmtUSD(nivel.compras)}. Volumen de venta aproximado: ${fmtUSD(metaVol)}. Recuerda: volumen de venta = compras × 3.8. Estos valores son aproximados.`;
 
-  const nombres=Math.ceil((isJD ? Math.max(falta/Math.max(1, 3), 0) : mensual)/185);
+  const nombres=Math.ceil((isJD ? falta : mensual)/185);
   let consejo='Consejo: revisa tu meta cada semana y convierte el faltante en nombres, puntos de prospección y movimiento de programas.';
   if(isJD && falta>0){
     consejo=`Consejo útil: para cerrar el faltante necesitas aprox. ${numFmt.format(nombres)} nombres semanales. Reúnete con tu distribuidor, activa puntos de prospección, QR, buzones y stands. Lo más efectivo: movimiento de programas; revisa con la tele de tu distribución los programas antiguos que quedaron a 1 o 2 visitas del premio y reactívalos con permiso del distribuidor.`;
@@ -103,7 +111,16 @@ function calcAscenso(){
 }
 bindMoney('ascensoVol', calcAscenso); ['jdMes1','jdMes2','jdMes3'].forEach(id=>bindMoney(id, calcAscenso)); $('ascensoNivel').addEventListener('change',calcAscenso); $('ascensoMeses').addEventListener('input',calcAscenso); const ascTipo=$('ascensoTipoActual'); if(ascTipo) ascTipo.addEventListener('change',calcAscenso); calcAscenso();
 
-function calcTicket(){const meta=n($('ticketTipo').value); const actual=n($('ticketVol').value); const avance=pct(actual/meta*100); const falta=Math.max(meta-actual,0); $('ticketPct').textContent=`${avance.toFixed(0)}%`; $('ticketBar').style.width=`${avance}%`; $('ticketFalta').textContent=falta?`Faltan ${fmtUSD(falta)} para clasificar.`:'Meta cumplida para este cuatrimestre.';}
+function calcTicket(){
+  const sel=$('ticketTipo');
+  const meta=n(sel.value);
+  const actual=n($('ticketVol').value);
+  const avance=pct(actual/meta*100);
+  const falta=Math.max(meta-actual,0);
+  const metaEl=$('ticketMeta'); if(metaEl) metaEl.textContent=fmtUSD(meta);
+  const metaTxt=$('ticketMetaTexto'); if(metaTxt) metaTxt.textContent=sel.options[sel.selectedIndex]?.textContent || '';
+  $('ticketPct').textContent=`${avance.toFixed(0)}%`; $('ticketBar').style.width=`${avance}%`; $('ticketFalta').textContent=falta?`Faltan ${fmtUSD(falta)} para clasificar.`:'Meta cumplida para este cuatrimestre.';
+}
 bindMoney('ticketVol', calcTicket); $('ticketTipo').addEventListener('change',calcTicket); calcTicket();
 function calcMoto(){const tipo=$('motoTipo').value; const v=n($('motoVol').value); let tickets=0, detalle=''; if(tipo==='personal'){tickets = v>=5000 ? 1+Math.floor((v-5000)/1000) : 0; const bono=v>=15000?3:0; tickets+=bono; detalle = bono?`Incluye 3 tickets adicionales por bono trimestral de US$15.000.`:`Venta personal: 1 ticket por US$5.000 y 1 adicional por cada US$1.000 extra.`;} else {tickets = v>=30000 ? 5+Math.floor((v-30000)/1000) : 0; detalle = `Distribución: 5 tickets por US$30.000 en el trimestre y 1 adicional por cada US$1.000 extra.`;} $('motoTickets').textContent=tickets; $('motoDetalle').textContent=detalle;}
 bindMoney('motoVol', calcMoto); $('motoTipo').addEventListener('change',calcMoto); calcMoto();
