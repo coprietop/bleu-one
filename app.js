@@ -213,3 +213,119 @@ document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click'
 }));
 let deferredPrompt; const installBtn=$('installBtn'); window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault(); deferredPrompt=e; installBtn.classList.remove('hidden')}); installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.classList.add('hidden')});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').catch(()=>{})}
+
+// Agregados
+(function initAgregados(){
+  const sel=$('agMeses');
+  if(sel){
+    for(let i=2;i<=27;i++){
+      const o=document.createElement('option');
+      o.value=i; o.textContent=`${i} meses — ${porcentajes[i].toFixed(2)}%`;
+      if(i===27)o.selected=true;
+      sel.appendChild(o);
+    }
+  }
+  function calcAgregados(){
+    if(!$('agSaldo')) return;
+    const saldo=n($('agSaldo').value);
+    const compra=n($('agCompra').value);
+    const inicial=n($('agInicial').value);
+    const meses=Number($('agMeses')?.value || 27);
+    const p=porcentajes[meses]||5;
+    const total=Math.max(saldo+compra-inicial,0);
+    const pago=total*(p/100);
+    $('agSaldoOut').textContent=fmtCOP(saldo);
+    $('agCompraOut').textContent=fmtCOP(compra);
+    $('agInicialOut').textContent=fmtCOP(inicial);
+    $('agTotal').textContent=fmtCOP(total);
+    $('agPago').textContent=fmtCOP(pago);
+    $('agFormula').textContent=`Pago mensual = ${fmtCOP(total)} × ${p.toFixed(2)}% (${meses} meses) = ${fmtCOP(pago)}.`;
+  }
+  ['agSaldo','agCompra','agInicial'].forEach(id=>bindMoney(id, calcAgregados));
+  if(sel) sel.addEventListener('change', calcAgregados);
+  calcAgregados();
+})();
+
+// Botón Somos Bleu
+(function initSomos(){
+  document.querySelectorAll('[data-go]').forEach(btn=>btn.addEventListener('click',()=>{
+    const target=btn.dataset.go;
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.querySelector(`.nav-item[data-screen="${target}"]`)?.classList.add('active');
+    document.getElementById(target)?.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+})();
+
+// Toppers
+(function initToppers(){
+  const data={
+    personal:{title:'Venta personal', items:[
+      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:20648},
+      {name:'Cristian Camilo Forero', city:'Cajicá', volume:11201},
+      {name:'Lina Marcela Molina', city:'Cajicá', volume:11172},
+      {name:'Samuel Camilo Riaño', city:'Chía', volume:11071},
+      {name:'Alba Lucía Gonzales', city:'Sopó', volume:11012}
+    ]},
+    junior:{title:'Distribuidores Junior', items:[
+      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:20648},
+      {name:'Samuel Camilo Riaño', city:'Chía', volume:13268},
+      {name:'Cristian Camilo Forero', city:'Cajicá', volume:11201},
+      {name:'Lina Marcela Molina', city:'Cajicá', volume:11172},
+      {name:'Andrés & Samuel Álvarez', city:'Chía', volume:9182}
+    ]},
+    distribuidores:{title:'Distribuidores', items:[
+      {name:'Yurani Chacón & Luis Villarraga', city:'Cajicá', volume:21525},
+      {name:'Alejandro Camelo & Karol Viloria', city:'Tocancipá', volume:13776},
+      {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', volume:13628},
+      {name:'Alex Prieto & Valentina Rodríguez', city:'Chía', volume:12605},
+      {name:'Javier Barrera & Kelly Soto', city:'Tocancipá', volume:12287}
+    ]}
+  };
+  const medals=['🥇','🥈','🥉','4','5'];
+  let current='personal';
+  function openModal(item, idx, category){
+    const m=$('topperModal'); if(!m) return;
+    $('modalMedal').textContent=medals[idx] || idx+1;
+    $('modalName').textContent=item.name;
+    $('modalCity').textContent=`📍 ${item.city}`;
+    $('modalVolume').textContent=fmtUSD(item.volume);
+    $('modalCategory').textContent=category;
+    m.classList.remove('hidden');
+  }
+  function render(key=current){
+    if(!$('podium')) return;
+    current=key;
+    const group=data[key];
+    $('podiumTitle').textContent=group.title;
+    const [a,b,c]=group.items;
+    $('podium').innerHTML=`
+      <button class="podium-place first" data-idx="0"><span class="medal">🥇</span><strong>${a.name}</strong><small>${a.city}</small><b>${fmtUSD(a.volume)}</b></button>
+      <div class="podium-row">
+        <button class="podium-place second" data-idx="1"><span class="medal">🥈</span><strong>${b.name}</strong><small>${b.city}</small><b>${fmtUSD(b.volume)}</b></button>
+        <button class="podium-place third" data-idx="2"><span class="medal">🥉</span><strong>${c.name}</strong><small>${c.city}</small><b>${fmtUSD(c.volume)}</b></button>
+      </div>`;
+    $('topperList').innerHTML=group.items.slice(3).map((x,i)=>`<button class="topper-row" data-idx="${i+3}"><span>${i+4}°</span><strong>${x.name}</strong><small>${x.city}</small><b>${fmtUSD(x.volume)}</b></button>`).join('');
+    document.querySelectorAll('#podium [data-idx], #topperList [data-idx]').forEach(el=>el.addEventListener('click',()=>openModal(group.items[Number(el.dataset.idx)], Number(el.dataset.idx), group.title)));
+  }
+  document.querySelectorAll('.topper-tab').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.topper-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); render(btn.dataset.top);
+  }));
+  $('modalClose')?.addEventListener('click',()=> $('topperModal')?.classList.add('hidden'));
+  $('topperModal')?.addEventListener('click',(e)=>{ if(e.target.id==='topperModal') $('topperModal').classList.add('hidden'); });
+  function tick(){
+    const el=$('topCountdown'); if(!el) return;
+    const now=new Date();
+    const endColombia = new Date('2026-07-01T04:59:59Z'); // 30 junio 2026, 11:59:59 p.m. Colombia
+    let diff=Math.max(0, endColombia-now);
+    const d=Math.floor(diff/86400000); diff-=d*86400000;
+    const h=Math.floor(diff/3600000); diff-=h*3600000;
+    const m=Math.floor(diff/60000); diff-=m*60000;
+    const s=Math.floor(diff/1000);
+    const vals=[d,h,m,s].map(x=>String(x).padStart(2,'0'));
+    el.querySelectorAll('strong').forEach((node,i)=>node.textContent=vals[i]);
+  }
+  render(); tick(); setInterval(tick,1000);
+})();

@@ -13,8 +13,10 @@
     <aside class="sidebar">
       <div class="brand-card"><img src="assets/logo-bleu.png" alt="Territorio Bleu Company SAS" class="logo" /></div>
       <nav class="nav" aria-label="Módulos Bleu One">
-        <button class="nav-item active" data-screen="orden">Orden de Compra</button>
+        <button class="nav-item active" data-screen="somos">Somos Bleu</button>
+        <button class="nav-item" data-screen="orden">Orden de Compra</button>
         <button class="nav-item" data-screen="cuota">Cuota</button>
+        <button class="nav-item" data-screen="agregados">Agregados</button>
         <button class="nav-item" data-screen="nombres">Nombres</button>
         <button class="nav-item" data-screen="ascenso">Ascensos</button>
         <button class="nav-item" data-screen="ticket">Ticket Dorado</button>
@@ -23,6 +25,7 @@
         <button class="nav-item" data-screen="moto">Tickets Moto</button>
         <button class="nav-item" data-screen="ingresos">Proyección Ingresos</button>
         <button class="nav-item" data-screen="admin">Administración</button>
+        <button class="nav-item" data-screen="toppers">Toppers</button>
       </nav>
       <div class="side-note"><strong>Bleu One</strong><span>Una sola app. Todo el territorio. Todas las herramientas.</span></div>
     </aside>
@@ -33,7 +36,22 @@
         <button id="installBtn" class="install hidden">Instalar app</button>
       </header>
 
-      <section id="orden" class="screen active">
+      <section id="somos" class="screen active somos-screen">
+        <div class="somos-card">
+          <img src="assets/logo-bleu.png" alt="Bleu Company" class="somos-logo" />
+          <div class="somos-text">
+            <p>Toda familia tiene a alguien que decide romper el ciclo...</p>
+            <p>Alguien que deja de sobrevivir para empezar a construir...</p>
+            <p>Alguien que cambia el “siempre hemos sido así” por un “a partir de hoy será diferente”...</p>
+            <p><strong>Tal vez esa persona seas TÚ..</strong></p>
+            <p>Bleu Company existe para quienes tienen el valor de escribir un nuevo capítulo y romper límites que parecían imposibles.</p>
+            <p><strong>Lo que DIOS comienza en una vida, puede bendecir generaciones enteras..!!</strong></p>
+          </div>
+          <button class="primary-action" data-go="orden">Entrar a Bleu One →</button>
+        </div>
+      </section>
+
+      <section id="orden" class="screen">
         <div class="screen-head"><div><h2>Calculadora de Orden de Compra</h2><p>Ingresa los datos y transcribe manualmente los valores en la orden física.</p></div></div>
         <div class="grid">
           <section class="panel input-panel">
@@ -67,6 +85,8 @@
 
       <section id="cuota" class="screen"><div class="screen-head"><div><h2>Cuota</h2><p>Calcula cuánto le puedes vender a un cliente según la cuota mensual y el plazo elegido.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Valor de cuota mensual</span><div class="money-input"><span>$</span><input id="cuotaValor" inputmode="numeric" value="" placeholder="0" /></div></label><label class="field"><span>Meses de financiación</span><select id="cuotaMeses"></select><small>Predeterminado: 27 meses = 5% del saldo según tabla.</small></label></section><section class="panel hero-result"><span>Venta aproximada</span><strong id="cuotaVenta">$ 0</strong><small id="cuotaFormula">Fórmula según tabla.</small></section><div class="formula soft">Una cuota clara evita confusión, y una negociación clara acerca al cliente a la decisión.</div></div></section>
 
+      <section id="agregados" class="screen"><div class="screen-head"><div><h2>Agregados</h2><p>Calcula el total del cliente y su pago mensual según la tabla de financiación.</p></div></div><div class="grid"><section class="panel"><h3>Datos del agregado</h3><label class="field"><span>Saldo del cliente</span><div class="money-input"><span>$</span><input id="agSaldo" inputmode="numeric" value="" placeholder="0" /></div></label><label class="field"><span>Nueva compra <small>(IVA incluido)</small></span><div class="money-input"><span>$</span><input id="agCompra" inputmode="numeric" value="" placeholder="0" /></div></label><label class="field"><span>Cuota inicial <small>(opcional)</small></span><div class="money-input"><span>$</span><input id="agInicial" inputmode="numeric" value="" placeholder="0" /></div><small>Los agregados no necesitan cuota inicial, pero puedes escribirla si aplica.</small></label><label class="field"><span>Meses de financiación</span><select id="agMeses"></select></label></section><section class="panel"><h3>Resultado del agregado</h3><div class="order-form"><div class="row"><span>Saldo del cliente</span><strong id="agSaldoOut">$ 0</strong></div><div class="row"><span>Nueva compra IVA incluido</span><strong id="agCompraOut">$ 0</strong></div><div class="row"><span>Cuota inicial</span><strong id="agInicialOut">$ 0</strong></div><div class="row featured"><span>Total a financiar</span><strong id="agTotal">$ 0</strong></div><div class="row final"><span>Pago mensual aproximado</span><strong id="agPago">$ 0</strong></div></div><div class="formula" id="agFormula">Selecciona meses y escribe los valores para calcular.</div><div class="formula soft">Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.</div></section></div></section>
+
       <section id="nombres" class="screen"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" value="0" /></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Fórmula: volumen del mes ÷ 185.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
 
       <section id="ascenso" class="screen"><div class="screen-head"><div><h2>Ascensos</h2><p>Estás en camino a ascender a:</p></div></div><div class="grid"><section class="panel"><label class="field"><span>Ascenso objetivo</span><select id="ascensoNivel"></select></label><div class="formula soft" id="ascensoDescripcion">Selecciona un ascenso para ver la meta.</div>
@@ -87,6 +107,18 @@
         <section class="panel"><h3>2. ¿Cuánto quiero ganar?</h3><p class="muted-text"><strong>Importante:</strong> escribe cuánto quieres ganar en pesos colombianos. Bleu One lo convierte a dólares y calcula el volumen de <strong>VENTA PERSONAL</strong> aproximado y los nombres necesarios.</p><label class="field"><span>Nivel</span><select id="ingRolDeseado"><option value="0.162">Emprendedor — 16.2%</option><option value="0.38">JD — 38%</option><option value="0.47">Distribuidor — 47%</option></select></label><label class="field"><span>Quiero ganar este mes en COP</span><div class="money-input"><span>$</span><input id="ingDeseadoCop" inputmode="numeric" value="" placeholder="0" /></div></label><div class="order-form"><div class="row"><span>Equivalente aproximado en USD</span><strong id="ingDeseadoUsd">US$ 0</strong></div><div class="row final"><span>Volumen de venta personal necesario</span><strong id="ingVolNecesario">US$ 0</strong></div><div class="row"><span>Nombres semanales necesarios</span><strong id="ingNombres">0</strong></div></div></section></div><div class="formula soft">Los ingresos son aproximados y están basados exclusivamente en VENTA PERSONAL. El ingreso crece cuando la actividad crece; tu meta de dinero debe convertirse en meta de volumen y nombres.</div></section>
 
       <section id="admin" class="screen"><div class="screen-head"><div><h2>Administración de ingresos</h2><p>Una guía simple para no gastar todo lo que entra y proteger la reinversión del negocio.</p></div></div><div class="grid"><section class="panel"><h3>Define tu etapa</h3><p class="muted-text">Emprendedor: separa el 25% de lo que recibes para generar más demostraciones. JD o Distribuidor: si no tienes salario fijo, toma máximo el 30% para ti y protege el resto para operación, equipo y crecimiento.</p><label class="field"><span>Tipo</span><select id="adminTipo"><option value="emprendedor">Emprendedor — guardar 25% para más demostraciones</option><option value="jd">JD / Distribuidor — tomar 30% si no tiene salario fijo</option></select></label><label class="field"><span>Dinero recibido en COP</span><div class="money-input"><span>$</span><input id="adminMonto" inputmode="numeric" value="0" /></div></label></section><section class="panel"><h3>Distribución sugerida</h3><div class="formula soft" id="adminExplica">El objetivo es convertir cada pago en combustible para más actividad.</div><div class="order-form"><div class="row featured"><span id="adminReservaLabel">Guardar para demostraciones</span><strong id="adminReserva">$ 0</strong></div><div class="row final"><span id="adminDisponibleLabel">Disponible después de separar</span><strong id="adminDisponible">$ 0</strong></div></div></section></div><div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div></section>
+
+      <section id="toppers" class="screen"><div class="screen-head"><div><h2>Salón de los Toppers</h2><p>Junio 2026 a la fecha. El podio está cambiando cada día.</p></div></div>
+        <section class="panel toppers-hero">
+          <div class="trophy">🏆</div>
+          <h3>SALÓN DE LOS TOPPERS</h3>
+          <p>El reconocimiento inspira. La constancia construye. El próximo Topper puede ser usted.</p>
+          <div class="countdown" id="topCountdown"><div><strong>00</strong><span>Días</span></div><div><strong>00</strong><span>Horas</span></div><div><strong>00</strong><span>Minutos</span></div><div><strong>00</strong><span>Segundos</span></div></div>
+        </section>
+        <div class="topper-tabs"><button class="topper-tab active" data-top="personal">Venta personal</button><button class="topper-tab" data-top="junior">Distribuidores Junior</button><button class="topper-tab" data-top="distribuidores">Distribuidores</button></div>
+        <section class="panel podium-panel"><div class="result-title"><h3 id="podiumTitle">Venta personal</h3><span class="badge">Top 5</span></div><div id="podium" class="podium"></div><div id="topperList" class="topper-list"></div><div class="formula soft">Los Toppers no nacen del azar: nacen de la disciplina, el seguimiento y la decisión de no bajar el estándar.</div></section>
+        <div id="topperModal" class="modal hidden"><div class="modal-card"><button id="modalClose" class="modal-close">×</button><div class="modal-medal" id="modalMedal">🥇</div><h3 id="modalName">Nombre</h3><p id="modalCity">Ciudad</p><strong id="modalVolume">US$ 0</strong><small id="modalCategory">Categoría</small></div></div>
+      </section>
     </main>
   </div>
   <script src="app.js"></script>
