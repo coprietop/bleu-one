@@ -96,6 +96,8 @@ function calcAscenso(){
   $('ascensoActualLabel').textContent=isJD?'Volumen acumulado en 3 meses':'Volumen actual aproximado';
   $('ascensoActual').textContent=fmtUSD(actual);
   $('ascensoFalta').textContent=fmtUSD(falta);
+  const faltaCopIva = falta * COP_RATE * 1.19;
+  const faltaCopEl = $('ascensoFaltaCOP'); if(faltaCopEl) faltaCopEl.textContent = fmtCOP(faltaCopIva) + ' COP';
   $('ascensoMensualLabel').textContent=isJD?'Faltante para los US$20.000':'Volumen mensual necesario';
   $('ascensoMensual').textContent=fmtUSD(mensual);
   $('ascensoExtra').textContent=isJD ? nivel.nota : `Meta anual en compras: ${fmtUSD(nivel.compras)}. Volumen de venta aproximado: ${fmtUSD(metaVol)}. Estos valores son aproximados.`;
@@ -115,10 +117,29 @@ function calcTicket(){
   const sel=$('ticketTipo');
   const meta=n(sel.value);
   const actual=n($('ticketVol').value);
+  const metaEl=$('ticketMeta');
+  const metaTxt=$('ticketMetaTexto');
+  const detalle=$('ticketMetaDetalle');
+  if(!meta){
+    if(metaEl) metaEl.textContent='—';
+    if(metaTxt) metaTxt.textContent='Selecciona una categoría';
+    if(detalle) detalle.textContent='Selecciona una categoría para ver su meta específica.';
+    $('ticketPct').textContent='0%'; $('ticketBar').style.width='0%'; $('ticketFalta').textContent='Selecciona una categoría para calcular tu avance.';
+    return;
+  }
+  const label=sel.options[sel.selectedIndex]?.textContent || '';
   const avance=pct(actual/meta*100);
   const falta=Math.max(meta-actual,0);
-  const metaEl=$('ticketMeta'); if(metaEl) metaEl.textContent=fmtUSD(meta);
-  const metaTxt=$('ticketMetaTexto'); if(metaTxt) metaTxt.textContent=sel.options[sel.selectedIndex]?.textContent || '';
+  const detalles={
+    34000:'Meta: US$34.000 en venta personal al final del cuatrimestre.',
+    42000:'Meta: US$42.000 en venta personal de pareja al final del cuatrimestre.',
+    65000:'Meta: US$65.000 en volumen de distribución al final del cuatrimestre.',
+    30000:'Meta: US$30.000 en socios directos nuevos durante el cuatrimestre.',
+    20000:'Meta: US$20.000 si eres novato del cuatrimestre.'
+  };
+  if(metaEl) metaEl.textContent=fmtUSD(meta);
+  if(metaTxt) metaTxt.textContent=label;
+  if(detalle) detalle.textContent=detalles[meta] || `Meta: ${fmtUSD(meta)}.`;
   $('ticketPct').textContent=`${avance.toFixed(0)}%`; $('ticketBar').style.width=`${avance}%`; $('ticketFalta').textContent=falta?`Faltan ${fmtUSD(falta)} para clasificar.`:'Meta cumplida para este cuatrimestre.';
 }
 bindMoney('ticketVol', calcTicket); $('ticketTipo').addEventListener('change',calcTicket); calcTicket();
