@@ -3,10 +3,45 @@ const COP_RATE = 3600;
 const $ = (id)=>document.getElementById(id);
 const moneyCOP = new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
 const numFmt = new Intl.NumberFormat('es-CO',{maximumFractionDigits:0});
-function n(v){return Number(String(v ?? '').replace(/[^0-9]/g,''))||0}
+function n(v){
+  const raw = String(v ?? '').trim();
+  if(!raw) return 0;
+  // Acepta 50000, 50.000, 50,000 y evita que 50.000 se lea como 50.
+  const clean = raw.replace(/[^0-9]/g,'');
+  return Number(clean)||0;
+}
 function fmtCOP(v){return moneyCOP.format(Math.round(v)).replace('COP','').trim()}
 function fmtUSD(v){return 'US$ ' + numFmt.format(Math.round(v))}
-function pct(v){return Math.max(0, Math.min(100, v));}
+function pct(v){
+  const x = Number(v);
+  if(!isFinite(x)) return 0;
+  return Math.max(0, Math.min(100, x));
+}
+function progressMessage(v){
+  const x=pct(v);
+  if(x>=100) return '🎉 ¡META CUMPLIDA! Disfruta este logro... y mañana comienza a construir el siguiente.';
+  if(x>=81) return '⭐ Estás muy cerca. Un esfuerzo adicional puede hacer que este mes marque la diferencia.';
+  if(x>=61) return '🔥 ¡Vas muy bien! No disminuyas el ritmo. La constancia separa a los líderes del resto.';
+  if(x>=36) return '🚀 Excelente progreso. Mantén la disciplina y la meta comenzará a verse cada vez más cerca.';
+  if(x>=16) return '💪 Vas avanzando, pero aún puedes acelerar el ritmo. Cada día cuenta.';
+  return '🌱 Todo gran resultado comienza con el primer paso. Hoy aún estás a tiempo de construir un gran mes.';
+}
+function setProgress(barId, pctId, value){
+  const val=pct(value);
+  const bar=$(barId), label=$(pctId);
+  if(bar){
+    bar.style.width='0%';
+    requestAnimationFrame(()=>{ bar.style.width=val.toFixed(2)+'%'; });
+  }
+  if(label) label.textContent=Math.round(val)+'%';
+  const msg=$(pctId+'Msg');
+  if(msg){
+    msg.textContent=progressMessage(val);
+    msg.classList.remove('celebrate','encourage');
+    void msg.offsetWidth;
+    msg.classList.add(val>=100?'celebrate':'encourage');
+  }
+}
 function bindMoney(id, cb){ const el=$(id); if(!el) return; el.addEventListener('input',()=>{const val=n(el.value); el.value=val?numFmt.format(val):''; cb&&cb();}); el.dispatchEvent(new Event('input')); }
 
 function calcOrden(){
@@ -27,7 +62,7 @@ function calcCuota(){
   const v=n($('cuotaValor').value);
   const meses=Number($('cuotaMeses')?.value || 27);
   const p=porcentajes[meses]||5;
-  const venta=p ? v/(p/100) : 0;
+  const venta=p ? Math.round(v/(p/100)) : 0;
   $('cuotaVenta').textContent=fmtCOP(venta);
   const f=$('cuotaFormula'); if(f) f.textContent=`Venta aproximada calculada según ${meses} meses y tabla interna.`;
 }
@@ -103,8 +138,7 @@ function calcAscenso(){
   const mensual=isJD ? falta : falta/meses;
   $('ascensoTitulo').textContent=`${nivel.name}`; const ati=$('ascensoTituloInput'); if(ati) ati.textContent=nivel.name;
   $('ascensoDescripcion').textContent=nivel.desc;
-  $('ascensoPct').textContent=`${avance.toFixed(0)}%`;
-  $('ascensoBar').style.width=`${avance}%`;
+  setProgress('ascensoBar','ascensoPct',avance);
   $('ascensoMetaVol').textContent=fmtUSD(metaVol);
   $('ascensoActualLabel').textContent=isJD?'Volumen acumulado en 3 meses':'Volumen actual aproximado';
   $('ascensoActual').textContent=fmtUSD(actual);
@@ -138,7 +172,7 @@ function calcTicket(){
     if(metaEl) metaEl.textContent='—';
     if(metaTxt) metaTxt.textContent='Selecciona una categoría';
     if(detalle) detalle.textContent='Selecciona una categoría para ver su meta específica.';
-    $('ticketPct').textContent='0%'; $('ticketBar').style.width='0%'; $('ticketFalta').textContent='Selecciona una categoría para calcular tu avance.';
+    setProgress('ticketBar','ticketPct',0); $('ticketFalta').textContent='Selecciona una categoría para calcular tu avance.';
     return;
   }
   const label=sel.options[sel.selectedIndex]?.textContent || '';
@@ -154,7 +188,7 @@ function calcTicket(){
   if(metaEl) metaEl.textContent=fmtUSD(meta);
   if(metaTxt) metaTxt.textContent=label;
   if(detalle) detalle.textContent=detalles[meta] || `Meta: ${fmtUSD(meta)}.`;
-  $('ticketPct').textContent=`${avance.toFixed(0)}%`; $('ticketBar').style.width=`${avance}%`; $('ticketFalta').textContent=falta?`Faltan ${fmtUSD(falta)} para clasificar.`:'Meta cumplida para este cuatrimestre.';
+  setProgress('ticketBar','ticketPct',avance); $('ticketFalta').textContent=falta?`Faltan ${fmtUSD(falta)} para clasificar.`:'Meta cumplida para este cuatrimestre.';
 }
 bindMoney('ticketVol', calcTicket); $('ticketTipo').addEventListener('change',calcTicket); calcTicket();
 function calcMoto(){const tipo=$('motoTipo').value; const v=n($('motoVol').value); let tickets=0, detalle=''; if(tipo==='personal'){tickets = v>=5000 ? 1+Math.floor((v-5000)/1000) : 0; const bono=v>=15000?3:0; tickets+=bono; detalle = bono?`Incluye 3 tickets adicionales por bono trimestral de US$15.000.`:`Venta personal: 1 ticket por US$5.000 y 1 adicional por cada US$1.000 extra.`;} else {tickets = v>=30000 ? 5+Math.floor((v-30000)/1000) : 0; detalle = `Distribución: 5 tickets por US$30.000 en el trimestre y 1 adicional por cada US$1.000 extra.`;} $('motoTickets').textContent=tickets; $('motoDetalle').textContent=detalle;}
@@ -365,7 +399,8 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
 })();
 
 
-// Bleu One v9.3 - Presentation Edition enhancements
+
+// Bleu One v1.0 Stable - Presentation Edition enhancements
 (function(){
   const purposes = {
     orden: ['Orden de Compra','Una orden bien hecha genera confianza. Un error puede costarte una venta.'],
@@ -388,61 +423,21 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     card.innerHTML=`<strong>${title}</strong><p>${text}</p>`;
     head.insertAdjacentElement('afterend',card);
   });
-  // Softer action language
-  document.querySelectorAll('.ascenso-card span').forEach(el=>{ if(el.textContent.trim().toLowerCase().includes('ver progreso')) el.textContent='Ver mi avance →'; });
+  document.querySelectorAll('.ascenso-card span').forEach(el=>{ el.textContent='Ver mi avance →'; });
   const toggleSpeech=document.getElementById('toggleSpeech'); if(toggleSpeech) toggleSpeech.innerHTML='Ver Speech <span>→</span>';
-  // Floating signature on desktop
   if(!document.querySelector('.made-by-floating')){
     const f=document.createElement('div'); f.className='made-by-floating'; f.textContent='Made with ❤️ by Bleu Company'; document.body.appendChild(f);
   }
-  function parseDisplayed(text){
-    if(!text || text.includes('—') || /Omitir/i.test(text)) return null;
-    const hasPct=/%/.test(text), hasUSD=/US\$/.test(text), hasCOP=/COP/.test(text) || (!hasUSD && /\$/.test(text));
-    const clean=text.replace(/[^0-9,.-]/g,'').replace(/\./g,'').replace(',', '.');
-    const val=parseFloat(clean); if(!isFinite(val)) return null;
-    return {val, hasPct, hasUSD, hasCOP, original:text};
+  // Mensajes de progreso estables, sin depender de animaciones de texto.
+  function ensureProgressMessage(pctId, barId){
+    const pct=document.getElementById(pctId), bar=document.getElementById(barId); if(!pct || !bar) return;
+    let msg=document.getElementById(pctId+'Msg');
+    if(!msg){ msg=document.createElement('div'); msg.id=pctId+'Msg'; msg.className='progress-message encourage'; bar.parentElement.insertAdjacentElement('afterend',msg); }
+    const value=parseFloat(String(pct.textContent).replace('%',''))||0;
+    msg.textContent=progressMessage(value);
   }
-  function fmtAnim(meta, value){
-    const rounded=Math.round(value);
-    if(meta.hasPct) return rounded + '%';
-    const str=new Intl.NumberFormat('es-CO',{maximumFractionDigits:0}).format(rounded);
-    if(meta.hasUSD) return 'US$ ' + str;
-    if(meta.hasCOP) return '$ ' + str;
-    return str;
-  }
-  const last=new WeakMap();
-  function animateEl(el, targetText){
-    const meta=parseDisplayed(targetText); if(!meta) return;
-    const prev=last.has(el) ? last.get(el) : 0;
-    if(Math.abs(prev-meta.val)<1){ last.set(el,meta.val); return; }
-    el.dataset.animating='1'; el.classList.add('number-pop','animating');
-    const start=performance.now(), dur=520, from=prev, to=meta.val;
-    function tick(t){
-      const p=Math.min(1,(t-start)/dur); const ease=1-Math.pow(1-p,3); const v=from+(to-from)*ease;
-      el.textContent=fmtAnim(meta,v);
-      if(p<1) requestAnimationFrame(tick); else { el.textContent=targetText; last.set(el,to); el.classList.remove('animating'); setTimeout(()=>{delete el.dataset.animating},0); }
-    }
-    requestAnimationFrame(tick);
-  }
-  const watchSelector='.hero-result strong, .row strong, #ascensoPct, #ticketPct, #nombresOut, #motoTickets';
-  document.querySelectorAll(watchSelector).forEach(el=>{ const meta=parseDisplayed(el.textContent); if(meta) last.set(el,meta.val); });
-  const mo=new MutationObserver(muts=>{
-    for(const m of muts){ const el=m.target.nodeType===3 ? m.target.parentElement : m.target; if(!el || el.dataset.animating) continue; if(!el.matches || !el.matches(watchSelector)) continue; animateEl(el, el.textContent); }
-  });
-  document.querySelectorAll(watchSelector).forEach(el=>mo.observe(el,{childList:true,characterData:true,subtree:true}));
-  function progressMsg(pct){
-    const n=parseFloat(String(pct).replace('%',''))||0;
-    if(n<=30) return 'Todavía estás a tiempo. Empieza hoy.';
-    if(n<=70) return 'Vas muy bien. No aflojes.';
-    if(n<96) return 'Estás muy cerca. El siguiente nivel depende de tu constancia.';
-    return '¡Excelente! La meta está al alcance de tus manos.';
-  }
-  function attachProgressMessage(pctId, afterId){
-    const pct=document.getElementById(pctId), after=document.getElementById(afterId); if(!pct || !after) return;
-    let msg=document.getElementById(pctId+'Msg'); if(!msg){ msg=document.createElement('div'); msg.id=pctId+'Msg'; msg.className='progress-message'; after.insertAdjacentElement('afterend',msg); }
-    const update=()=>{ msg.textContent=progressMsg(pct.textContent); };
-    update(); new MutationObserver(update).observe(pct,{childList:true,characterData:true,subtree:true});
-  }
-  attachProgressMessage('ascensoPct','ascensoBar');
-  attachProgressMessage('ticketPct','ticketBar');
+  ensureProgressMessage('ascensoPct','ascensoBar');
+  ensureProgressMessage('ticketPct','ticketBar');
+  // Inicializa barras y mensajes después de que todos los módulos cargan.
+  try{ calcAscenso(); calcTicket(); calcCuota(); calcAgregados?.(); }catch(e){}
 })();
