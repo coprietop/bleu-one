@@ -36,13 +36,13 @@ function calcNombres(){const v=n($('metaNombres').value); $('nombresOut').textCo
 bindMoney('metaNombres', calcNombres);
 
 const niveles = [
-  {name:'Emprendedor a JD', compras:null, volumen:20000, desc:'Para ascender de Emprendedor a Distribuidor Junior/JD debes lograr US$20.000 en volumen dentro de una ventana de 3 meses. Es el único ascenso que se mide solo por volumen. Cada mes debe tener mínimo US$4.000; si un mes no cumple, la ventana se corre al siguiente periodo.', nota:'Meta: US$20.000 en volumen en 3 meses. Mínimo US$4.000 por mes.'},
-  {name:'JD a D3', compras:27000, desc:'Para ascender de JD a D3 debes lograr US$27.000 en compras dentro del año. En volumen de venta aproximado equivale a compras × 3.8.'},
-  {name:'D3 a D2', compras:80000, desc:'Para ascender a D2 debes lograr US$80.000 en compras dentro del año. En volumen de venta aproximado equivale a compras × 3.8.'},
-  {name:'D2 a D1', compras:135000, desc:'Para ascender a D1 debes lograr US$135.000 en compras dentro del año. En volumen de venta aproximado equivale a compras × 3.8.'},
-  {name:'D1 a BLUE', compras:275000, desc:'Para ascender a BLUE debes lograr US$275.000 en compras dentro del año. En volumen de venta aproximado equivale a compras × 3.8.'},
-  {name:'BLUE a ROYAL', compras:550000, desc:'Para ascender a ROYAL debes lograr US$550.000 en compras dentro del año. En volumen de venta aproximado equivale a compras × 3.8.'},
-  {name:'ROYAL a PREMIER', compras:1000000, desc:'Para ascender a PREMIER debes lograr US$1.000.000 en compras dentro del año. En volumen de venta aproximado equivale a compras × 3.8.'}
+  {name:'JD', compras:null, volumen:20000, desc:'Meta para ascender a JD: lograr US$20.000 en volumen dentro de una ventana de 3 meses. Cada mes debe tener mínimo US$4.000; si un mes no cumple, la ventana se corre al siguiente periodo.', nota:'Meta: US$20.000 en volumen en 3 meses. Mínimo US$4.000 por mes.'},
+  {name:'D3', compras:27000, desc:'Meta para ascender a D3: lograr US$27.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
+  {name:'D2', compras:80000, desc:'Meta para ascender a D2: lograr US$80.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
+  {name:'D1', compras:135000, desc:'Meta para ascender a D1: lograr US$135.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
+  {name:'BLUE', compras:275000, desc:'Meta para ascender a BLUE: lograr US$275.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
+  {name:'ROYAL', compras:550000, desc:'Meta para ascender a ROYAL: lograr US$550.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
+  {name:'PREMIER', compras:1000000, desc:'Meta para ascender a PREMIER: lograr US$1.000.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'}
 ];
 niveles.forEach((x,i)=>{const o=document.createElement('option'); o.value=i; o.textContent=x.name; $('ascensoNivel').appendChild(o)});
 function calcAscenso(){
@@ -98,7 +98,7 @@ function calcAscenso(){
   $('ascensoFalta').textContent=fmtUSD(falta);
   $('ascensoMensualLabel').textContent=isJD?'Faltante para los US$20.000':'Volumen mensual necesario';
   $('ascensoMensual').textContent=fmtUSD(mensual);
-  $('ascensoExtra').textContent=isJD ? nivel.nota : `Meta anual en compras: ${fmtUSD(nivel.compras)}. Volumen de venta aproximado: ${fmtUSD(metaVol)}. Recuerda: volumen de venta = compras × 3.8. Estos valores son aproximados.`;
+  $('ascensoExtra').textContent=isJD ? nivel.nota : `Meta anual en compras: ${fmtUSD(nivel.compras)}. Volumen de venta aproximado: ${fmtUSD(metaVol)}. Estos valores son aproximados.`;
 
   const nombres=Math.ceil((isJD ? falta : mensual)/185);
   let consejo='Consejo: revisa tu meta cada semana y convierte el faltante en nombres, puntos de prospección y movimiento de programas.';
