@@ -14,39 +14,53 @@ function calcOrden(){
   const compra=total/1.19; const iva=total-compra; const min=total*0.05; const saldo=Math.max(total-dep,0); const p=porcentajes[cuotas]||0; const pago=saldo*(p/100); const mg=total*0.20;
   $('precioCompra').textContent=fmtCOP(compra); $('iva').textContent=fmtCOP(iva); $('precioTotal').textContent=fmtCOP(total); $('depositoHoy').textContent=fmtCOP(dep); $('saldo').textContent=fmtCOP(saldo); $('cuotasOut').textContent=cuotas; $('pagoMinimo').textContent=fmtCOP(pago);
   const mgEl=$('mgValor'); if(mgEl) mgEl.textContent=fmtCOP(mg);
-  $('depositHint').textContent=`Mínimo requerido: ${fmtCOP(min)}.`; $('formula').textContent=`Pago mínimo mensual = ${fmtCOP(saldo)} × ${p.toFixed(2)}% = ${fmtCOP(pago)}.`;
+  $('depositHint').textContent=`Mínimo requerido: ${fmtCOP(min)}.`; $('formula').textContent=`Pago mínimo mensual calculado según tabla interna: ${fmtCOP(pago)}.`;
   const alerta=$('alerta');
   if(dep>=min){alerta.className='alert ok'; alerta.textContent='Depósito correcto. Cumple con el mínimo requerido del 5%.'}
   else{alerta.className='alert bad'; alerta.textContent=`Depósito insuficiente. Debe ser mínimo ${fmtCOP(min)}.`}
 }
-for(let i=2;i<=27;i++){const o=document.createElement('option'); o.value=i; o.textContent=`${i} cuotas — ${porcentajes[i].toFixed(2)}%`; if(i===27)o.selected=true; $('cuotas').appendChild(o)}
+for(let i=2;i<=27;i++){const o=document.createElement('option'); o.value=i; o.textContent=`${i} cuotas`; if(i===27)o.selected=true; $('cuotas').appendChild(o)}
 ['total','deposito'].forEach(id=>bindMoney(id, calcOrden)); $('cuotas').addEventListener('change',calcOrden); calcOrden();
 
-for(let i=2;i<=27;i++){const o=document.createElement('option'); o.value=i; o.textContent=`${i} meses — ${porcentajes[i].toFixed(2)}%`; if(i===27)o.selected=true; const sel=$('cuotaMeses'); if(sel) sel.appendChild(o)}
+for(let i=2;i<=27;i++){const o=document.createElement('option'); o.value=i; o.textContent=`${i} meses`; if(i===27)o.selected=true; const sel=$('cuotaMeses'); if(sel) sel.appendChild(o)}
 function calcCuota(){
   const v=n($('cuotaValor').value);
   const meses=Number($('cuotaMeses')?.value || 27);
   const p=porcentajes[meses]||5;
   const venta=p ? v/(p/100) : 0;
   $('cuotaVenta').textContent=fmtCOP(venta);
-  const f=$('cuotaFormula'); if(f) f.textContent=`${meses} meses usa ${p.toFixed(2)}% según tabla. Venta aproximada = cuota ÷ ${p.toFixed(2)}%.`;
+  const f=$('cuotaFormula'); if(f) f.textContent=`Venta aproximada calculada según ${meses} meses y tabla interna.`;
 }
 bindMoney('cuotaValor', calcCuota); const cuotaMeses=$('cuotaMeses'); if(cuotaMeses) cuotaMeses.addEventListener('change',calcCuota); calcCuota();
 function calcNombres(){const v=n($('metaNombres').value); $('nombresOut').textContent=numFmt.format(Math.ceil(v/185));}
 bindMoney('metaNombres', calcNombres);
 
 const niveles = [
-  {name:'JD', compras:null, volumen:20000, desc:'Meta para ascender a JD: lograr US$20.000 en volumen dentro de una ventana de 3 meses. Cada mes debe tener mínimo US$4.000; si un mes no cumple, la ventana se corre al siguiente periodo.', nota:'Meta: US$20.000 en volumen en 3 meses. Mínimo US$4.000 por mes.'},
-  {name:'D3', compras:27000, desc:'Meta para ascender a D3: lograr US$27.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
-  {name:'D2', compras:80000, desc:'Meta para ascender a D2: lograr US$80.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
-  {name:'D1', compras:135000, desc:'Meta para ascender a D1: lograr US$135.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
-  {name:'BLUE', compras:275000, desc:'Meta para ascender a BLUE: lograr US$275.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
-  {name:'ROYAL', compras:550000, desc:'Meta para ascender a ROYAL: lograr US$550.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'},
-  {name:'PREMIER', compras:1000000, desc:'Meta para ascender a PREMIER: lograr US$1.000.000 en compras dentro del año. Bleu One también te muestra el volumen aproximado que debes construir.'}
+  {name:'JD', compras:null, volumen:20000, desc:'Meta JD: US$20.000 en volumen durante 3 meses. Cada mes debe tener mínimo US$4.000.', nota:'JD se mide únicamente por volumen.'},
+  {name:'D3', compras:27000, desc:'Meta D3: US$27.000 en compras durante el año. Puedes ingresar tu avance como compras o como volumen.'},
+  {name:'D2', compras:80000, desc:'Meta D2: US$80.000 en compras durante el año. Puedes ingresar tu avance como compras o como volumen.'},
+  {name:'D1', compras:135000, desc:'Meta D1: US$135.000 en compras durante el año. Puedes ingresar tu avance como compras o como volumen.'},
+  {name:'BLUE', compras:275000, desc:'Meta BLUE: US$275.000 en compras durante el año. Puedes ingresar tu avance como compras o como volumen.'},
+  {name:'ROYAL', compras:550000, desc:'Meta ROYAL: US$550.000 en compras durante el año. Puedes ingresar tu avance como compras o como volumen.'},
+  {name:'PREMIER', compras:1000000, desc:'Meta PREMIER: US$1.000.000 en compras durante el año. Puedes ingresar tu avance como compras o como volumen.'}
 ];
-niveles.forEach((x,i)=>{const o=document.createElement('option'); o.value=i; o.textContent=x.name; $('ascensoNivel').appendChild(o)});
+const adnBleu = [
+  'Enfócate en las instantáneas. Practícalas con tus compañeros al terminar la capacitación.',
+  'Es mejor traer 7 nombres activos que 30 sin activar.',
+  'Para mejorar mercados, el 4 en 14 es lo más efectivo. Si necesitas complementar, usa buzones o QR de forma estratégica en estratos 3 y 4.',
+  'Una hora de autoagendamiento al día puede hacer la diferencia este mes.',
+  'Pídele la lista de tus antiguos clientes a tu distribuidor. A veces lo que buscas no está afuera, está con tus antiguos clientes.',
+  'Todos los caminos deben conducir a mejorar nuestro 4 en 14.'
+];
+let adnIndex = 0;
+function setAdn(i){ adnIndex=(i+adnBleu.length)%adnBleu.length; const el=$('ascensoConsejo'); if(el) el.textContent=adnBleu[adnIndex]; }
+const cards=$('ascensoCards');
+if(cards){ niveles.forEach((x,i)=>{const b=document.createElement('button'); b.className='ascenso-card'+(i===0?' active':''); b.type='button'; b.dataset.idx=i; b.innerHTML=`<strong>${x.name}</strong><span>Ver progreso →</span>`; cards.appendChild(b); }); }
+let selectedAscenso=0;
+document.querySelectorAll('.ascenso-card').forEach(btn=>btn.addEventListener('click',()=>{selectedAscenso=Number(btn.dataset.idx); document.querySelectorAll('.ascenso-card').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); calcAscenso();}));
+$('otroAdn')?.addEventListener('click',()=>setAdn(adnIndex+1));
 function calcAscenso(){
-  const idx=Number($('ascensoNivel').value);
+  const idx=selectedAscenso;
   const nivel=niveles[idx];
   const isJD=idx===0;
   const jdBox=$('jdMesesBox'); const otrosBox=$('otrosAscensosBox');
@@ -87,11 +101,10 @@ function calcAscenso(){
   const falta=Math.max(metaVol-actual,0);
   const avance=pct((actual/metaVol)*100);
   const mensual=isJD ? falta : falta/meses;
-  $('ascensoTitulo').textContent=`Meta: ${nivel.name}`;
+  $('ascensoTitulo').textContent=`${nivel.name}`; const ati=$('ascensoTituloInput'); if(ati) ati.textContent=nivel.name;
   $('ascensoDescripcion').textContent=nivel.desc;
   $('ascensoPct').textContent=`${avance.toFixed(0)}%`;
   $('ascensoBar').style.width=`${avance}%`;
-  $('ascensoCompras').textContent=nivel.compras?fmtUSD(nivel.compras):'No aplica';
   $('ascensoMetaVol').textContent=fmtUSD(metaVol);
   $('ascensoActualLabel').textContent=isJD?'Volumen acumulado en 3 meses':'Volumen actual aproximado';
   $('ascensoActual').textContent=fmtUSD(actual);
@@ -100,18 +113,19 @@ function calcAscenso(){
   const faltaCopEl = $('ascensoFaltaCOP'); if(faltaCopEl) faltaCopEl.textContent = fmtCOP(faltaCopIva) + ' COP';
   $('ascensoMensualLabel').textContent=isJD?'Faltante para los US$20.000':'Volumen mensual necesario';
   $('ascensoMensual').textContent=fmtUSD(mensual);
-  $('ascensoExtra').textContent=isJD ? nivel.nota : `Meta anual en compras: ${fmtUSD(nivel.compras)}. Volumen de venta aproximado: ${fmtUSD(metaVol)}. Estos valores son aproximados.`;
+  $('ascensoExtra').textContent=isJD ? 'JD se mide únicamente por volumen.' : 'Los valores son aproximados y se calculan según tu avance y los meses restantes.';
 
-  const nombres=Math.ceil((isJD ? falta : mensual)/185);
-  let consejo='Consejo: revisa tu meta cada semana y convierte el faltante en nombres, puntos de prospección y movimiento de programas.';
-  if(isJD && falta>0){
-    consejo=`Consejo útil: para cerrar el faltante necesitas aprox. ${numFmt.format(nombres)} nombres semanales. Reúnete con tu distribuidor, activa puntos de prospección, QR, buzones y stands. Lo más efectivo: movimiento de programas; revisa con la tele de tu distribución los programas antiguos que quedaron a 1 o 2 visitas del premio y reactívalos con permiso del distribuidor.`;
-  } else if(!isJD && falta>0){
-    consejo=`Consejo útil: si faltan ${fmtUSD(falta)}, divide la meta en meses, semanas y nombres. Aproximadamente necesitas ${numFmt.format(nombres)} nombres semanales según el volumen mensual requerido.`;
+  const nombres=Math.ceil((isJD ? falta : mensual)/185); const an=$('ascensoNombres'); if(an) an.textContent=numFmt.format(nombres);
+  if(falta>0){
+    if(nombres>=100) setAdn(2);
+    else if(nombres>=50) setAdn(0);
+    else if(nombres>=20) setAdn(3);
+    else setAdn(5);
+  } else {
+    setAdn(5);
   }
-  $('ascensoConsejo').textContent=consejo;
 }
-bindMoney('ascensoVol', calcAscenso); ['jdMes1','jdMes2','jdMes3'].forEach(id=>bindMoney(id, calcAscenso)); $('ascensoNivel').addEventListener('change',calcAscenso); $('ascensoMeses').addEventListener('input',calcAscenso); const ascTipo=$('ascensoTipoActual'); if(ascTipo) ascTipo.addEventListener('change',calcAscenso); calcAscenso();
+bindMoney('ascensoVol', calcAscenso); ['jdMes1','jdMes2','jdMes3'].forEach(id=>bindMoney(id, calcAscenso)); $('ascensoMeses').addEventListener('input',calcAscenso); const ascTipo=$('ascensoTipoActual'); if(ascTipo) ascTipo.addEventListener('change',calcAscenso); calcAscenso();
 
 function calcTicket(){
   const sel=$('ticketTipo');
@@ -203,6 +217,7 @@ function calcDesarrollo(){
   $('desSocios').textContent=numFmt.format(socios);
 }
 const desInv=$('desInv'); if(desInv){desInv.addEventListener('input',calcDesarrollo); calcDesarrollo();}
+const toggleSpeech=$('toggleSpeech'); if(toggleSpeech){toggleSpeech.addEventListener('click',()=>{const box=$('speechBox'); box?.classList.toggle('hidden'); toggleSpeech.innerHTML = box?.classList.contains('hidden') ? 'Ver Speech <span>→</span>' : 'Ocultar Speech <span>↑</span>';});}
 
 document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>{
   if(document.body.classList.contains('locked') && btn.dataset.screen !== 'somos') return;
@@ -226,7 +241,7 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
   if(sel){
     for(let i=2;i<=27;i++){
       const o=document.createElement('option');
-      o.value=i; o.textContent=`${i} meses — ${porcentajes[i].toFixed(2)}%`;
+      o.value=i; o.textContent=`${i} meses`;
       if(i===27)o.selected=true;
       sel.appendChild(o);
     }
@@ -245,7 +260,7 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     $('agInicialOut').textContent=fmtCOP(inicial);
     $('agTotal').textContent=fmtCOP(total);
     $('agPago').textContent=fmtCOP(pago);
-    $('agFormula').textContent=`Pago mensual = ${fmtCOP(total)} × ${p.toFixed(2)}% (${meses} meses) = ${fmtCOP(pago)}.`;
+    $('agFormula').textContent=`Pago mensual calculado según ${meses} meses y tabla interna: ${fmtCOP(pago)}.`;
   }
   ['agSaldo','agCompra','agInicial'].forEach(id=>bindMoney(id, calcAgregados));
   if(sel) sel.addEventListener('change', calcAgregados);
@@ -347,4 +362,87 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     el.querySelectorAll('strong').forEach((node,i)=>node.textContent=vals[i]);
   }
   render(); setMonthLabel(); tick(); setInterval(tick,1000);
+})();
+
+
+// Bleu One v9.3 - Presentation Edition enhancements
+(function(){
+  const purposes = {
+    orden: ['Orden de Compra','Una orden bien hecha genera confianza. Un error puede costarte una venta.'],
+    cuota: ['Cuota','No vendas un producto. Ayuda a construir una decisión inteligente.'],
+    agregados: ['Agregados','Un agregado bien calculado evita reprocesos y protege la experiencia del cliente.'],
+    nombres: ['Nombres','Cuando sabes cuántos nombres necesitas, dejas de esperar resultados y empiezas a construirlos.'],
+    ascenso: ['Ascensos','Cada dólar de volumen es un paso más hacia tu siguiente nivel.'],
+    ticket: ['Ticket Dorado','La constancia durante cuatro meses puede cambiar un año completo.'],
+    sistema122: ['Sistema 122','Las ventas generan ingresos. Las personas construyen patrimonio.'],
+    desarrollo: ['Desarrollo','El crecimiento de una organización siempre comienza desarrollando personas.'],
+    moto: ['Tickets Moto','Cada venta suma. Cada ticket acerca la posibilidad de cumplir un sueño.'],
+    ingresos: ['Proyección de ingresos','Todo gran resultado comienza con una meta clara.'],
+    admin: ['Administración','Quien administra bien pequeñas cantidades estará preparado para grandes oportunidades.'],
+    toppers: ['Toppers','El reconocimiento no premia el talento. Premia la disciplina.']
+  };
+  Object.entries(purposes).forEach(([id,[title,text]])=>{
+    const screen=document.getElementById(id); if(!screen || screen.querySelector('.purpose-card')) return;
+    const head=screen.querySelector('.screen-head'); if(!head) return;
+    const card=document.createElement('div'); card.className='purpose-card';
+    card.innerHTML=`<strong>${title}</strong><p>${text}</p>`;
+    head.insertAdjacentElement('afterend',card);
+  });
+  // Softer action language
+  document.querySelectorAll('.ascenso-card span').forEach(el=>{ if(el.textContent.trim().toLowerCase().includes('ver progreso')) el.textContent='Ver mi avance →'; });
+  const toggleSpeech=document.getElementById('toggleSpeech'); if(toggleSpeech) toggleSpeech.innerHTML='Ver Speech <span>→</span>';
+  // Floating signature on desktop
+  if(!document.querySelector('.made-by-floating')){
+    const f=document.createElement('div'); f.className='made-by-floating'; f.textContent='Made with ❤️ by Bleu Company'; document.body.appendChild(f);
+  }
+  function parseDisplayed(text){
+    if(!text || text.includes('—') || /Omitir/i.test(text)) return null;
+    const hasPct=/%/.test(text), hasUSD=/US\$/.test(text), hasCOP=/COP/.test(text) || (!hasUSD && /\$/.test(text));
+    const clean=text.replace(/[^0-9,.-]/g,'').replace(/\./g,'').replace(',', '.');
+    const val=parseFloat(clean); if(!isFinite(val)) return null;
+    return {val, hasPct, hasUSD, hasCOP, original:text};
+  }
+  function fmtAnim(meta, value){
+    const rounded=Math.round(value);
+    if(meta.hasPct) return rounded + '%';
+    const str=new Intl.NumberFormat('es-CO',{maximumFractionDigits:0}).format(rounded);
+    if(meta.hasUSD) return 'US$ ' + str;
+    if(meta.hasCOP) return '$ ' + str;
+    return str;
+  }
+  const last=new WeakMap();
+  function animateEl(el, targetText){
+    const meta=parseDisplayed(targetText); if(!meta) return;
+    const prev=last.has(el) ? last.get(el) : 0;
+    if(Math.abs(prev-meta.val)<1){ last.set(el,meta.val); return; }
+    el.dataset.animating='1'; el.classList.add('number-pop','animating');
+    const start=performance.now(), dur=520, from=prev, to=meta.val;
+    function tick(t){
+      const p=Math.min(1,(t-start)/dur); const ease=1-Math.pow(1-p,3); const v=from+(to-from)*ease;
+      el.textContent=fmtAnim(meta,v);
+      if(p<1) requestAnimationFrame(tick); else { el.textContent=targetText; last.set(el,to); el.classList.remove('animating'); setTimeout(()=>{delete el.dataset.animating},0); }
+    }
+    requestAnimationFrame(tick);
+  }
+  const watchSelector='.hero-result strong, .row strong, #ascensoPct, #ticketPct, #nombresOut, #motoTickets';
+  document.querySelectorAll(watchSelector).forEach(el=>{ const meta=parseDisplayed(el.textContent); if(meta) last.set(el,meta.val); });
+  const mo=new MutationObserver(muts=>{
+    for(const m of muts){ const el=m.target.nodeType===3 ? m.target.parentElement : m.target; if(!el || el.dataset.animating) continue; if(!el.matches || !el.matches(watchSelector)) continue; animateEl(el, el.textContent); }
+  });
+  document.querySelectorAll(watchSelector).forEach(el=>mo.observe(el,{childList:true,characterData:true,subtree:true}));
+  function progressMsg(pct){
+    const n=parseFloat(String(pct).replace('%',''))||0;
+    if(n<=30) return 'Todavía estás a tiempo. Empieza hoy.';
+    if(n<=70) return 'Vas muy bien. No aflojes.';
+    if(n<96) return 'Estás muy cerca. El siguiente nivel depende de tu constancia.';
+    return '¡Excelente! La meta está al alcance de tus manos.';
+  }
+  function attachProgressMessage(pctId, afterId){
+    const pct=document.getElementById(pctId), after=document.getElementById(afterId); if(!pct || !after) return;
+    let msg=document.getElementById(pctId+'Msg'); if(!msg){ msg=document.createElement('div'); msg.id=pctId+'Msg'; msg.className='progress-message'; after.insertAdjacentElement('afterend',msg); }
+    const update=()=>{ msg.textContent=progressMsg(pct.textContent); };
+    update(); new MutationObserver(update).observe(pct,{childList:true,characterData:true,subtree:true});
+  }
+  attachProgressMessage('ascensoPct','ascensoBar');
+  attachProgressMessage('ticketPct','ticketBar');
 })();
