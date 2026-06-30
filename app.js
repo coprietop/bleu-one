@@ -205,14 +205,20 @@ function calcDesarrollo(){
 const desInv=$('desInv'); if(desInv){desInv.addEventListener('input',calcDesarrollo); calcDesarrollo();}
 
 document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>{
+  if(document.body.classList.contains('locked') && btn.dataset.screen !== 'somos') return;
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(btn.dataset.screen).classList.add('active');
+  document.body.classList.remove('menu-open');
   window.scrollTo({top:0,behavior:'smooth'});
 }));
 let deferredPrompt; const installBtn=$('installBtn'); window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault(); deferredPrompt=e; installBtn.classList.remove('hidden')}); installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.classList.add('hidden')});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').catch(()=>{})}
+
+const menuToggle=$('menuToggle');
+menuToggle?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
+document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.classList.remove('menu-open')});
 
 // Agregados
 (function initAgregados(){
@@ -250,6 +256,8 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worke
 (function initSomos(){
   document.querySelectorAll('[data-go]').forEach(btn=>btn.addEventListener('click',()=>{
     const target=btn.dataset.go;
+    document.body.classList.remove('locked');
+    document.body.classList.remove('menu-open');
     document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.querySelector(`.nav-item[data-screen="${target}"]`)?.classList.add('active');
@@ -315,10 +323,21 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worke
   }));
   $('modalClose')?.addEventListener('click',()=> $('topperModal')?.classList.add('hidden'));
   $('topperModal')?.addEventListener('click',(e)=>{ if(e.target.id==='topperModal') $('topperModal').classList.add('hidden'); });
+  function colombiaParts(date=new Date()){
+    const parts=new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(date);
+    const obj={}; parts.forEach(p=>{if(p.type!=='literal') obj[p.type]=Number(p.value)});
+    return obj;
+  }
+  function setMonthLabel(){
+    const label=$('topperMonthLabel'); if(!label) return;
+    const text=new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',month:'long',year:'numeric'}).format(new Date());
+    label.textContent=text.charAt(0).toUpperCase()+text.slice(1);
+  }
   function tick(){
     const el=$('topCountdown'); if(!el) return;
     const now=new Date();
-    const endColombia = new Date('2026-07-01T04:59:59Z'); // 30 junio 2026, 11:59:59 p.m. Colombia
+    const c=colombiaParts(now);
+    const endColombia = new Date(Date.UTC(c.year, c.month, 1, 4, 59, 59)); // último día del mes, 11:59:59 p.m. Colombia
     let diff=Math.max(0, endColombia-now);
     const d=Math.floor(diff/86400000); diff-=d*86400000;
     const h=Math.floor(diff/3600000); diff-=h*3600000;
@@ -327,5 +346,5 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worke
     const vals=[d,h,m,s].map(x=>String(x).padStart(2,'0'));
     el.querySelectorAll('strong').forEach((node,i)=>node.textContent=vals[i]);
   }
-  render(); tick(); setInterval(tick,1000);
+  render(); setMonthLabel(); tick(); setInterval(tick,1000);
 })();

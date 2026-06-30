@@ -8,9 +8,9 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="locked">
   <div class="app-shell">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="brand-card"><img src="assets/logo-bleu.png" alt="Territorio Bleu Company SAS" class="logo" /></div>
       <nav class="nav" aria-label="Módulos Bleu One">
         <button class="nav-item active" data-screen="somos">Somos Bleu</button>
@@ -28,9 +28,11 @@
         <button class="nav-item" data-screen="toppers">Toppers</button>
       </nav>
       <div class="side-note"><strong>Bleu One</strong><span>Una sola app. Todo el territorio. Todas las herramientas.</span></div>
+      <div class="app-footer">Bleu Company SAS ® All rights reserved</div>
     </aside>
 
     <main class="main">
+      <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú">☰ Menú</button>
       <header class="topbar">
         <div><p class="eyebrow">Territorio Bleu Company SAS</p><h1>Bleu One</h1></div>
         <button id="installBtn" class="install hidden">Instalar app</button>
@@ -47,7 +49,7 @@
             <p>Bleu Company existe para quienes tienen el valor de escribir un nuevo capítulo y romper límites que parecían imposibles.</p>
             <p><strong>Lo que DIOS comienza en una vida, puede bendecir generaciones enteras..!!</strong></p>
           </div>
-          <button class="primary-action" data-go="orden">Entrar a Bleu One →</button>
+          <button class="primary-action" data-go="orden">Entrar a Bleu One <span>→</span></button>
         </div>
       </section>
 
@@ -108,11 +110,11 @@
 
       <section id="admin" class="screen"><div class="screen-head"><div><h2>Administración de ingresos</h2><p>Una guía simple para no gastar todo lo que entra y proteger la reinversión del negocio.</p></div></div><div class="grid"><section class="panel"><h3>Define tu etapa</h3><p class="muted-text">Emprendedor: separa el 25% de lo que recibes para generar más demostraciones. JD o Distribuidor: si no tienes salario fijo, toma máximo el 30% para ti y protege el resto para operación, equipo y crecimiento.</p><label class="field"><span>Tipo</span><select id="adminTipo"><option value="emprendedor">Emprendedor — guardar 25% para más demostraciones</option><option value="jd">JD / Distribuidor — tomar 30% si no tiene salario fijo</option></select></label><label class="field"><span>Dinero recibido en COP</span><div class="money-input"><span>$</span><input id="adminMonto" inputmode="numeric" value="0" /></div></label></section><section class="panel"><h3>Distribución sugerida</h3><div class="formula soft" id="adminExplica">El objetivo es convertir cada pago en combustible para más actividad.</div><div class="order-form"><div class="row featured"><span id="adminReservaLabel">Guardar para demostraciones</span><strong id="adminReserva">$ 0</strong></div><div class="row final"><span id="adminDisponibleLabel">Disponible después de separar</span><strong id="adminDisponible">$ 0</strong></div></div></section></div><div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div></section>
 
-      <section id="toppers" class="screen"><div class="screen-head"><div><h2>Salón de los Toppers</h2><p>Junio 2026 a la fecha. El podio está cambiando cada día.</p></div></div>
+      <section id="toppers" class="screen"><div class="screen-head"><div><h2>Salón de los Toppers</h2><p><span id="topperMonthLabel">Junio 2026</span>. El podio se actualizará semanalmente.</p></div></div>
         <section class="panel toppers-hero">
           <div class="trophy">🏆</div>
           <h3>SALÓN DE LOS TOPPERS</h3>
-          <p>El reconocimiento inspira. La constancia construye. El próximo Topper puede ser usted.</p>
+          <p>El reconocimiento inspira. La constancia construye. El próximo Topper puedes ser TÚ.</p>
           <div class="countdown" id="topCountdown"><div><strong>00</strong><span>Días</span></div><div><strong>00</strong><span>Horas</span></div><div><strong>00</strong><span>Minutos</span></div><div><strong>00</strong><span>Segundos</span></div></div>
         </section>
         <div class="topper-tabs"><button class="topper-tab active" data-top="personal">Venta personal</button><button class="topper-tab" data-top="junior">Distribuidores Junior</button><button class="topper-tab" data-top="distribuidores">Distribuidores</button></div>
