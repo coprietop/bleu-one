@@ -319,29 +319,42 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
 (function initToppers(){
   const data={
     personal:{title:'Venta personal', items:[
-      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:20648},
-      {name:'Cristian Camilo Forero', city:'Cajicá', volume:11201},
-      {name:'Lina Marcela Molina', city:'Cajicá', volume:11172},
-      {name:'Samuel Camilo Riaño', city:'Chía', volume:11071},
-      {name:'Alba Lucía Gonzales', city:'Sopó', volume:11012}
+      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:23664, move:0},
+      {name:'Cristian Camilo Forero', city:'Cajicá', volume:14663, move:0},
+      {name:'Lina Marcela Molina', city:'Cajicá', volume:12817, move:0},
+      {name:'Samuel Camilo Riaño', city:'Chía', volume:11071, move:0},
+      {name:'Carolina Castillo & Tulio Gómez', city:'Bogotá', volume:11034, move:76, highlight:true}
     ]},
     junior:{title:'Distribuidores Junior', items:[
-      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:20648},
-      {name:'Samuel Camilo Riaño', city:'Chía', volume:13268},
-      {name:'Cristian Camilo Forero', city:'Cajicá', volume:11201},
-      {name:'Lina Marcela Molina', city:'Cajicá', volume:11172},
-      {name:'Andrés & Samuel Álvarez', city:'Chía', volume:9182}
+      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:23664, move:0},
+      {name:'Cristian Camilo Forero', city:'Cajicá', volume:14663, move:1},
+      {name:'Lina Marcela Molina', city:'Cajicá', volume:14448, move:1},
+      {name:'Samuel Camilo Riaño', city:'Chía', volume:13218, move:-2},
+      {name:'Andrés & Samuel Álvarez', city:'Chía', volume:9182, move:0}
     ]},
     distribuidores:{title:'Distribuidores', items:[
-      {name:'Yurani Chacón & Luis Villarraga', city:'Cajicá', volume:21525},
-      {name:'Alejandro Camelo & Karol Viloria', city:'Tocancipá', volume:13776},
-      {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', volume:13628},
-      {name:'Alex Prieto & Valentina Rodríguez', city:'Chía', volume:12605},
-      {name:'Javier Barrera & Kelly Soto', city:'Tocancipá', volume:12287}
+      {name:'Ana Morales & Christian Prieto', city:'Bogotá', volume:25754, move:25, highlight:true},
+      {name:'Yurani Chacón & Luis Villarraga', city:'Cajicá', volume:22233, move:-1},
+      {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', volume:15367, move:0},
+      {name:'Alex Prieto & Valentina Rodríguez', city:'Chía', volume:14044, move:0},
+      {name:'Alejandro Camelo & Karol Viloria', city:'Tocancipá', volume:13776, move:-3}
     ]}
   };
   const medals=['🥇','🥈','🥉','4','5'];
   let current='personal';
+  function movementHTML(item){
+    const m=Number(item.move||0);
+    if(m>0) return `<span class="move move-up">↑ +${m}</span>${item.highlight?'<em class="rise-badge">🔥 Mayor ascenso</em>':''}`;
+    if(m<0) return `<span class="move move-down">↓ ${m}</span>`;
+    return '<span class="move move-same">—</span>';
+  }
+  function movementText(item){
+    const m=Number(item.move||0);
+    if(m>0) return `Movimiento: subió ${m} posiciones`;
+    if(m<0) return `Movimiento: bajó ${Math.abs(m)} posiciones`;
+    return 'Movimiento: se mantuvo en su posición';
+  }
+
   function openModal(item, idx, category){
     const m=$('topperModal'); if(!m) return;
     $('modalMedal').textContent=medals[idx] || idx+1;
@@ -349,6 +362,14 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     $('modalCity').textContent=`📍 ${item.city}`;
     $('modalVolume').textContent=fmtUSD(item.volume);
     $('modalCategory').textContent=category;
+    let movement=$('modalMovement');
+    if(!movement){
+      movement=document.createElement('div');
+      movement.id='modalMovement';
+      movement.className='modal-movement';
+      $('modalCategory').insertAdjacentElement('afterend', movement);
+    }
+    movement.textContent=movementText(item);
     m.classList.remove('hidden');
   }
   function render(key=current){
@@ -358,12 +379,13 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     $('podiumTitle').textContent=group.title;
     const [a,b,c]=group.items;
     $('podium').innerHTML=`
-      <button class="podium-place first" data-idx="0"><span class="medal">🥇</span><strong>${a.name}</strong><small>${a.city}</small><b>${fmtUSD(a.volume)}</b></button>
+      <button class="podium-place first podium-enter" data-idx="0"><span class="medal">🥇</span><strong>${a.name}</strong><small>${a.city}</small><b>${fmtUSD(a.volume)}</b><span class="movement-wrap">${movementHTML(a)}</span></button>
       <div class="podium-row">
-        <button class="podium-place second" data-idx="1"><span class="medal">🥈</span><strong>${b.name}</strong><small>${b.city}</small><b>${fmtUSD(b.volume)}</b></button>
-        <button class="podium-place third" data-idx="2"><span class="medal">🥉</span><strong>${c.name}</strong><small>${c.city}</small><b>${fmtUSD(c.volume)}</b></button>
+        <button class="podium-place second podium-enter" data-idx="1"><span class="medal">🥈</span><strong>${b.name}</strong><small>${b.city}</small><b>${fmtUSD(b.volume)}</b><span class="movement-wrap">${movementHTML(b)}</span></button>
+        <button class="podium-place third podium-enter" data-idx="2"><span class="medal">🥉</span><strong>${c.name}</strong><small>${c.city}</small><b>${fmtUSD(c.volume)}</b><span class="movement-wrap">${movementHTML(c)}</span></button>
       </div>`;
-    $('topperList').innerHTML=group.items.slice(3).map((x,i)=>`<button class="topper-row" data-idx="${i+3}"><span>${i+4}°</span><strong>${x.name}</strong><small>${x.city}</small><b>${fmtUSD(x.volume)}</b></button>`).join('');
+    $('topperList').innerHTML=group.items.slice(3).map((x,i)=>`<button class="topper-row" data-idx="${i+3}"><span>${i+4}°</span><strong>${x.name}</strong><small>${x.city}</small><b>${fmtUSD(x.volume)}</b><span class="movement-wrap">${movementHTML(x)}</span></button>`).join('');
+    document.querySelectorAll('.podium-enter').forEach((el,i)=>{ el.style.animationDelay=`${i*110}ms`; });
     document.querySelectorAll('#podium [data-idx], #topperList [data-idx]').forEach(el=>el.addEventListener('click',()=>openModal(group.items[Number(el.dataset.idx)], Number(el.dataset.idx), group.title)));
   }
   document.querySelectorAll('.topper-tab').forEach(btn=>btn.addEventListener('click',()=>{
@@ -379,15 +401,22 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
   }
   function setMonthLabel(){
     const label=$('topperMonthLabel'); if(!label) return;
-    const text=new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',month:'long',year:'numeric'}).format(new Date());
-    label.textContent=text.charAt(0).toUpperCase()+text.slice(1);
+    label.textContent='Junio 2026';
+  }
+  function nextWeeklyUpdate(now=new Date()){
+    const bogotaNow=new Date(now.toLocaleString('en-US',{timeZone:'America/Bogota'}));
+    const target=new Date(bogotaNow);
+    const day=target.getDay(); // 0 domingo, 1 lunes
+    const daysUntilMonday=(8-day)%7 || 7;
+    target.setDate(target.getDate()+daysUntilMonday);
+    target.setHours(8,0,0,0);
+    const utcMs=target.getTime()+5*3600000; // Colombia UTC-5
+    return new Date(utcMs);
   }
   function tick(){
     const el=$('topCountdown'); if(!el) return;
     const now=new Date();
-    const c=colombiaParts(now);
-    const endColombia = new Date(Date.UTC(c.year, c.month, 1, 4, 59, 59)); // último día del mes, 11:59:59 p.m. Colombia
-    let diff=Math.max(0, endColombia-now);
+    let diff=Math.max(0, nextWeeklyUpdate(now)-now);
     const d=Math.floor(diff/86400000); diff-=d*86400000;
     const h=Math.floor(diff/3600000); diff-=h*3600000;
     const m=Math.floor(diff/60000); diff-=m*60000;
