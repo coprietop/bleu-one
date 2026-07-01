@@ -371,6 +371,7 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     }
     movement.textContent=movementText(item);
     m.classList.remove('hidden');
+    if(idx===0) setTimeout(launchConfetti, 120);
   }
   function render(key=current){
     if(!$('podium')) return;
@@ -403,20 +404,25 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     const label=$('topperMonthLabel'); if(!label) return;
     label.textContent='Junio 2026';
   }
-  function nextWeeklyUpdate(now=new Date()){
+  function endOfCurrentMonthColombia(now=new Date()){
     const bogotaNow=new Date(now.toLocaleString('en-US',{timeZone:'America/Bogota'}));
-    const target=new Date(bogotaNow);
-    const day=target.getDay(); // 0 domingo, 1 lunes
-    const daysUntilMonday=(8-day)%7 || 7;
-    target.setDate(target.getDate()+daysUntilMonday);
-    target.setHours(8,0,0,0);
-    const utcMs=target.getTime()+5*3600000; // Colombia UTC-5
-    return new Date(utcMs);
+    const y=bogotaNow.getFullYear();
+    const m=bogotaNow.getMonth();
+    // Inicio del mes siguiente a las 00:00 en Colombia (UTC-5).
+    return new Date(Date.UTC(y, m + 1, 1, 5, 0, 0));
+  }
+  function setCountdownLabel(){
+    const label=document.querySelector('.countdown-label');
+    if(!label) return;
+    const bogotaNow=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Bogota'}));
+    const monthName=new Intl.DateTimeFormat('es-CO',{month:'long', timeZone:'America/Bogota'}).format(bogotaNow);
+    const title=monthName.charAt(0).toUpperCase()+monthName.slice(1);
+    label.textContent=`Finaliza ${title} ${bogotaNow.getFullYear()} en`;
   }
   function tick(){
     const el=$('topCountdown'); if(!el) return;
     const now=new Date();
-    let diff=Math.max(0, nextWeeklyUpdate(now)-now);
+    let diff=Math.max(0, endOfCurrentMonthColombia(now)-now);
     const d=Math.floor(diff/86400000); diff-=d*86400000;
     const h=Math.floor(diff/3600000); diff-=h*3600000;
     const m=Math.floor(diff/60000); diff-=m*60000;
@@ -424,7 +430,21 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     const vals=[d,h,m,s].map(x=>String(x).padStart(2,'0'));
     el.querySelectorAll('strong').forEach((node,i)=>node.textContent=vals[i]);
   }
-  render(); setMonthLabel(); tick(); setInterval(tick,1000);
+  function launchConfetti(){
+    const layer=$('confettiLayer'); if(!layer) return;
+    layer.innerHTML='';
+    for(let i=0;i<34;i++){
+      const piece=document.createElement('i');
+      piece.style.left=(8+Math.random()*84)+'%';
+      piece.style.animationDelay=(Math.random()*0.25)+'s';
+      piece.style.transform=`rotate(${Math.random()*360}deg)`;
+      piece.style.setProperty('--fall', (80+Math.random()*120)+'px');
+      layer.appendChild(piece);
+    }
+    layer.classList.add('show');
+    setTimeout(()=>{ layer.classList.remove('show'); layer.innerHTML=''; }, 1500);
+  }
+  render(); setMonthLabel(); setCountdownLabel(); tick(); setInterval(tick,1000);
 })();
 
 
