@@ -191,8 +191,15 @@ function calcTicket(){
   setProgress('ticketBar','ticketPct',avance); $('ticketFalta').textContent=falta?`Faltan ${fmtUSD(falta)} para clasificar.`:'Meta cumplida para este cuatrimestre.';
 }
 bindMoney('ticketVol', calcTicket); $('ticketTipo').addEventListener('change',calcTicket); calcTicket();
-function calcMoto(){const tipo=$('motoTipo').value; const v=n($('motoVol').value); let tickets=0, detalle=''; if(tipo==='personal'){tickets = v>=5000 ? 1+Math.floor((v-5000)/1000) : 0; const bono=v>=15000?3:0; tickets+=bono; detalle = bono?`Incluye 3 tickets adicionales por bono trimestral de US$15.000.`:`Venta personal: 1 ticket por US$5.000 y 1 adicional por cada US$1.000 extra.`;} else {tickets = v>=30000 ? 5+Math.floor((v-30000)/1000) : 0; detalle = `Distribución: 5 tickets por US$30.000 en el trimestre y 1 adicional por cada US$1.000 extra.`;} $('motoTickets').textContent=tickets; $('motoDetalle').textContent=detalle;}
-bindMoney('motoVol', calcMoto); $('motoTipo').addEventListener('change',calcMoto); calcMoto();
+function calcMoto(){
+  const tipoEl=$('motoTipo'), volEl=$('motoVol');
+  if(!tipoEl || !volEl) return;
+  const tipo=tipoEl.value; const v=n(volEl.value); let tickets=0, detalle='';
+  if(tipo==='personal'){tickets = v>=5000 ? 1+Math.floor((v-5000)/1000) : 0; const bono=v>=15000?3:0; tickets+=bono; detalle = bono?`Incluye 3 tickets adicionales por bono trimestral de US$15.000.`:`Venta personal: 1 ticket por US$5.000 y 1 adicional por cada US$1.000 extra.`;}
+  else {tickets = v>=30000 ? 5+Math.floor((v-30000)/1000) : 0; detalle = `Distribución: 5 tickets por US$30.000 en el trimestre y 1 adicional por cada US$1.000 extra.`;}
+  if($('motoTickets')) $('motoTickets').textContent=tickets; if($('motoDetalle')) $('motoDetalle').textContent=detalle;
+}
+if($('motoVol')) bindMoney('motoVol', calcMoto); if($('motoTipo')) $('motoTipo').addEventListener('change',calcMoto); calcMoto();
 function calcIngresos(){
   const r=Number($('ingRol').value); const vol=n($('ingVol').value); const ingreso=vol*r;
   $('ingUsd').textContent=fmtUSD(ingreso); $('ingCop').textContent=fmtCOP(ingreso*COP_RATE);
@@ -317,117 +324,151 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
 
 // Toppers
 (function initToppers(){
-  const data={
-    personal:{title:'Venta personal', items:[
-      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:23664, move:0},
-      {name:'Cristian Camilo Forero', city:'Cajicá', volume:14663, move:0},
-      {name:'Lina Marcela Molina', city:'Cajicá', volume:12817, move:0},
-      {name:'Samuel Camilo Riaño', city:'Chía', volume:11071, move:0},
-      {name:'Carolina Castillo & Tulio Gómez', city:'Bogotá', volume:11034, move:76, highlight:true}
-    ]},
-    junior:{title:'Distribuidores Junior', items:[
-      {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:23664, move:0},
-      {name:'Cristian Camilo Forero', city:'Cajicá', volume:14663, move:1},
-      {name:'Lina Marcela Molina', city:'Cajicá', volume:14448, move:1},
-      {name:'Samuel Camilo Riaño', city:'Chía', volume:13218, move:-2},
-      {name:'Andrés & Samuel Álvarez', city:'Chía', volume:9182, move:0}
-    ]},
-    distribuidores:{title:'Distribuidores', items:[
-      {name:'Ana Morales & Christian Prieto', city:'Bogotá', volume:25754, move:25, highlight:true},
-      {name:'Yurani Chacón & Luis Villarraga', city:'Cajicá', volume:22233, move:-1},
-      {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', volume:15367, move:0},
-      {name:'Alex Prieto & Valentina Rodríguez', city:'Chía', volume:14044, move:0},
-      {name:'Alejandro Camelo & Karol Viloria', city:'Tocancipá', volume:13776, move:-3}
-    ]}
+  const rankings={
+    junio:{
+      label:'Junio 2026', final:true,
+      personal:{title:'Venta personal', items:[
+        {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:23664, move:0},
+        {name:'Cristian Camilo Forero', city:'Cajicá', volume:14663, move:0},
+        {name:'Lina Marcela Molina', city:'Cajicá', volume:12817, move:0},
+        {name:'Samuel Camilo Riaño', city:'Chía', volume:11071, move:0},
+        {name:'Carolina Castillo & Tulio Gómez', city:'Bogotá', volume:11034, move:76, highlight:true}
+      ]},
+      junior:{title:'Distribuidores Junior', items:[
+        {name:'Maricela Chilito & Eduardo Mayordomo', city:'Funza', volume:23664, move:0},
+        {name:'Cristian Camilo Forero', city:'Cajicá', volume:14663, move:1},
+        {name:'Lina Marcela Molina', city:'Cajicá', volume:14448, move:1},
+        {name:'Samuel Camilo Riaño', city:'Chía', volume:13218, move:-2},
+        {name:'Andrés & Samuel Álvarez', city:'Chía', volume:9182, move:0}
+      ]},
+      distribuidores:{title:'Distribuidores', items:[
+        {name:'Ana Morales & Christian Prieto', city:'Bogotá', volume:25754, move:25, highlight:true},
+        {name:'Yurani Chacón & Luis Villarraga', city:'Cajicá', volume:22233, move:-1},
+        {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', volume:15367, move:0},
+        {name:'Alex Prieto & Valentina Rodríguez', city:'Chía', volume:14044, move:0},
+        {name:'Alejandro Camelo & Karol Viloria', city:'Tocancipá', volume:13776, move:-3}
+      ]}
+    },
+    julio:{
+      label:'Julio 2026', final:false,
+      personal:{title:'Venta personal', items:[
+        {name:'Jessica Paola Calderón', city:'Tocancipá', distribution:'Sabores de Prestigio', volume:5490, move:null},
+        {name:'Juan Pablo Riaño', city:'Chía', distribution:'Crois GT', volume:4890, move:null},
+        {name:'Valentina Martín', city:'Cajicá', distribution:'Nakuru Company', volume:4548, move:null},
+        {name:'Rosa Aliqui Buitrago', city:'Chía', distribution:'Ariluxe Company', volume:4507, move:null},
+        {name:'Jury Araque', city:'Sopó', distribution:'Bleu Company', volume:4382, move:null}
+      ]},
+      junior:{title:'Mejor Distribuidor Junior', items:[
+        {name:'Rosa Aliqui Buitrago', city:'Chía', distribution:'Ariluxe Company', volume:4507, move:null},
+        {name:'Lady Rojas & Steven Prieto', city:'Chía', distribution:'Company LuryBlue', volume:4148, move:null},
+        {name:'Ximena Aguilar', city:'Cajicá', distribution:'Majestic Fénix', volume:3904, move:null},
+        {name:'Samuel Camilo Riaño', city:'Chía', distribution:'Exclusive Quality', volume:3858, move:null},
+        {name:'Natalia Bolívar & Santiago Parra', city:'Cajicá', distribution:'JM Global Company', volume:3538, move:null}
+      ]},
+      distribuidores:{title:'Mejor Distribuidor', items:[
+        {name:'Valentina Martín', city:'Cajicá', distribution:'Nakuru Company', volume:10600, move:null},
+        {name:'Dayana Ayala & Wilmer Núñez', city:'Tocancipá', distribution:'Lion Heart Company', volume:10504, move:null},
+        {name:'Ana Morales & Christian Prieto', city:'Bogotá', distribution:'Bleu Company', volume:9078, move:null},
+        {name:'Alejandro Camelo & Karol Rincón', city:'Tocancipá', distribution:'Sabores de Prestigio', volume:7613, move:null},
+        {name:'Yurani Chacón & Luis Villarraga', city:'Cajicá', distribution:'Sloan Enterprise', volume:7125, move:null}
+      ]}
+    }
   };
   const medals=['🥇','🥈','🥉','4','5'];
-  let current='personal';
+  let currentMonth='julio';
+  let currentCategory='personal';
+
   function movementHTML(item){
+    if(item.move===null || item.move===undefined) return '<span class="move move-new">En competencia</span>';
     const m=Number(item.move||0);
     if(m>0) return `<span class="move move-up">↑ +${m}</span>${item.highlight?'<em class="rise-badge">🔥 Mayor ascenso</em>':''}`;
     if(m<0) return `<span class="move move-down">↓ ${m}</span>`;
     return '<span class="move move-same">—</span>';
   }
   function movementText(item){
+    if(item.move===null || item.move===undefined) return 'Ranking de Julio a la fecha';
     const m=Number(item.move||0);
     if(m>0) return `Movimiento: subió ${m} posiciones`;
     if(m<0) return `Movimiento: bajó ${Math.abs(m)} posiciones`;
     return 'Movimiento: se mantuvo en su posición';
   }
-
+  function launchConfetti(container=document.body){
+    const layer=document.createElement('div');
+    layer.className='confetti-layer';
+    const symbols=['◆','●','✦','■'];
+    for(let i=0;i<34;i++){
+      const piece=document.createElement('i');
+      piece.textContent=symbols[i%symbols.length];
+      piece.style.left=`${8+Math.random()*84}%`;
+      piece.style.animationDelay=`${Math.random()*.28}s`;
+      piece.style.animationDuration=`${.85+Math.random()*.7}s`;
+      piece.style.setProperty('--drift',`${-50+Math.random()*100}px`);
+      layer.appendChild(piece);
+    }
+    container.appendChild(layer);
+    setTimeout(()=>layer.remove(),1900);
+  }
   function openModal(item, idx, category){
     const m=$('topperModal'); if(!m) return;
     $('modalMedal').textContent=medals[idx] || idx+1;
     $('modalName').textContent=item.name;
     $('modalCity').textContent=`📍 ${item.city}`;
+    const dist=$('modalDistribution');
+    if(dist){dist.textContent=item.distribution?`Distribución: ${item.distribution}`:''; dist.style.display=item.distribution?'block':'none';}
     $('modalVolume').textContent=fmtUSD(item.volume);
-    $('modalCategory').textContent=category;
+    $('modalCategory').textContent=`${category} · ${rankings[currentMonth].label}`;
     let movement=$('modalMovement');
-    if(!movement){
-      movement=document.createElement('div');
-      movement.id='modalMovement';
-      movement.className='modal-movement';
-      $('modalCategory').insertAdjacentElement('afterend', movement);
-    }
+    if(!movement){movement=document.createElement('div');movement.id='modalMovement';movement.className='modal-movement';$('modalCategory').insertAdjacentElement('afterend',movement);}
     movement.textContent=movementText(item);
     m.classList.remove('hidden');
+    if(idx===0) requestAnimationFrame(()=>launchConfetti(m.querySelector('.modal-card')));
   }
-  function render(key=current){
+  function extraInfo(item){return item.distribution?`<small class="topper-distribution">${item.distribution}</small>`:'';}
+  function render(){
     if(!$('podium')) return;
-    current=key;
-    const group=data[key];
-    $('podiumTitle').textContent=group.title;
+    const month=rankings[currentMonth];
+    const group=month[currentCategory];
+    $('podiumTitle').textContent=`${group.title} · ${month.label}`;
     const [a,b,c]=group.items;
     $('podium').innerHTML=`
-      <button class="podium-place first podium-enter" data-idx="0"><span class="medal">🥇</span><strong>${a.name}</strong><small>${a.city}</small><b>${fmtUSD(a.volume)}</b><span class="movement-wrap">${movementHTML(a)}</span></button>
+      <button class="podium-place first podium-enter" data-idx="0"><span class="medal">🥇</span><strong>${a.name}</strong><small>${a.city}</small>${extraInfo(a)}<b>${fmtUSD(a.volume)}</b><span class="movement-wrap">${movementHTML(a)}</span></button>
       <div class="podium-row">
-        <button class="podium-place second podium-enter" data-idx="1"><span class="medal">🥈</span><strong>${b.name}</strong><small>${b.city}</small><b>${fmtUSD(b.volume)}</b><span class="movement-wrap">${movementHTML(b)}</span></button>
-        <button class="podium-place third podium-enter" data-idx="2"><span class="medal">🥉</span><strong>${c.name}</strong><small>${c.city}</small><b>${fmtUSD(c.volume)}</b><span class="movement-wrap">${movementHTML(c)}</span></button>
+        <button class="podium-place second podium-enter" data-idx="1"><span class="medal">🥈</span><strong>${b.name}</strong><small>${b.city}</small>${extraInfo(b)}<b>${fmtUSD(b.volume)}</b><span class="movement-wrap">${movementHTML(b)}</span></button>
+        <button class="podium-place third podium-enter" data-idx="2"><span class="medal">🥉</span><strong>${c.name}</strong><small>${c.city}</small>${extraInfo(c)}<b>${fmtUSD(c.volume)}</b><span class="movement-wrap">${movementHTML(c)}</span></button>
       </div>`;
-    $('topperList').innerHTML=group.items.slice(3).map((x,i)=>`<button class="topper-row" data-idx="${i+3}"><span>${i+4}°</span><strong>${x.name}</strong><small>${x.city}</small><b>${fmtUSD(x.volume)}</b><span class="movement-wrap">${movementHTML(x)}</span></button>`).join('');
-    document.querySelectorAll('.podium-enter').forEach((el,i)=>{ el.style.animationDelay=`${i*110}ms`; });
-    document.querySelectorAll('#podium [data-idx], #topperList [data-idx]').forEach(el=>el.addEventListener('click',()=>openModal(group.items[Number(el.dataset.idx)], Number(el.dataset.idx), group.title)));
+    $('topperList').innerHTML=group.items.slice(3).map((x,i)=>`<button class="topper-row" data-idx="${i+3}"><span>${i+4}°</span><strong>${x.name}</strong><small>${x.city}${x.distribution?` · ${x.distribution}`:''}</small><b>${fmtUSD(x.volume)}</b><span class="movement-wrap">${movementHTML(x)}</span></button>`).join('');
+    document.querySelectorAll('.podium-enter').forEach((el,i)=>{el.style.animationDelay=`${i*110}ms`;});
+    document.querySelectorAll('#podium [data-idx], #topperList [data-idx]').forEach(el=>el.addEventListener('click',()=>openModal(group.items[Number(el.dataset.idx)],Number(el.dataset.idx),group.title)));
+    setTimeout(()=>launchConfetti($('podium')),430);
   }
+  function setMonth(monthKey){
+    currentMonth=monthKey;
+    document.querySelectorAll('.topper-month-tab').forEach(b=>b.classList.toggle('active',b.dataset.month===monthKey));
+    const note=$('topperMonthNote');
+    if(note) note.textContent=monthKey==='junio'?'Resultados finales de Junio 2026. Felicitamos a quienes cerraron el mes en el Top 5.':'Ranking de Julio a la fecha. Se actualizará semanalmente hasta el cierre del mes.';
+    render();
+  }
+  document.querySelectorAll('.topper-month-tab').forEach(btn=>btn.addEventListener('click',()=>setMonth(btn.dataset.month)));
   document.querySelectorAll('.topper-tab').forEach(btn=>btn.addEventListener('click',()=>{
     document.querySelectorAll('.topper-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active'); render(btn.dataset.top);
+    btn.classList.add('active'); currentCategory=btn.dataset.top; render();
   }));
   $('modalClose')?.addEventListener('click',()=> $('topperModal')?.classList.add('hidden'));
-  $('topperModal')?.addEventListener('click',(e)=>{ if(e.target.id==='topperModal') $('topperModal').classList.add('hidden'); });
-  function colombiaParts(date=new Date()){
-    const parts=new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(date);
-    const obj={}; parts.forEach(p=>{if(p.type!=='literal') obj[p.type]=Number(p.value)});
-    return obj;
-  }
-  function setMonthLabel(){
-    const label=$('topperMonthLabel'); if(!label) return;
-    label.textContent='Junio 2026';
-  }
-  function nextWeeklyUpdate(now=new Date()){
-    const bogotaNow=new Date(now.toLocaleString('en-US',{timeZone:'America/Bogota'}));
-    const target=new Date(bogotaNow);
-    const day=target.getDay(); // 0 domingo, 1 lunes
-    const daysUntilMonday=(8-day)%7 || 7;
-    target.setDate(target.getDate()+daysUntilMonday);
-    target.setHours(8,0,0,0);
-    const utcMs=target.getTime()+5*3443.59000; // Colombia UTC-5
-    return new Date(utcMs);
-  }
+  $('topperModal')?.addEventListener('click',(e)=>{if(e.target.id==='topperModal') $('topperModal').classList.add('hidden');});
+
+  function endOfJulyBogota(){return new Date('2026-08-01T00:00:00-05:00');}
   function tick(){
     const el=$('topCountdown'); if(!el) return;
-    const now=new Date();
-    let diff=Math.max(0, nextWeeklyUpdate(now)-now);
+    let diff=Math.max(0,endOfJulyBogota().getTime()-Date.now());
     const d=Math.floor(diff/86400000); diff-=d*86400000;
-    const h=Math.floor(diff/3443.59000); diff-=h*3443.59000;
+    const h=Math.floor(diff/3600000); diff-=h*3600000;
     const m=Math.floor(diff/60000); diff-=m*60000;
     const s=Math.floor(diff/1000);
     const vals=[d,h,m,s].map(x=>String(x).padStart(2,'0'));
     el.querySelectorAll('strong').forEach((node,i)=>node.textContent=vals[i]);
   }
-  render(); setMonthLabel(); tick(); setInterval(tick,1000);
+  setMonth('julio'); tick(); setInterval(tick,1000);
 })();
-
-
 
 // Bleu One v1.0 Stable - Presentation Edition enhancements
 (function(){
