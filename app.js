@@ -352,25 +352,25 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     julio:{
       label:'Julio 2026', final:false,
       personal:{title:'Venta personal', items:[
-        {name:'Jessica Paola Calderón', city:'Tocancipá', distribution:'Sabores de Prestigio', volume:5490, move:null},
-        {name:'Juan Pablo Riaño', city:'Chía', distribution:'Crois GT', volume:4890, move:null},
-        {name:'Valentina Martín', city:'Cajicá', distribution:'Nakuru Company', volume:4548, move:null},
-        {name:'Rosa Aliqui Buitrago', city:'Chía', distribution:'Ariluxe Company', volume:4507, move:null},
-        {name:'Jury Araque', city:'Sopó', distribution:'Bleu Company', volume:4382, move:null}
+        {name:'Sandra Milena Cano', city:'Tocancipá', distribution:'Lions Heart', volume:11993, move:21, highlight:true},
+        {name:'Leidy Rojas & Steven Prieto', city:'Chía', distribution:'Company Lury Blue', volume:11649, move:11},
+        {name:'Nelsen Rocío Vega', city:'Tocancipá', distribution:'Nakuru Company', volume:8837, move:13},
+        {name:'Jessica Paola Calderón', city:'Tocancipá', distribution:'Sabores de Prestigio', volume:8760, move:-3},
+        {name:'María Paula Villarraga & Andrea Juzga', city:'Cajicá', distribution:'Samand Corporation', volume:8486, move:62, highlight:true}
       ]},
       junior:{title:'Mejor Distribuidor Junior', items:[
-        {name:'Rosa Aliqui Buitrago', city:'Chía', distribution:'Ariluxe Company', volume:4507, move:null},
-        {name:'Lady Rojas & Steven Prieto', city:'Chía', distribution:'Company LuryBlue', volume:4148, move:null},
-        {name:'Ximena Aguilar', city:'Cajicá', distribution:'Majestic Fénix', volume:3904, move:null},
-        {name:'Samuel Camilo Riaño', city:'Chía', distribution:'Exclusive Quality', volume:3858, move:null},
-        {name:'Natalia Bolívar & Santiago Parra', city:'Cajicá', distribution:'JM Global Company', volume:3538, move:null}
+        {name:'Leidy Rojas & Steven Prieto', city:'Chía', distribution:'Company Lury Blue', volume:11649, move:1},
+        {name:'Samuel Camilo Riaño', city:'Chía', distribution:'Exclusive Quality', volume:6700, move:2},
+        {name:'Natalia Bolívar & Santiago Parra', city:'Cajicá', distribution:'JM Global Company', volume:6112, move:2},
+        {name:'Andrea Barriga', city:'Cajicá', distribution:'Lions Fuentes', volume:5197, move:27, highlight:true},
+        {name:'Andrés Moreno', city:'Bogotá', distribution:'Esenzia Vital SAS', volume:4894, move:13}
       ]},
       distribuidores:{title:'Mejor Distribuidor', items:[
-        {name:'Valentina Martín', city:'Cajicá', distribution:'Nakuru Company', volume:10600, move:null},
-        {name:'Dayana Ayala & Wilmer Núñez', city:'Tocancipá', distribution:'Lion Heart Company', volume:10504, move:null},
-        {name:'Ana Morales & Christian Prieto', city:'Bogotá', distribution:'Bleu Company', volume:9078, move:null},
-        {name:'Alejandro Camelo & Karol Rincón', city:'Tocancipá', distribution:'Sabores de Prestigio', volume:7613, move:null},
-        {name:'Yurani Chacón & Luis Villarraga', city:'Cajicá', distribution:'Sloan Enterprise', volume:7125, move:null}
+        {name:'Dayana Ayala & Wilmer Núñez', city:'Tocancipá', distribution:'Lion Heart SAS', volume:18337, move:1},
+        {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', distribution:'Taru Company', volume:16021, move:12},
+        {name:'Ana Morales & Christian Prieto', city:'Bogotá', distribution:'Bleu Company', volume:14452, move:0},
+        {name:'María Paula Villarraga & Andrea Juzga', city:'Cajicá', distribution:'Samand Corporation', volume:13861, move:9},
+        {name:'Karol Bernal', city:'Bogotá', distribution:'Aeternum Company', volume:13716, move:7}
       ]}
     }
   };
