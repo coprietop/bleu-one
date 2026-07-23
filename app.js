@@ -942,3 +942,66 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     });
   });
 })();
+
+
+// ===== Experto en 4 en 14 =====
+(()=>{
+  const screen=document.getElementById('experto414');
+  if(!screen) return;
+  const tabs=[...screen.querySelectorAll('.expert-tab')];
+  const panels=[...screen.querySelectorAll('.expert-panel')];
+  tabs.forEach(btn=>btn.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.toggle('active',x===btn));
+    panels.forEach(p=>p.classList.toggle('active',p.id===`expertTab-${btn.dataset.expertTab}`));
+  }));
+  const subtabs=[...screen.querySelectorAll('.instant-subtab')];
+  const contents=[...screen.querySelectorAll('.instant-content')];
+  subtabs.forEach(btn=>btn.addEventListener('click',()=>{
+    subtabs.forEach(x=>x.classList.toggle('active',x===btn));
+    contents.forEach(p=>p.classList.toggle('active',p.id===`instantTab-${btn.dataset.instantTab}`));
+  }));
+  const learned=new Set();
+  const bar=document.getElementById('expertProgressBar');
+  const label=document.getElementById('expertProgressLabel');
+  screen.querySelectorAll('.learn-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    const n=btn.dataset.learn;
+    if(learned.has(n)){learned.delete(n);btn.classList.remove('learned');btn.textContent='Marcar paso como aprendido';}
+    else{learned.add(n);btn.classList.add('learned');btn.textContent='✓ Paso aprendido';}
+    const pct=Math.round(learned.size/8*100);bar.style.width=pct+'%';label.textContent=`${learned.size} de 8 pasos`;
+  }));
+  async function copyText(text,button){
+    try{await navigator.clipboard.writeText(text);const old=button.textContent;button.textContent='✓ Copiado';setTimeout(()=>button.textContent=old,1500)}catch(e){button.textContent='Selecciona y copia'}
+  }
+  document.getElementById('copyCristianSpeech')?.addEventListener('click',e=>copyText(document.getElementById('cristianSpeechText').innerText,e.currentTarget));
+  screen.querySelector('.copy-activation')?.addEventListener('click',e=>copyText(document.getElementById('activationSpeech').innerText,e.currentTarget));
+
+  const scenarios=[
+    {q:'El cliente dice: “Yo mañana les escribo y te cuento.”',opts:['Aceptar y salir con los datos','Explicar que para asegurar que tú visites a su familia deben agendar ahora','Enviar una cadena de WhatsApp al día siguiente'],a:1,why:'La instantánea aprovecha la confianza y la emoción del momento. Lidera la llamada ahora.'},
+    {q:'Ya calificaste los prospectos. ¿A quién llamas primero?',opts:['Al prospecto número 1','Al contacto 6 o 7 para entrar en ritmo','A nadie hasta sentirte completamente seguro'],a:1,why:'Las primeras llamadas sirven para ganar naturalidad sin arriesgar a los prospectos más valiosos.'},
+    {q:'El prospecto pregunta: “¿Tengo que comprar algo?”',opts:['Explicar precios y planes','Decir que no hay obligación, que es una experiencia gratuita y agendar','Prometer que no se mostrará ningún producto'],a:1,why:'No vendas por teléfono. Reduce la tensión, explica lo mínimo y confirma la visita.'},
+    {q:'La primera persona no contesta.',opts:['Terminar el intento','Esperar al día siguiente','Llamar inmediatamente al siguiente contacto'],a:2,why:'La instantánea se sostiene por ritmo. Una llamada fallida no puede detener el proceso.'},
+    {q:'El cliente toma el celular y se va a otra habitación.',opts:['Dejarlo explicar todo','Pedirle amablemente que solo salude, te presente y entregue el teléfono','Enviar un texto después'],a:1,why:'Una explicación larga puede confundir o quemar el contacto. La instrucción debe ser breve.'}
+  ];
+  let current=0,score=0;
+  const q=document.getElementById('trainerScenario'),opts=document.getElementById('trainerOptions'),fb=document.getElementById('trainerFeedback'),start=document.getElementById('trainerStart');
+  function showScenario(){const s=scenarios[current];q.textContent=s.q;opts.innerHTML='';fb.textContent='';fb.className='trainer-feedback';s.opts.forEach((o,i)=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>{[...opts.children].forEach(x=>x.disabled=true);const good=i===s.a;if(good)score++;fb.className='trainer-feedback '+(good?'good':'bad');fb.textContent=(good?'✓ Excelente. ':'⚠ Se puede mejorar. ')+s.why;start.textContent=current===scenarios.length-1?`Ver resultado (${score}/${scenarios.length})`:'Siguiente situación →';start.style.display='inline-flex'};opts.appendChild(b)});start.style.display='none'}
+  start?.addEventListener('click',()=>{if(start.dataset.started!=='1'){start.dataset.started='1';current=0;score=0;showScenario();return}if(current<scenarios.length-1){current++;showScenario()}else{q.textContent=`Entrenamiento completado: ${score} de ${scenarios.length}`;opts.innerHTML='';fb.textContent=score>=4?'Muy buen criterio. Ahora llévalo a una demostración real.':'Repasa el Speech de Cristian Prieto y vuelve a intentarlo.';start.textContent='Repetir entrenamiento';start.dataset.started='0';start.style.display='inline-flex'}});
+
+  const quiz=[
+    ['¿Cuál es la meta completa del 4 en 14?',['4 nombres y una venta','4 visitas, mínimo una venta y 14 días','14 visitas y 4 ventas'],1],
+    ['¿Cuál es el objetivo del puente?',['Pedir teléfonos rápido','Aliviar el estrés post negociación y crear transición','Cerrar una segunda venta'],1],
+    ['¿Qué diferencia hay entre pedir y anotar nombres?',['Ninguna','Pedir busca calidad; anotar solo llena espacios','Anotar siempre es mejor'],1],
+    ['¿Qué círculo debe priorizarse?',['Conocidos lejanos','Compañeros de trabajo','Familiares y núcleo de máxima confianza'],2],
+    ['¿Por qué se califican los prospectos?',['Para conversar más','Para proteger tiempo y trabajar mejores mercados','Para eliminar todos los nombres'],1],
+    ['Después de una venta dentro del programa, ¿qué puede faltar?',['Nada','Las visitas necesarias hasta completar cuatro','Otro premio'],1],
+    ['¿Con qué contacto conviene iniciar la instantánea?',['Siempre el número 1','Uno intermedio, como el 6 o 7','El contacto más difícil'],1],
+    ['¿Cuál es la frase más efectiva?',['¿Será que podemos llamar?','Vamos a llamar de una vez','Me avisa mañana'],1],
+    ['¿Cuál es el plazo ideal para la visita instantánea?',['Hoy, mañana o máximo pasado mañana','En dos semanas','Cuando el prospecto recuerde'],0],
+    ['Si no contestan, ¿cuál es la segunda opción?',['Cadena genérica','Mensaje de voz personal','No hacer nada'],1],
+    ['¿Qué busca la llamada instantánea?',['Cerrar la venta por teléfono','Explicar precios','Abrir la puerta y agendar'],2],
+    ['¿Cuándo se hace seguimiento?',['Aproximadamente a las 48 horas','Al mes','Solo si el cliente llama'],0]
+  ];
+  const quizBox=document.getElementById('expertQuiz');
+  quiz.forEach((item,idx)=>{const d=document.createElement('div');d.className='quiz-question';d.innerHTML=`<strong>${idx+1}. ${item[0]}</strong>`+item[1].map((o,i)=>`<label><input type="radio" name="eq${idx}" value="${i}"> ${o}</label>`).join('');quizBox.appendChild(d)});
+  document.getElementById('gradeExpertQuiz')?.addEventListener('click',()=>{let correct=0;quiz.forEach((item,idx)=>{const v=screen.querySelector(`input[name="eq${idx}"]:checked`);if(v&&Number(v.value)===item[2])correct++});const pct=Math.round(correct/quiz.length*100);const result=document.getElementById('expertQuizResult');document.getElementById('examScore').textContent=pct+'%';result.className='quiz-result show';result.innerHTML=pct>=90?`<strong>🏅 Experto en 4 en 14</strong><p>${correct} de ${quiz.length} respuestas correctas. Estás listo para llevar el sistema a la práctica y enseñarlo con el ejemplo.</p>`:pct>=70?`<strong>Muy buen avance</strong><p>${correct} de ${quiz.length}. Repasa especialmente Instantánea y Activación antes de repetir.</p>`:`<strong>La práctica apenas comienza</strong><p>${correct} de ${quiz.length}. Recorre nuevamente los ocho pasos y vuelve a presentar la evaluación.</p>`});
+})();
