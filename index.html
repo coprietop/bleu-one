@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <meta content="#05070c" name="theme-color"/>
-<title>Bleu One v1.8 · Academia y Gimnasio 4 en 14</title>
+<title>Bleu One v1.9 · Academia y Gimnasio 4 en 14</title>
 <link href="manifest.json" rel="manifest"/>
 <link href="styles.css" rel="stylesheet"/>
 </head>
@@ -24,6 +24,7 @@
 <button class="nav-item" data-screen="sistema122">Sistema 122</button>
 <button class="nav-item" data-screen="desarrollo">Desarrollo</button>
 <button class="nav-item" data-screen="experto414">Experto en 4 en 14</button>
+<button class="nav-item" data-screen="gimnasio414">Gimnasio 4 en 14</button>
 <button class="nav-item" data-screen="monoazul">Programa Moño Azul</button>
 <button class="nav-item" data-screen="moto">Tickets Moto</button>
 <button class="nav-item" data-screen="ingresos">Proyección Ingresos</button>
@@ -171,7 +172,6 @@
     <button class="expert-tab star-tab" data-expert-tab="instantanea414">6. Instantánea y activación ★</button>
     <button class="expert-tab" data-expert-tab="seguimiento414">7. Seguimiento</button>
     <button class="expert-tab" data-expert-tab="mover414">8. Mover programas</button>
-    <button class="expert-tab gym-tab" data-expert-tab="gimnasio414">🏋️ Gimnasio 4 en 14</button>
     <button class="expert-tab" data-expert-tab="evaluacion414">Evaluación</button>
   </div>
 
@@ -220,8 +220,8 @@
       <div class="never-grid"><article>✕ No hablar de precios</article><article>✕ No explicar toda la experiencia</article><article>✕ No vender por teléfono</article><article>✕ No agendar para la próxima semana</article></div>
     </div></section></div>
 
-    <div class="instant-content" id="instantTab-speechcp"><section class="panel speech-premium"><div class="result-title"><div><span class="eyebrow">Guion de alto rendimiento</span><h3>Speech de Christian Prieto</h3></div><button class="small-action" id="copyChristianSpeech">Copiar speech</button></div>
-      <div id="christianSpeechText" class="dialog-script">
+    <div class="instant-content" id="instantTab-speechcp"><section class="panel speech-premium"><div class="result-title"><div><span class="eyebrow">Guion de alto rendimiento</span><h3>Speech de Christian Prieto</h3></div><button class="small-action" id="copyCristianSpeech">Copiar speech</button></div>
+      <div id="cristianSpeechText" class="dialog-script">
         <p><b>Asesor:</b> Señora Andrea, una pregunta: ¿a usted le gustaría que estas personas las visitara yo, que ya me conoce, o una persona desconocida?</p>
         <p><b>Cliente:</b> Pues usted.</p>
         <p><b>Asesor:</b> ¿Por qué?</p>
@@ -251,7 +251,10 @@
 
   <div class="expert-panel" id="expertTab-mover414"><section class="panel lesson-card"><span class="lesson-number">08</span><div><h3>Mover programas</h3><p class="lesson-lead">Un contacto que no respondió no siempre está perdido. Puede necesitar un nuevo momento, canal o recomendador.</p><div class="lesson-grid"><article><h4>Qué significa</h4><p>Reactivar programas antiguos, reemplazar visitas caídas y recuperar prospectos que mostraron interés.</p></article><article><h4>Cuándo hacerlo</h4><p>Cuando una visita no se concreta, un prospecto deja de responder o una temporada baja reduce la actividad.</p></article><article class="danger-card"><h4>Si no lo haces</h4><p>Tu base de datos se llena de oportunidades incompletas que nunca vuelven a trabajarse.</p></article><article><h4>Principio</h4><p>No abandones un programa sin revisar primero qué nombres pueden sustituirse o reactivarse.</p></article></div><div class="objection"><b>Objeción:</b> “Ya pasó demasiado tiempo.”<br><strong>Respuesta:</strong> “Podemos retomar la oportunidad con una nueva fecha y un mensaje fresco. Lo importante es no desperdiciar una relación que ya existe.”</div><button class="learn-btn" data-learn="8">Marcar paso como aprendido</button></div></section></div>
 
-  <div class="expert-panel" id="expertTab-gimnasio414">
+  <div class="expert-panel" id="expertTab-evaluacion414"><section class="panel exam-card"><div class="result-title"><div><span class="eyebrow">Evaluación final</span><h3>¿Qué tan experto eres?</h3></div><span class="badge" id="examScore">Sin presentar</span></div><div id="expertQuiz"></div><button class="primary-action" id="gradeExpertQuiz">Calificar evaluación <span>→</span></button><div id="expertQuizResult" class="quiz-result"></div></section></div>
+</section>
+
+<section class="screen gym-screen" id="gimnasio414">
     <section class="panel gym-hero">
       <div><span class="eyebrow">Entrena, repite, mejora</span><h3>🏋️ Gimnasio 4 en 14</h3><p>Aquí no vienes a leer. Vienes a practicar decisiones reales, fortalecer tus speeches y convertir los ocho pasos en reflejos.</p></div>
       <div class="mastery-ring"><strong id="masteryScore">0%</strong><span>Maestría de esta sesión</span></div>
@@ -259,13 +262,12 @@
     <div class="mastery-bars panel"><div><span>Orden del sistema</span><i><b id="masteryOrder"></b></i></div><div><span>Objeciones</span><i><b id="masteryObjections"></b></i></div><div><span>Calificación de mercados</span><i><b id="masteryMarkets"></b></i></div><div><span>Instantánea</span><i><b id="masteryInstant"></b></i></div><small>La maestría se calcula únicamente durante esta sesión y se reinicia al recargar.</small></div>
     <div class="daily-challenge panel"><span>⚡ Desafío del día</span><h3 id="dailyChallenge">Cargando reto...</h3><button class="small-action" id="newDailyChallenge">Dame otro reto</button></div>
     <div class="gym-menu">
-      <button class="gym-mode active" data-gym="random">🎲 Entrenamiento aleatorio</button><button class="gym-mode" data-gym="objections">🧪 Laboratorio de objeciones</button><button class="gym-mode" data-gym="markets">📊 Juego de mercados</button><button class="gym-mode" data-gym="errors">🚨 Detecta el error</button><button class="gym-mode" data-gym="order">🧩 Orden perfecto</button><button class="gym-mode" data-gym="speech">🎤 Completa el speech</button><button class="gym-mode" data-gym="timer">⏱️ Entrena tu instantánea</button><button class="gym-mode" data-gym="mentor">💎 Modo Mentor</button>
+      <button class="gym-mode active" data-gym="random">🎲 Entrenamiento aleatorio</button><button class="gym-mode" data-gym="objections">🧪 Laboratorio de objeciones</button><button class="gym-mode" data-gym="markets">📊 Juego de mercados</button><button class="gym-mode" data-gym="errors">🚨 Detecta el error</button><button class="gym-mode" data-gym="order">🧩 Orden perfecto</button><button class="gym-mode" data-gym="speech">🎤 Completa el speech</button><button class="gym-mode" data-gym="timer">⏱️ Entrena tu instantánea</button><button class="gym-mode" data-gym="expertmind">🧠 Piensa como un experto</button><button class="gym-mode" data-gym="quick">⚡ Reto 10 segundos</button><button class="gym-mode" data-gym="mentor">💎 Modo Mentor</button>
     </div>
     <section class="panel gym-stage" id="gymStage"><div class="gym-placeholder"><span>🎲</span><h3>Entrenamiento aleatorio</h3><p>Cada intento combina una situación diferente del 4 en 14.</p><button class="primary-action" id="startGym">Comenzar entrenamiento <span>→</span></button></div></section>
-  </div>
-
-  <div class="expert-panel" id="expertTab-evaluacion414"><section class="panel exam-card"><div class="result-title"><div><span class="eyebrow">Evaluación final</span><h3>¿Qué tan experto eres?</h3></div><span class="badge" id="examScore">Sin presentar</span></div><div id="expertQuiz"></div><button class="primary-action" id="gradeExpertQuiz">Calificar evaluación <span>→</span></button><div id="expertQuizResult" class="quiz-result"></div></section></div>
 </section>
+
+
 
 <section class="screen mono-screen" id="monoazul">
 <div class="screen-head"><div><p class="eyebrow">Prospección premium</p><h2>Programa Moño Azul</h2><p>Una experiencia exclusiva para clientes VIP que convierte recomendaciones agendadas en ventas y beneficios de alto nivel.</p></div></div>
