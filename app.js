@@ -511,3 +511,138 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
   // Inicializa barras y mensajes después de que todos los módulos cargan.
   try{ calcAscenso(); calcTicket(); calcCuota(); calcAgregados?.(); }catch(e){}
 })();
+
+
+// Programa Moño Azul
+(function initMonoAzul(){
+  const root=document.getElementById('monoazul');
+  if(!root) return;
+  const q=id=>document.getElementById(id);
+  const levels=[
+    {sales:2,min:2000000,max:2499000},
+    {sales:3,min:2500000,max:3399000},
+    {sales:4,min:3400000,max:3999000},
+    {sales:5,min:4000000,max:5499000},
+    {sales:6,min:5500000,max:7000000}
+  ];
+  const adn=[
+    'Moño Azul no reemplaza el 4 en 14: es un plus que lo complementa y genera más actividad instantánea.',
+    'Usa Moño Azul para generar más actividad instantánea, siempre con estrategia y seguimiento.',
+    'Las personas tienen máximo un mes para activar y desarrollar este programa.',
+    'El Programa Moño Azul solo se usa con autorización de tu Distribuidor.',
+    'El éxito está en que el cliente mismo agende las visitas, no únicamente en que envíe contactos.',
+    'Haz sinergia con el cliente y un seguimiento exhaustivo para que el programa sea exitoso.',
+    'Moño Azul históricamente ha ayudado a muchos asesores y distribuidores a construir su mejor mes.',
+    'Todos los caminos deben seguir fortaleciendo el 4 en 14: Moño Azul es un acelerador, nunca un reemplazo.'
+  ];
+  const messages=[
+    'La primera venta inicia el camino. Activa seguimiento desde hoy.',
+    '¡Primera venta aprobada! El programa ya está en movimiento.',
+    '🎉 Primer beneficio desbloqueado. Mantén la emoción y agenda la siguiente visita.',
+    'Excelente avance. El cliente ya puede aspirar a un beneficio superior.',
+    'El programa está tomando fuerza. No disminuyas el seguimiento.',
+    'Están muy cerca del máximo nivel. Convierte la energía en acción.',
+    '👑 Nivel máximo de beneficios desbloqueado. Coordina la selección con tu Distribuidor.',
+    '✨ Séptima venta lograda. Un resultado extraordinario construido con confianza y ejecución.'
+  ];
+  let adnIdx=0;
+
+  root.querySelectorAll('.mono-tab').forEach(btn=>btn.addEventListener('click',()=>{
+    root.querySelectorAll('.mono-tab').forEach(b=>b.classList.remove('active'));
+    root.querySelectorAll('.mono-tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    q('monoTab-'+btn.dataset.monoTab)?.classList.add('active');
+  }));
+
+  function localDate(str){
+    if(!str) return null;
+    const [y,m,d]=str.split('-').map(Number);
+    return new Date(y,m-1,d,12,0,0);
+  }
+  function update(){
+    const sales=Math.max(0,Math.min(7,Number(q('monoVentas')?.value||0)));
+    q('monoVentasOut').textContent=`${sales} de 7`;
+    q('monoVentasBar').style.width=`${(sales/7)*100}%`;
+    q('monoBow').classList.toggle('active',sales>0);
+    q('monoBow').classList.toggle('complete',sales>=6);
+    q('monoMensaje').textContent=messages[sales];
+    q('monoMensaje').className='progress-message '+(sales>=6?'celebrate':'encourage');
+    q('monoSalesDots').innerHTML=Array.from({length:7},(_,i)=>`<i class="${i<sales?'done':''}"></i>`).join('');
+    root.querySelectorAll('#monoLevels article').forEach(card=>{
+      const need=Number(card.dataset.sales);
+      card.classList.toggle('unlocked',sales>=need);
+      card.classList.toggle('current',sales===need);
+    });
+    let benefit='Completa 2 ventas aprobadas para desbloquear el primer nivel de beneficio.';
+    const unlocked=[...levels].reverse().find(x=>sales>=x.sales);
+    if(unlocked) benefit=`Beneficio desbloqueado: producto entre ${fmtCOP(unlocked.min)} y ${fmtCOP(unlocked.max)}.`;
+    if(sales>=7) benefit='Séptima venta alcanzada. Celebra el resultado y coordina con tu Distribuidor el cierre exitoso del programa.';
+    q('monoBenefitMsg').textContent=benefit;
+
+    const start=localDate(q('monoInicio')?.value);
+    if(start){
+      const end=new Date(start); end.setDate(end.getDate()+30);
+      const now=new Date();
+      const total=30*86400000;
+      const remaining=Math.ceil((end-now)/86400000);
+      const elapsed=Math.max(0,Math.min(100,((now-start)/total)*100));
+      q('monoFin').textContent=`Finaliza el ${end.toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'})}`;
+      q('monoTiempoBar').style.width=`${elapsed}%`;
+      q('monoDias').textContent=remaining>0?`${remaining} días restantes para completar el programa.`:'La vigencia de 30 días ya finalizó. Consulta con tu Distribuidor.';
+    }else{
+      q('monoFin').textContent='Selecciona fecha de inicio';
+      q('monoTiempoBar').style.width='0%';
+      q('monoDias').textContent='30 días máximo para activar y desarrollar el programa.';
+    }
+  }
+  q('monoVentas')?.addEventListener('change',update);
+  q('monoInicio')?.addEventListener('change',update);
+  update();
+
+  q('otroMonoAdn')?.addEventListener('click',()=>{adnIdx=(adnIdx+1)%adn.length;q('monoAdnText').textContent=adn[adnIdx];});
+  q('copyMonoSpeech')?.addEventListener('click',async()=>{
+    const text=q('monoSpeechText').innerText.trim();
+    try{await navigator.clipboard.writeText(text);q('copyMonoSpeech').textContent='Speech copiado ✓';setTimeout(()=>q('copyMonoSpeech').textContent='Copiar speech',1800)}catch(e){q('copyMonoSpeech').textContent='Selecciona y copia';}
+  });
+
+  const ordinal=['Primera','Segunda','Tercera','Cuarta','Quinta','Sexta','Séptima'];
+  const grid=q('monoDownloadGrid');
+  if(grid){
+    grid.innerHTML=ordinal.map((word,i)=>`<article class="mono-download-card"><div><strong>${word} venta</strong><br><span>Reconocimiento personalizado</span></div><button type="button" data-mono-download="${i+1}">Descargar PNG</button></article>`).join('');
+    grid.querySelectorAll('[data-mono-download]').forEach(btn=>btn.addEventListener('click',()=>downloadRecognition(Number(btn.dataset.monoDownload))));
+  }
+
+  function recognitionCopy(sale){
+    if(sale===1) return ['¡FELICITACIONES!','Tu primera venta ya fue aprobada.','Has dado el primer paso hacia beneficios exclusivos.'];
+    const level=levels.find(x=>x.sales===sale);
+    if(level) return ['¡NUEVO NIVEL DESBLOQUEADO!',`Has logrado tu ${ordinal[sale-1].toLowerCase()} venta.`,`Ya puedes elegir un producto entre ${fmtCOP(level.min)} y ${fmtCOP(level.max)}.`];
+    if(sale===7) return ['¡RESULTADO EXTRAORDINARIO!','Has logrado tu séptima venta.','Tu confianza y compromiso han llevado este programa a otro nivel.'];
+    return ['¡FELICITACIONES!',`Has logrado tu ${ordinal[sale-1].toLowerCase()} venta.`,`Cada venta te acerca a beneficios más exclusivos.`];
+  }
+  function wrap(ctx,text,x,y,maxWidth,lineHeight){
+    const words=text.split(' ');let line='';let yy=y;
+    for(const word of words){const test=line+word+' ';if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line.trim(),x,yy);line=word+' ';yy+=lineHeight}else line=test}
+    if(line)ctx.fillText(line.trim(),x,yy);return yy;
+  }
+  function downloadRecognition(sale){
+    const name=(q('monoCliente')?.value||'CLIENTE VIP').trim().toUpperCase();
+    const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');
+    const bg=ctx.createLinearGradient(0,0,1080,1350);bg.addColorStop(0,'#02050c');bg.addColorStop(.55,'#071735');bg.addColorStop(1,'#02040a');ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1350);
+    const glow=ctx.createRadialGradient(820,170,20,820,170,520);glow.addColorStop(0,'rgba(29,91,203,.45)');glow.addColorStop(1,'rgba(2,5,12,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,1080,700);
+    ctx.strokeStyle='#d9aa45';ctx.lineWidth=4;ctx.strokeRect(48,48,984,1254);ctx.strokeStyle='rgba(217,170,69,.35)';ctx.lineWidth=1;ctx.strokeRect(70,70,940,1210);
+    // bow
+    ctx.save();ctx.translate(810,105);ctx.fillStyle='#0c3b91';ctx.strokeStyle='#e0b64f';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(-92,42,104,67,-.35,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.ellipse(92,42,104,67,.35,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#1255bd';ctx.fillRect(-34,8,68,88);ctx.strokeRect(-34,8,68,88);ctx.restore();
+    ctx.textAlign='center';ctx.fillStyle='#f0cf76';ctx.font='700 32px Georgia';ctx.fillText('PROGRAMA',540,150);ctx.font='900 98px Georgia';ctx.fillText('MOÑO AZUL',540,250);ctx.fillStyle='#ffffff';ctx.font='italic 42px Georgia';ctx.fillText('Exclusividad que se gana',540,312);
+    const [title,line1,line2]=recognitionCopy(sale);
+    ctx.fillStyle='#f0cf76';ctx.font='900 54px Arial';ctx.fillText(title,540,460);
+    ctx.fillStyle='#ffffff';ctx.font='900 48px Arial';wrap(ctx,name,540,555,860,58);
+    ctx.fillStyle='#f1d27d';ctx.font='900 120px Georgia';ctx.fillText(String(sale),540,760);
+    ctx.fillStyle='#ffffff';ctx.font='700 40px Arial';ctx.fillText(`${ordinal[sale-1].toUpperCase()} VENTA`,540,825);
+    ctx.fillStyle='#e7edf8';ctx.font='500 34px Arial';wrap(ctx,line1,540,930,850,48);
+    ctx.fillStyle='#f1d27d';ctx.font='700 31px Arial';wrap(ctx,line2,540,1045,850,44);
+    ctx.fillStyle='#9fb0cb';ctx.font='500 25px Arial';ctx.fillText(new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'}),540,1165);
+    ctx.fillStyle='#f0cf76';ctx.font='700 29px Georgia';ctx.fillText('BLEU COMPANY SAS',540,1240);
+    ctx.fillStyle='#8d9bb2';ctx.font='500 22px Arial';ctx.fillText('Gracias por elegirnos. Gracias por confiar.',540,1280);
+    const a=document.createElement('a');a.download=`Programa-Mono-Azul-${sale}-venta-${name.replace(/[^A-Z0-9]+/g,'-')}.png`;a.href=canvas.toDataURL('image/png');a.click();
+  }
+})();

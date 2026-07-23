@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#05070c" />
-  <title>Bleu One v1.3 · Toppers Julio 2026</title>
+  <title>Bleu One v1.4 · Programa Moño Azul</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -22,6 +22,7 @@
         <button class="nav-item" data-screen="ticket">Ticket Dorado</button>
         <button class="nav-item" data-screen="sistema122">Sistema 122</button>
         <button class="nav-item" data-screen="desarrollo">Desarrollo</button>
+        <button class="nav-item" data-screen="monoazul">Programa Moño Azul</button>
         <button class="nav-item" data-screen="moto">Tickets Moto</button>
         <button class="nav-item" data-screen="ingresos">Proyección Ingresos</button>
         <button class="nav-item" data-screen="admin">Administración</button>
@@ -153,6 +154,112 @@
           <a class="primary-action resource-download" href="assets/material-compartir-negocio.pdf" download="Material para compartir el negocio - Bleu Company.pdf">Descargar PDF <span>↓</span></a>
         </section>
         <div class="adn-card wide"><span>💎 ADN BLEU</span><p>Asociar no es pedir un favor: es abrirle una puerta a alguien con hambre de crecer.</p></div>
+      </section>
+
+
+      <section id="monoazul" class="screen mono-screen">
+        <div class="screen-head"><div><p class="eyebrow">Prospección premium</p><h2>Programa Moño Azul</h2><p>Una experiencia exclusiva para clientes VIP que convierte recomendaciones agendadas en ventas y beneficios de alto nivel.</p></div></div>
+
+        <section class="mono-hero panel">
+          <div class="mono-cover"><img src="assets/programa-mono-azul.jpg" alt="Programa Moño Azul para clientes VIP" /></div>
+          <div class="mono-intro">
+            <span class="mono-kicker">🎀 Exclusivo · Elegante · Complementario</span>
+            <h3>El 4 en 14 es nuestro sistema más poderoso.</h3>
+            <p><strong>Moño Azul no lo reemplaza:</strong> es un plus estratégico para generar actividad instantánea con clientes VIP, fortalecer la prospección y abrir nuevas oportunidades.</p>
+            <div class="mono-warning">⚠️ El Programa Moño Azul solo puede utilizarse con autorización previa del Distribuidor.</div>
+            <div class="mono-facts"><span>30 días máximo</span><span>Cuenta ventas, no visitas</span><span>El cliente agenda</span></div>
+          </div>
+        </section>
+
+        <div class="mono-tabs" role="tablist" aria-label="Contenido Programa Moño Azul">
+          <button class="mono-tab active" data-mono-tab="programa">Cómo funciona</button>
+          <button class="mono-tab" data-mono-tab="speech">Speech irresistible</button>
+          <button class="mono-tab" data-mono-tab="adn">ADN Bleu</button>
+          <button class="mono-tab" data-mono-tab="reconocimientos">Reconocimientos</button>
+        </div>
+
+        <div id="monoTab-programa" class="mono-tab-panel active">
+          <section class="panel mono-explain">
+            <div class="result-title"><h3>¿Cómo funciona?</h3><span class="badge">Programa autorizado</span></div>
+            <div class="mono-steps">
+              <article><b>1</b><div><strong>Selecciona al cliente</strong><p>Elige un cliente con perfil VIP y solicita autorización a tu Distribuidor.</p></div></article>
+              <article><b>2</b><div><strong>Activa el programa</strong><p>Explícale con claridad los beneficios y establece una vigencia máxima de 30 días.</p></div></article>
+              <article><b>3</b><div><strong>El cliente agenda</strong><p>El éxito está en que el cliente coordine directamente las visitas, no solo comparta contactos.</p></div></article>
+              <article><b>4</b><div><strong>Cuenta ventas aprobadas</strong><p>Las visitas no suman. Cada venta aprobada desbloquea o acerca un nuevo nivel de beneficio.</p></div></article>
+              <article><b>5</b><div><strong>Haz seguimiento</strong><p>Crea sinergia con el cliente y acompáñalo de forma constante hasta completar el programa.</p></div></article>
+              <article><b>6</b><div><strong>Celebra cada avance</strong><p>Envía el reconocimiento premium correspondiente y mantén viva la emoción del programa.</p></div></article>
+            </div>
+          </section>
+
+          <div class="grid mono-tracker-grid">
+            <section class="panel mono-tracker">
+              <div class="result-title"><h3>Iniciar Programa Moño Azul</h3><span class="badge">No guarda datos</span></div>
+              <p class="muted-text">Esta versión no almacena información. Si recargas la página, deberás ingresar los datos nuevamente.</p>
+              <label class="field"><span>Nombre del cliente</span><input class="plain-input" id="monoCliente" type="text" autocomplete="off" placeholder="Escribe el nombre" /></label>
+              <label class="field"><span>Fecha de inicio</span><input class="plain-input" id="monoInicio" type="date" /></label>
+              <label class="field"><span>Ventas aprobadas</span><select id="monoVentas"><option value="0">0 ventas</option><option value="1">1 venta</option><option value="2">2 ventas</option><option value="3">3 ventas</option><option value="4">4 ventas</option><option value="5">5 ventas</option><option value="6">6 ventas</option><option value="7">7 ventas</option></select></label>
+              <div class="mono-time-card"><span>Vigencia del programa</span><strong id="monoFin">Selecciona fecha de inicio</strong><div class="progress mono-time-progress"><div id="monoTiempoBar"></div></div><small id="monoDias">30 días máximo para activar y desarrollar el programa.</small></div>
+            </section>
+
+            <section class="panel mono-progress-card">
+              <span class="mono-kicker">Avance del cliente</span>
+              <div class="mono-bow" id="monoBow" aria-hidden="true"><span></span><i></i></div>
+              <strong class="mono-big-number" id="monoVentasOut">0 de 7</strong>
+              <div class="progress big-progress"><div id="monoVentasBar"></div></div>
+              <div class="mono-sales-dots" id="monoSalesDots" aria-label="Ventas alcanzadas"></div>
+              <div class="progress-message encourage" id="monoMensaje">La primera venta inicia el camino. Activa seguimiento desde hoy.</div>
+            </section>
+          </div>
+
+          <section class="panel mono-benefits">
+            <div class="result-title"><h3>Camino hacia el beneficio</h3><span class="badge">Más ventas · Más recompensa</span></div>
+            <p class="muted-text">El cliente puede elegir un producto dentro del rango correspondiente al número de ventas aprobadas.</p>
+            <div class="mono-levels" id="monoLevels">
+              <article data-sales="2"><span>Nivel 1</span><strong>2 ventas</strong><p>$2.000.000 a $2.499.000</p></article>
+              <article data-sales="3"><span>Nivel 2</span><strong>3 ventas</strong><p>$2.500.000 a $3.399.000</p></article>
+              <article data-sales="4"><span>Nivel 3</span><strong>4 ventas</strong><p>$3.400.000 a $3.999.000</p></article>
+              <article data-sales="5"><span>Nivel 4</span><strong>5 ventas</strong><p>$4.000.000 a $5.499.000</p></article>
+              <article data-sales="6"><span>Nivel 5</span><strong>6 ventas</strong><p>$5.500.000 a $7.000.000</p></article>
+            </div>
+            <div class="formula soft" id="monoBenefitMsg">Completa 2 ventas aprobadas para desbloquear el primer nivel de beneficio.</div>
+          </section>
+        </div>
+
+        <div id="monoTab-speech" class="mono-tab-panel">
+          <section class="panel mono-speech-panel">
+            <div class="result-title"><h3>Speech para presentar el Programa</h3><button class="small-action mono-copy" id="copyMonoSpeech" type="button">Copiar speech</button></div>
+            <div class="mono-speech" id="monoSpeechText">
+              <p><strong>Señor(a), quiero contarle algo que normalmente no presentamos a todos nuestros clientes.</strong></p>
+              <p>Por la confianza que usted ha depositado en nosotros, existe un programa muy exclusivo llamado <strong>Programa Moño Azul</strong>, creado para reconocer a clientes que disfrutan recomendar calidad a sus familiares y amigos.</p>
+              <p>Aquí no buscamos simplemente nombres o teléfonos. Lo valioso es que las personas que usted recomiende vivan nuestra experiencia y que usted mismo nos ayude a coordinar las visitas. Por cada venta aprobada irá desbloqueando beneficios cada vez más exclusivos.</p>
+              <p>Tendrá hasta <strong>30 días</strong> y nosotros lo acompañaremos durante todo el proceso. Usted no estará solo: vamos a construir este logro juntos.</p>
+              <p><strong>¿Le gustaría que activáramos hoy mismo su Programa Moño Azul?</strong></p>
+            </div>
+            <div class="mono-objections">
+              <details><summary>Si pregunta: “¿Qué tengo que hacer?”</summary><p>Muy sencillo: usted nos ayuda a coordinar personas que realmente disfrutarían conocer nuestros productos. Nosotros hacemos la presentación y el acompañamiento. Cada venta aprobada lo acerca a un beneficio superior.</p></details>
+              <details><summary>Si pregunta: “¿Qué gano?”</summary><p>Entre más ventas se logren gracias a sus recomendaciones, podrá elegir productos de mayor valor. Es nuestra manera de agradecer su confianza y reconocer su preferencia.</p></details>
+              <details><summary>Si dice: “Solo le envío los contactos”</summary><p>Para que el programa sea exitoso, lo ideal es que usted nos ayude a coordinar directamente las visitas. Cuando el cliente agenda, la confianza es mayor y las probabilidades de éxito aumentan.</p></details>
+            </div>
+          </section>
+        </div>
+
+        <div id="monoTab-adn" class="mono-tab-panel">
+          <section class="panel mono-adn-lux">
+            <span class="mono-kicker">💎 ADN BLEU · Programa Moño Azul</span>
+            <blockquote id="monoAdnText">Moño Azul no reemplaza el 4 en 14: es un plus que lo complementa y genera más actividad instantánea.</blockquote>
+            <button class="primary-action small-action" id="otroMonoAdn" type="button">Otro ADN Bleu <span>→</span></button>
+          </section>
+        </div>
+
+        <div id="monoTab-reconocimientos" class="mono-tab-panel">
+          <section class="panel mono-recognition-panel">
+            <div class="result-title"><h3>Reconocimientos premium para el cliente</h3><span class="badge">Imagen PNG</span></div>
+            <p class="muted-text">Escribe el nombre del cliente en “Cómo funciona” y descarga la imagen correspondiente a cada venta. Diseño en azul noche y dorado, listo para compartir por WhatsApp.</p>
+            <div class="mono-download-grid" id="monoDownloadGrid"></div>
+          </section>
+        </div>
+
+        <div class="formula soft mono-closing">Moño Azul históricamente ha ayudado a muchos asesores y distribuidores a construir su mejor mes. El resultado nace de la autorización, el entusiasmo, el seguimiento y la ejecución.</div>
       </section>
 
       <section id="moto" class="screen">
