@@ -15,3 +15,11 @@ PUBLICACIÓN
 1. Reemplaza los archivos del proyecto por esta versión.
 2. Ejecuta git add ., git commit y git push.
 3. En caso de ver una versión anterior, actualiza forzadamente el navegador o limpia la caché del sitio.
+
+
+VERSIÓN 2.1
+- Corregido el avance de Entrenamiento aleatorio.
+- Las preguntas ya no se repiten de inmediato.
+- Cada banco se recorre completo antes de reiniciarse.
+- El botón Siguiente carga un reto nuevo y alterna entre modos.
+- Caché del service worker actualizado.
