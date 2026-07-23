@@ -1,308 +1,280 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#05070c" />
-  <title>Bleu One v1.4 · Programa Moño Azul</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#05070c" name="theme-color"/>
+<title>Bleu One v1.5 · ADN BLEU &amp; Programa Moño Azul</title>
+<link href="manifest.json" rel="manifest"/>
+<link href="styles.css" rel="stylesheet"/>
 </head>
 <body class="locked">
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand-card"><img src="assets/logo-bleu.png" alt="Territorio Bleu Company SAS" class="logo" /></div>
-      <nav class="nav" aria-label="Módulos Bleu One">
-        <button class="nav-item active" data-screen="somos">Somos Bleu</button>
-        <button class="nav-item" data-screen="orden">Orden de Compra</button>
-        <button class="nav-item" data-screen="cuota">Cuota</button>
-        <button class="nav-item" data-screen="agregados">Agregados</button>
-        <button class="nav-item" data-screen="nombres">Nombres</button>
-        <button class="nav-item" data-screen="ascenso">Ascensos</button>
-        <button class="nav-item" data-screen="ticket">Ticket Dorado</button>
-        <button class="nav-item" data-screen="sistema122">Sistema 122</button>
-        <button class="nav-item" data-screen="desarrollo">Desarrollo</button>
-        <button class="nav-item" data-screen="monoazul">Programa Moño Azul</button>
-        <button class="nav-item" data-screen="moto">Tickets Moto</button>
-        <button class="nav-item" data-screen="ingresos">Proyección Ingresos</button>
-        <button class="nav-item" data-screen="admin">Administración</button>
-        <button class="nav-item" data-screen="toppers">Toppers</button>
-      </nav>
-      <div class="side-note"><strong>Bleu One</strong><span>Una sola app. Todo el territorio. Todas las herramientas.</span></div>
-      <div class="app-footer">Bleu Company SAS ® All rights reserved<br><span>Made with ❤️ by Bleu Company</span></div>
-    </aside>
-
-    <main class="main">
-      <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú">☰ Menú</button>
-      <header class="topbar">
-        <div><p class="eyebrow">Territorio Bleu Company SAS</p><h1>Bleu One</h1></div>
-        <button id="installBtn" class="install hidden">Instalar app</button>
-      </header>
-
-      <section id="somos" class="screen active somos-screen">
-        <div class="somos-card">
-          <img src="assets/logo-bleu.png" alt="Bleu Company" class="somos-logo" />
-          <div class="somos-signature">Construyendo líderes. Transformando futuros.</div>
-          <div class="somos-text">
-            <p>Toda familia tiene a alguien que decide romper el ciclo...</p>
-            <p>Alguien que deja de sobrevivir para empezar a construir...</p>
-            <p>Alguien que cambia el “siempre hemos sido así” por un “a partir de hoy será diferente”...</p>
-            <p><strong>Tal vez esa persona seas TÚ..</strong></p>
-            <p>Bleu Company existe para quienes tienen el valor de escribir un nuevo capítulo y romper límites que parecían imposibles.</p>
-            <p><strong>Lo que DIOS comienza en una vida, puede bendecir generaciones enteras..!!</strong></p>
-          </div>
-          <button class="primary-action" data-go="orden">Entrar a Bleu One <span>→</span></button>
-        </div>
-      </section>
-
-      <section id="orden" class="screen">
-        <div class="screen-head"><div><h2>Calculadora de Orden de Compra</h2><p>Ingresa los datos y transcribe manualmente los valores en la orden física.</p></div></div>
-        <div class="grid">
-          <section class="panel input-panel">
-            <h3>1. Ingresa los datos</h3>
-            <label class="field"><span>Precio total con IVA</span><div class="money-input"><span>$</span><input id="total" inputmode="numeric" value="0" /></div></label>
-            <label class="field"><span>Depósito pagado hoy</span><div class="money-input"><span>$</span><input id="deposito" inputmode="numeric" value="0" /></div><small id="depositHint">Debe ser mínimo el 5% del precio total.</small></label>
-            <label class="field"><span>Número de cuotas mensuales</span><select id="cuotas"></select><small>Permitido: mínimo 2 y máximo 27 cuotas.</small></label>
-            <div class="hero-result mn-card"><span>MN</span><strong id="mgValor">$ 0</strong></div>
-            <div id="alerta" class="alert ok">Depósito correcto.</div>
-          </section>
-          <section class="panel result-panel">
-            <div class="result-title"><h3>2. Así debe quedar la orden</h3><span class="badge">Para transcribir</span></div>
-            <div class="order-form">
-              <div class="row"><span>Precio de compra</span><strong id="precioCompra">$ 0</strong></div>
-              <div class="row"><span>Costo de envío</span><strong>$ 0</strong></div>
-              <div class="row"><span>IVA</span><strong id="iva">$ 0</strong></div>
-              <div class="row featured"><span>Precio total</span><strong id="precioTotal">$ 0</strong></div>
-              <div class="row"><span>Depósito pagado hoy</span><strong id="depositoHoy">$ 0</strong></div>
-              <div class="row muted"><span>Fecha depósito adicional</span><strong>Omitir</strong></div>
-              <div class="row muted"><span>Depósito adicional</span><strong>Omitir</strong></div>
-              <div class="row"><span>Saldo a financiar</span><strong id="saldo">$ 0</strong></div>
-              <div class="row"><span>Tasa fija remuneratoria efectiva anual</span><strong>28.32%</strong></div>
-              <div class="row"><span>Tasa de interés vigente a la fecha de hoy</span><strong>2.10%</strong></div>
-              <div class="row"><span>Número de cuotas mensuales</span><strong id="cuotasOut">0</strong></div>
-              <div class="row final"><span>Pago mínimo mensual</span><strong id="pagoMinimo">$ 0</strong></div>
-            </div>
-            <div class="formula" id="formula">Pago mínimo mensual = saldo a financiar × porcentaje de la tabla.</div>
-          </section>
-        </div>
-      </section>
-
-      <section id="cuota" class="screen"><div class="screen-head"><div><h2>Cuota</h2><p>Calcula cuánto le puedes vender a un cliente según la cuota mensual y el plazo elegido.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Valor de cuota mensual</span><div class="money-input"><span>$</span><input id="cuotaValor" inputmode="numeric" value="" placeholder="0" /></div></label><label class="field"><span>Meses de financiación</span><select id="cuotaMeses"></select><small>Predeterminado: 27 meses según tabla interna.</small></label></section><section class="panel hero-result"><span>Venta aproximada</span><strong id="cuotaVenta">$ 0</strong><small id="cuotaFormula">Fórmula según tabla.</small></section><div class="formula soft">Una cuota clara evita confusión, y una negociación clara acerca al cliente a la decisión.</div></div></section>
-
-      <section id="agregados" class="screen"><div class="screen-head"><div><h2>Agregados</h2><p>Calcula el total del cliente y su pago mensual según la tabla de financiación.</p></div></div><div class="grid"><section class="panel"><h3>Datos del agregado</h3><label class="field"><span>Saldo del cliente</span><div class="money-input"><span>$</span><input id="agSaldo" inputmode="numeric" value="" placeholder="0" /></div></label><label class="field"><span>Nueva compra <small>(IVA incluido)</small></span><div class="money-input"><span>$</span><input id="agCompra" inputmode="numeric" value="" placeholder="0" /></div></label><label class="field"><span>Cuota inicial <small>(opcional)</small></span><div class="money-input"><span>$</span><input id="agInicial" inputmode="numeric" value="" placeholder="0" /></div><small>Los agregados no necesitan cuota inicial, pero puedes escribirla si aplica.</small></label><label class="field"><span>Meses de financiación</span><select id="agMeses"></select></label></section><section class="panel"><h3>Resultado del agregado</h3><div class="order-form"><div class="row"><span>Saldo del cliente</span><strong id="agSaldoOut">$ 0</strong></div><div class="row"><span>Nueva compra IVA incluido</span><strong id="agCompraOut">$ 0</strong></div><div class="row"><span>Cuota inicial</span><strong id="agInicialOut">$ 0</strong></div><div class="row featured"><span>Total a financiar</span><strong id="agTotal">$ 0</strong></div><div class="row final"><span>Pago mensual aproximado</span><strong id="agPago">$ 0</strong></div></div><div class="formula" id="agFormula">Selecciona meses y escribe los valores para calcular.</div><div class="formula soft">Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.</div></section></div></section>
-
-      <section id="nombres" class="screen"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" value="" placeholder="0" /></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Fórmula: volumen del mes ÷ 185.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
-
-      <section id="ascenso" class="screen">
-        <div class="screen-head"><div><h2>Ascensos</h2><p>Elige tu siguiente meta y revisa tu progreso con claridad.</p></div></div>
-        <div class="ascenso-picker" id="ascensoCards"></div>
-        <div class="grid ascenso-layout">
-          <section class="panel ascenso-input-panel">
-            <div class="result-title"><h3 id="ascensoTituloInput">JD</h3><span class="badge">Meta activa</span></div>
-            <div class="formula soft" id="ascensoDescripcion">Selecciona un ascenso para ver la meta.</div>
-
-            <div id="jdMesesBox" class="clean-block">
-              <p class="muted-text">Este ascenso se mide únicamente por volumen. Tienes 3 meses para lograr US$20.000 y cada mes debe tener mínimo US$4.000.</p>
-              <div class="month-grid">
-                <label class="field"><span>Mes 1</span><div class="money-input"><span>US$</span><input id="jdMes1" inputmode="numeric" value="" placeholder="0" /></div></label>
-                <label class="field"><span>Mes 2</span><div class="money-input"><span>US$</span><input id="jdMes2" inputmode="numeric" value="" placeholder="0" /></div></label>
-                <label class="field"><span>Mes 3</span><div class="money-input"><span>US$</span><input id="jdMes3" inputmode="numeric" value="" placeholder="0" /></div></label>
-              </div>
-              <div id="jdAlerta" class="alert ok">Ingresa los valores de cada mes.</div>
-            </div>
-
-            <div id="otrosAscensosBox" class="clean-block">
-              <p class="muted-text">Puedes ingresar tu avance como volumen de venta o como compras. Los resultados son aproximados.</p>
-              <label class="field"><span>¿Qué dato vas a ingresar?</span><select id="ascensoTipoActual"><option value="venta">Volumen de venta</option><option value="compra">Compras</option></select></label>
-              <label class="field"><span>Valor que llevas a la fecha en USD</span><div class="money-input"><span>US$</span><input id="ascensoVol" inputmode="numeric" value="" placeholder="0" /></div></label>
-              <label class="field"><span>Meses que faltan</span><input class="plain-input" id="ascensoMeses" inputmode="numeric" value="" placeholder="Ej: 6" /></label>
-            </div>
-            <small id="ascensoNota">Los valores son aproximados. JD es el único ascenso que se mide solo por volumen.</small>
-          </section>
-
-          <section class="panel ascenso-result-panel">
-            <div class="result-title"><h3 id="ascensoTitulo">Meta</h3><span class="badge" id="ascensoPct">0%</span></div>
-            <div class="progress big-progress"><div id="ascensoBar"></div></div>
-            <div class="order-form compact-results">
-              <div class="row featured"><span>Meta aproximada</span><strong id="ascensoMetaVol">US$ 0</strong></div>
-              <div class="row"><span id="ascensoActualLabel">Avance actual</span><strong id="ascensoActual">US$ 0</strong></div>
-              <div class="row"><span>Faltante</span><strong id="ascensoFalta">US$ 0</strong></div>
-              <div class="row"><span>Te falta vender IVA incluido</span><strong id="ascensoFaltaCOP">$ 0 COP</strong></div>
-              <div class="row final"><span id="ascensoMensualLabel">Promedio requerido</span><strong id="ascensoMensual">US$ 0</strong></div>
-              <div class="row"><span>Nombres semanales aprox.</span><strong id="ascensoNombres">0</strong></div>
-            </div>
-            <div class="adn-card"><span>💎 ADN BLEU</span><p id="ascensoConsejo">Todos los caminos deben conducir a mejorar nuestro 4 en 14.</p><button id="otroAdn" type="button">Otro ADN Bleu →</button></div>
-            <div class="formula soft" id="ascensoExtra">El ascenso se construye con seguimiento semanal y actividad diaria.</div>
-          </section>
-        </div>
-      </section>
-
-      <section id="ticket" class="screen"><div class="screen-head"><div><h2>Ticket Dorado</h2><p>Cuatrimestre vigente: Mayo, Junio, Julio y Agosto.</p></div></div><div class="grid"><section class="panel"><label class="field"><span>Categoría</span><select id="ticketTipo"><option value="0" selected>Selecciona una categoría</option><option value="34000">Venta personal — persona sola</option><option value="42000">Venta personal — pareja</option><option value="65000">Volumen de distribución</option><option value="30000">Desarrollo — socios directos nuevos</option><option value="20000">Soy novato del cuatrimestre</option></select></label><div class="formula soft" id="ticketMetaDetalle">Selecciona una categoría para ver su meta específica.</div><label class="field"><span>Volumen acumulado actual en USD</span><div class="money-input"><span>US$</span><input id="ticketVol" inputmode="numeric" value="0" /></div></label></section><section class="panel hero-result"><span>Meta de esta categoría</span><strong id="ticketMeta">—</strong><small id="ticketMetaTexto">Selecciona una categoría</small><hr class="sep"><span>Avance Ticket Dorado</span><strong id="ticketPct">0%</strong><div class="progress"><div id="ticketBar"></div></div><small id="ticketFalta">Faltan US$ 0 para clasificar.</small></section></div><div class="formula soft">El Ticket Dorado premia la constancia: el que mide su avance, corrige a tiempo y llega.</div></section>
-
-      <section id="sistema122" class="screen"><div class="screen-head"><div><h2>Sistema 122</h2><p>Bonificaciones por socios directos nuevos: primera venta y 2% mensual sobre sus ventas.</p></div></div><div class="grid"><section class="panel"><h3>Datos del mes</h3><label class="field"><span>¿Cuántos socios directos nuevos tienes?</span><input class="plain-input" id="s122Socios" inputmode="numeric" value="" placeholder="0" /></label><label class="field"><span>¿Cuántos ya tienen código y primera venta?</span><input class="plain-input" id="s122Codigos" inputmode="numeric" value="" placeholder="0" /></label><label class="field"><span>Venta acumulada de esos socios en USD</span><div class="money-input"><span>US$</span><input id="s122Ventas" inputmode="numeric" value="" placeholder="0" /></div></label><label class="field"><span>Tu volumen personal este mes en USD</span><div class="money-input"><span>US$</span><input id="s122Personal" inputmode="numeric" value="" placeholder="0" /></div><small>Para cobrar el 2% mensual debes tener mínimo US$2.000 en volumen personal.</small></label><div id="s122Alerta" class="alert ok">Clasificación pendiente.</div></section><section class="panel"><h3>Bonificación estimada</h3><div class="order-form"><div class="row featured"><span>Bono primera venta</span><strong id="s122Primera">$ 0</strong></div><div class="row"><span>2% sobre ventas de socios</span><strong id="s122DosUsd">US$ 0</strong></div><div class="row"><span>2% convertido a COP</span><strong id="s122DosCop">$ 0</strong></div><div class="row final"><span>Total estimado a recibir</span><strong id="s122Total">$ 0</strong></div></div><div class="formula soft">No hay límite de socios nuevos. El límite real es tu capacidad de asociar, activar y acompañar.</div></section></div></section>
-
-      <section id="desarrollo" class="screen">
-        <div class="screen-head"><div><h2>Desarrollo</h2><p>Reclutamiento, asociación y construcción de equipo.</p></div></div>
-        <div class="dev-grid">
-          <section class="panel dev-card"><span class="dev-icon">🤝</span><h3>Consejos para asociar</h3><p class="muted-text">Busca personas con 3 pilares: trabajadora, humilde de corazón y con ambición sana.</p><div class="formula soft">Los mejores socios normalmente están ocupados. No busques solo al desempleado: busca al empleado inconforme, al trabajador con hambre de crecer y a la persona que ya demostró disciplina.</div></section>
-          <section class="panel dev-card"><span class="dev-icon">🎙️</span><h3>Speech</h3><p class="muted-text">Usa esta guía para abrir conversaciones en frío o durante una demostración.</p><button class="primary-action small-action" type="button" id="toggleSpeech">Ver Speech <span>→</span></button><div class="formula speech-box hidden" id="speechBox">Después de preguntar a qué se dedica:<br><br>¿Cuánto tiempo lleva haciendo esto?<br>¿Le gustaría hacer esto por el resto de su vida?<br>¿Ha pensado alguna vez en un negocio propio?<br>¿Por qué todavía no lo tiene?<br><br>Si le hablara de un negocio donde no se requiere inversión inicial, no hay mensualidades, el entrenamiento es gratis y además ofrece comisiones muy altas, ¿le interesaría?<br><br><strong>Lo espero mañana en mi oficina.</strong><br><br>Si pregunta: “¿De qué se trata?”<br>Respuesta: <strong>De ganar dinero.</strong><br><br>Si pide más explicación:<br><strong>Para eso está la oficina. Quiero explicárselo como usted se lo merece, no de afán.</strong><br><br><hr class="sep">En demostración:<br>“Señor/a, la compañía está abriendo vacantes para trabajar con nosotros. ¿Usted no conoce a una persona que le interese generar entre 2 a 3 millones extra al mes?”</div></section>
-          <section class="panel dev-card"><span class="dev-icon">📈</span><h3>Invitaciones</h3><p class="muted-text">Convierte las invitaciones en entrevistas y las entrevistas en nuevos socios.</p><label class="field"><span>¿Cuántas invitaciones has hecho este mes?</span><input class="plain-input" id="desInv" inputmode="numeric" value="" placeholder="0" /></label><div class="order-form"><div class="row"><span>Entrevistas estimadas</span><strong id="desEntrevistas">0</strong></div><div class="row final"><span>Socios nuevos estimados</span><strong id="desSocios">0</strong></div></div><small>Promedio: de cada 3 invitaciones, 1 entrevista; de cada 3 entrevistas, 1 socio. Necesitas aproximadamente 9 invitaciones para lograr 1 socio.</small></section>
-        </div>
-        <section class="panel development-resource">
-          <div class="resource-icon">📘</div>
-          <div class="resource-copy"><span class="eyebrow">Recurso descargable</span><h3>Material para compartir el negocio</h3><p>Presentación de apoyo para entrevistas, conversaciones y seguimiento con candidatos.</p></div>
-          <a class="primary-action resource-download" href="assets/material-compartir-negocio.pdf" download="Material para compartir el negocio - Bleu Company.pdf">Descargar PDF <span>↓</span></a>
-        </section>
-        <div class="adn-card wide"><span>💎 ADN BLEU</span><p>Asociar no es pedir un favor: es abrirle una puerta a alguien con hambre de crecer.</p></div>
-      </section>
-
-
-      <section id="monoazul" class="screen mono-screen">
-        <div class="screen-head"><div><p class="eyebrow">Prospección premium</p><h2>Programa Moño Azul</h2><p>Una experiencia exclusiva para clientes VIP que convierte recomendaciones agendadas en ventas y beneficios de alto nivel.</p></div></div>
-
-        <section class="mono-hero panel">
-          <div class="mono-cover"><img src="assets/programa-mono-azul.jpg" alt="Programa Moño Azul para clientes VIP" /></div>
-          <div class="mono-intro">
-            <span class="mono-kicker">🎀 Exclusivo · Elegante · Complementario</span>
-            <h3>El 4 en 14 es nuestro sistema más poderoso.</h3>
-            <p><strong>Moño Azul no lo reemplaza:</strong> es un plus estratégico para generar actividad instantánea con clientes VIP, fortalecer la prospección y abrir nuevas oportunidades.</p>
-            <div class="mono-warning">⚠️ El Programa Moño Azul solo puede utilizarse con autorización previa del Distribuidor.</div>
-            <div class="mono-facts"><span>30 días máximo</span><span>Cuenta ventas, no visitas</span><span>El cliente agenda</span></div>
-          </div>
-        </section>
-
-        <div class="mono-tabs" role="tablist" aria-label="Contenido Programa Moño Azul">
-          <button class="mono-tab active" data-mono-tab="programa">Cómo funciona</button>
-          <button class="mono-tab" data-mono-tab="speech">Speech irresistible</button>
-          <button class="mono-tab" data-mono-tab="adn">ADN Bleu</button>
-          <button class="mono-tab" data-mono-tab="reconocimientos">Reconocimientos</button>
-        </div>
-
-        <div id="monoTab-programa" class="mono-tab-panel active">
-          <section class="panel mono-explain">
-            <div class="result-title"><h3>¿Cómo funciona?</h3><span class="badge">Programa autorizado</span></div>
-            <div class="mono-steps">
-              <article><b>1</b><div><strong>Selecciona al cliente</strong><p>Elige un cliente con perfil VIP y solicita autorización a tu Distribuidor.</p></div></article>
-              <article><b>2</b><div><strong>Activa el programa</strong><p>Explícale con claridad los beneficios y establece una vigencia máxima de 30 días.</p></div></article>
-              <article><b>3</b><div><strong>El cliente agenda</strong><p>El éxito está en que el cliente coordine directamente las visitas, no solo comparta contactos.</p></div></article>
-              <article><b>4</b><div><strong>Cuenta ventas aprobadas</strong><p>Las visitas no suman. Cada venta aprobada desbloquea o acerca un nuevo nivel de beneficio.</p></div></article>
-              <article><b>5</b><div><strong>Haz seguimiento</strong><p>Crea sinergia con el cliente y acompáñalo de forma constante hasta completar el programa.</p></div></article>
-              <article><b>6</b><div><strong>Celebra cada avance</strong><p>Envía el reconocimiento premium correspondiente y mantén viva la emoción del programa.</p></div></article>
-            </div>
-          </section>
-
-          <div class="grid mono-tracker-grid">
-            <section class="panel mono-tracker">
-              <div class="result-title"><h3>Iniciar Programa Moño Azul</h3><span class="badge">No guarda datos</span></div>
-              <p class="muted-text">Esta versión no almacena información. Si recargas la página, deberás ingresar los datos nuevamente.</p>
-              <label class="field"><span>Nombre del cliente</span><input class="plain-input" id="monoCliente" type="text" autocomplete="off" placeholder="Escribe el nombre" /></label>
-              <label class="field"><span>Fecha de inicio</span><input class="plain-input" id="monoInicio" type="date" /></label>
-              <label class="field"><span>Ventas aprobadas</span><select id="monoVentas"><option value="0">0 ventas</option><option value="1">1 venta</option><option value="2">2 ventas</option><option value="3">3 ventas</option><option value="4">4 ventas</option><option value="5">5 ventas</option><option value="6">6 ventas</option><option value="7">7 ventas</option></select></label>
-              <div class="mono-time-card"><span>Vigencia del programa</span><strong id="monoFin">Selecciona fecha de inicio</strong><div class="progress mono-time-progress"><div id="monoTiempoBar"></div></div><small id="monoDias">30 días máximo para activar y desarrollar el programa.</small></div>
-            </section>
-
-            <section class="panel mono-progress-card">
-              <span class="mono-kicker">Avance del cliente</span>
-              <div class="mono-bow" id="monoBow" aria-hidden="true"><span></span><i></i></div>
-              <strong class="mono-big-number" id="monoVentasOut">0 de 7</strong>
-              <div class="progress big-progress"><div id="monoVentasBar"></div></div>
-              <div class="mono-sales-dots" id="monoSalesDots" aria-label="Ventas alcanzadas"></div>
-              <div class="progress-message encourage" id="monoMensaje">La primera venta inicia el camino. Activa seguimiento desde hoy.</div>
-            </section>
-          </div>
-
-          <section class="panel mono-benefits">
-            <div class="result-title"><h3>Camino hacia el beneficio</h3><span class="badge">Más ventas · Más recompensa</span></div>
-            <p class="muted-text">El cliente puede elegir un producto dentro del rango correspondiente al número de ventas aprobadas.</p>
-            <div class="mono-levels" id="monoLevels">
-              <article data-sales="2"><span>Nivel 1</span><strong>2 ventas</strong><p>$2.000.000 a $2.499.000</p></article>
-              <article data-sales="3"><span>Nivel 2</span><strong>3 ventas</strong><p>$2.500.000 a $3.399.000</p></article>
-              <article data-sales="4"><span>Nivel 3</span><strong>4 ventas</strong><p>$3.400.000 a $3.999.000</p></article>
-              <article data-sales="5"><span>Nivel 4</span><strong>5 ventas</strong><p>$4.000.000 a $5.499.000</p></article>
-              <article data-sales="6"><span>Nivel 5</span><strong>6 ventas</strong><p>$5.500.000 a $7.000.000</p></article>
-            </div>
-            <div class="formula soft" id="monoBenefitMsg">Completa 2 ventas aprobadas para desbloquear el primer nivel de beneficio.</div>
-          </section>
-        </div>
-
-        <div id="monoTab-speech" class="mono-tab-panel">
-          <section class="panel mono-speech-panel">
-            <div class="result-title"><h3>Speech para presentar el Programa</h3><button class="small-action mono-copy" id="copyMonoSpeech" type="button">Copiar speech</button></div>
-            <div class="mono-speech" id="monoSpeechText">
-              <p><strong>Señor(a), quiero contarle algo que normalmente no presentamos a todos nuestros clientes.</strong></p>
-              <p>Por la confianza que usted ha depositado en nosotros, existe un programa muy exclusivo llamado <strong>Programa Moño Azul</strong>, creado para reconocer a clientes que disfrutan recomendar calidad a sus familiares y amigos.</p>
-              <p>Aquí no buscamos simplemente nombres o teléfonos. Lo valioso es que las personas que usted recomiende vivan nuestra experiencia y que usted mismo nos ayude a coordinar las visitas. Por cada venta aprobada irá desbloqueando beneficios cada vez más exclusivos.</p>
-              <p>Tendrá hasta <strong>30 días</strong> y nosotros lo acompañaremos durante todo el proceso. Usted no estará solo: vamos a construir este logro juntos.</p>
-              <p><strong>¿Le gustaría que activáramos hoy mismo su Programa Moño Azul?</strong></p>
-            </div>
-            <div class="mono-objections">
-              <details><summary>Si pregunta: “¿Qué tengo que hacer?”</summary><p>Muy sencillo: usted nos ayuda a coordinar personas que realmente disfrutarían conocer nuestros productos. Nosotros hacemos la presentación y el acompañamiento. Cada venta aprobada lo acerca a un beneficio superior.</p></details>
-              <details><summary>Si pregunta: “¿Qué gano?”</summary><p>Entre más ventas se logren gracias a sus recomendaciones, podrá elegir productos de mayor valor. Es nuestra manera de agradecer su confianza y reconocer su preferencia.</p></details>
-              <details><summary>Si dice: “Solo le envío los contactos”</summary><p>Para que el programa sea exitoso, lo ideal es que usted nos ayude a coordinar directamente las visitas. Cuando el cliente agenda, la confianza es mayor y las probabilidades de éxito aumentan.</p></details>
-            </div>
-          </section>
-        </div>
-
-        <div id="monoTab-adn" class="mono-tab-panel">
-          <section class="panel mono-adn-lux">
-            <span class="mono-kicker">💎 ADN BLEU · Programa Moño Azul</span>
-            <blockquote id="monoAdnText">Moño Azul no reemplaza el 4 en 14: es un plus que lo complementa y genera más actividad instantánea.</blockquote>
-            <button class="primary-action small-action" id="otroMonoAdn" type="button">Otro ADN Bleu <span>→</span></button>
-          </section>
-        </div>
-
-        <div id="monoTab-reconocimientos" class="mono-tab-panel">
-          <section class="panel mono-recognition-panel">
-            <div class="result-title"><h3>Reconocimientos premium para el cliente</h3><span class="badge">Imagen PNG</span></div>
-            <p class="muted-text">Escribe el nombre del cliente en “Cómo funciona” y descarga la imagen correspondiente a cada venta. Diseño en azul noche y dorado, listo para compartir por WhatsApp.</p>
-            <div class="mono-download-grid" id="monoDownloadGrid"></div>
-          </section>
-        </div>
-
-        <div class="formula soft mono-closing">Moño Azul históricamente ha ayudado a muchos asesores y distribuidores a construir su mejor mes. El resultado nace de la autorización, el entusiasmo, el seguimiento y la ejecución.</div>
-      </section>
-
-      <section id="moto" class="screen">
-        <div class="screen-head"><div><h2>Tickets de Moto</h2><p>Celebramos el cierre del primer semestre y a quienes convirtieron su constancia en una gran victoria.</p></div></div>
-        <section class="panel moto-winners">
-          <div class="moto-photo-wrap"><img src="assets/ganadores-moto-primer-semestre-2026.jpg" alt="Natalia Bolívar y Santiago Parra, ganadores de la moto 0 km" class="moto-winners-photo" /></div>
-          <div class="moto-winners-copy">
-            <span class="winner-kicker">🏍️ Ganadores del primer semestre</span>
-            <h3>Natalia Bolívar &amp; Santiago Parra</h3>
-            <p class="winner-title">Ganadores de la Moto 0 KM</p>
-            <p>Felicitamos su disciplina, actividad y constancia. Este reconocimiento demuestra que cada venta, cada seguimiento y cada día de trabajo sí cuentan.</p>
-            <div class="formula soft moto-next">Mantente atento a la próxima premiación y al nuevo camino hacia la siguiente Moto 0 KM.</div>
-          </div>
-        </section>
-        <div class="formula soft">Los grandes premios no se ganan en un solo día: se construyen con actividad sostenida.</div>
-      </section>
-
-      <section id="ingresos" class="screen"><div class="screen-head"><div><h2>Proyección de ingresos</h2><p>Valores aproximados. Tasa usada: US$1 = $3.443,59 COP.</p></div></div><div class="grid">
-        <section class="panel"><h3>1. Ganancias según nivel</h3><p class="muted-text"><strong>Importante:</strong> ingresa únicamente volumen de <strong>VENTA PERSONAL</strong>. Los ingresos son aproximados según el nivel.</p><label class="field"><span>Nivel</span><select id="ingRol"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Volumen de venta personal en USD</span><div class="money-input"><span>US$</span><input id="ingVol" inputmode="numeric" value="" placeholder="0" /></div></label><div class="order-form"><div class="row featured"><span>Ingreso aproximado USD</span><strong id="ingUsd">US$ 0</strong></div><div class="row"><span>Ingreso aproximado COP</span><strong id="ingCop">$ 0</strong></div></div></section>
-        <section class="panel"><h3>2. ¿Cuánto quiero ganar?</h3><p class="muted-text"><strong>Importante:</strong> escribe cuánto quieres ganar en pesos colombianos. Bleu One lo convierte a dólares y calcula el volumen de <strong>VENTA PERSONAL</strong> aproximado y los nombres necesarios.</p><label class="field"><span>Nivel</span><select id="ingRolDeseado"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Quiero ganar este mes en COP</span><div class="money-input"><span>$</span><input id="ingDeseadoCop" inputmode="numeric" value="" placeholder="0" /></div></label><div class="order-form"><div class="row"><span>Equivalente aproximado en USD</span><strong id="ingDeseadoUsd">US$ 0</strong></div><div class="row final"><span>Volumen de venta personal necesario</span><strong id="ingVolNecesario">US$ 0</strong></div><div class="row"><span>Nombres semanales necesarios</span><strong id="ingNombres">0</strong></div></div></section></div><div class="formula soft">Los ingresos son aproximados y están basados exclusivamente en VENTA PERSONAL. El ingreso crece cuando la actividad crece; tu meta de dinero debe convertirse en meta de volumen y nombres.</div></section>
-
-      <section id="admin" class="screen"><div class="screen-head"><div><h2>Administración de ingresos</h2><p>Una guía simple para no gastar todo lo que entra y proteger la reinversión del negocio.</p></div></div><div class="grid"><section class="panel"><h3>Define tu etapa</h3><p class="muted-text">Emprendedor: separa el 25% de lo que recibes para generar más demostraciones. JD o Distribuidor: si no tienes salario fijo, toma máximo el 30% para ti y protege el resto para operación, equipo y crecimiento.</p><label class="field"><span>Tipo</span><select id="adminTipo"><option value="emprendedor">Emprendedor</option><option value="jd">Distribuidor Junior / Distribuidor</option></select></label><label class="field"><span>Dinero recibido en COP</span><div class="money-input"><span>$</span><input id="adminMonto" inputmode="numeric" value="" placeholder="0" /></div></label></section><section class="panel"><h3>Distribución sugerida</h3><div class="formula soft" id="adminExplica">El objetivo es convertir cada pago en combustible para más actividad.</div><div class="order-form"><div class="row featured"><span id="adminReservaLabel">Guardar para demostraciones</span><strong id="adminReserva">$ 0</strong></div><div class="row final"><span id="adminDisponibleLabel">Disponible después de separar</span><strong id="adminDisponible">$ 0</strong></div></div></section></div><div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div></section>
-
-      <section id="toppers" class="screen">
-        <div class="screen-head"><div><h2>Salón de los Toppers</h2><p>Consulta el histórico de Junio y sigue en vivo el avance de Julio 2026.</p></div></div>
-        <section class="panel toppers-hero">
-          <div class="trophy">🏆</div>
-          <h3>SALÓN DE LOS TOPPERS</h3>
-          <p><strong>Julio 2026 está en marcha.</strong><br><span class="topper-subline">Los Toppers de Julio se actualizarán semanalmente. Por el momento, visualiza y felicita también a los Toppers que cerraron Junio.</span></p>
-          <div class="countdown-label">Tiempo restante para finalizar Julio</div>
-          <div class="countdown" id="topCountdown"><div><strong>00</strong><span>Días</span></div><div><strong>00</strong><span>Horas</span></div><div><strong>00</strong><span>Minutos</span></div><div><strong>00</strong><span>Segundos</span></div></div>
-        </section>
-        <div class="topper-month-tabs" role="tablist" aria-label="Mes del ranking">
-          <button class="topper-month-tab" data-month="junio">Junio 2026 · Histórico</button>
-          <button class="topper-month-tab active" data-month="julio">Julio 2026 · A la fecha</button>
-        </div>
-        <div class="topper-month-note" id="topperMonthNote">Ranking de Julio a la fecha. El mes aún está en competencia.</div>
-        <div class="topper-tabs"><button class="topper-tab active" data-top="personal">Venta personal</button><button class="topper-tab" data-top="junior">Mejor Distribuidor Junior</button><button class="topper-tab" data-top="distribuidores">Mejor Distribuidor</button></div>
-        <section class="panel podium-panel"><div class="result-title"><h3 id="podiumTitle">Venta personal</h3><span class="badge">Top 5</span></div><div id="podium" class="podium"></div><div id="topperList" class="topper-list"></div><div class="formula soft">El reconocimiento honra el resultado. La disciplina construye el camino para volver a estar aquí.</div></section>
-        <div id="topperModal" class="modal hidden"><div class="modal-card"><button id="modalClose" class="modal-close">×</button><div class="modal-medal" id="modalMedal">🥇</div><h3 id="modalName">Nombre</h3><p id="modalCity">Ciudad</p><p id="modalDistribution" class="modal-distribution"></p><strong id="modalVolume">US$ 0</strong><small id="modalCategory">Categoría</small></div></div>
-      </section>
-    </main>
-  </div>
-  <script src="app.js"></script>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+<div class="brand-card"><img alt="Territorio Bleu Company SAS" class="logo" src="assets/logo-bleu.png"/></div>
+<nav aria-label="Módulos Bleu One" class="nav">
+<button class="nav-item active" data-screen="somos">Somos Bleu</button>
+<button class="nav-item" data-screen="orden">Orden de Compra</button>
+<button class="nav-item" data-screen="cuota">Cuota</button>
+<button class="nav-item" data-screen="agregados">Agregados</button>
+<button class="nav-item" data-screen="nombres">Nombres</button>
+<button class="nav-item" data-screen="ascenso">Ascensos</button>
+<button class="nav-item" data-screen="ticket">Ticket Dorado</button>
+<button class="nav-item" data-screen="sistema122">Sistema 122</button>
+<button class="nav-item" data-screen="desarrollo">Desarrollo</button>
+<button class="nav-item" data-screen="monoazul">Programa Moño Azul</button>
+<button class="nav-item" data-screen="moto">Tickets Moto</button>
+<button class="nav-item" data-screen="ingresos">Proyección Ingresos</button>
+<button class="nav-item" data-screen="admin">Administración</button>
+<button class="nav-item" data-screen="toppers">Toppers</button>
+</nav>
+<div class="side-note"><strong>Bleu One</strong><span>Una sola app. Todo el territorio. Todas las herramientas.</span></div>
+<div class="app-footer">Bleu Company SAS ® All rights reserved<br/><span>Made with ❤️ by Bleu Company</span></div>
+</aside>
+<main class="main">
+<button aria-label="Abrir menú" class="menu-toggle" id="menuToggle">☰ Menú</button>
+<header class="topbar">
+<div><p class="eyebrow">Territorio Bleu Company SAS</p><h1>Bleu One</h1></div>
+<button class="install hidden" id="installBtn">Instalar app</button>
+</header>
+<section class="screen active somos-screen" id="somos">
+<div class="somos-card">
+<img alt="Bleu Company" class="somos-logo" src="assets/logo-bleu.png"/>
+<div class="somos-signature">Construyendo líderes. Transformando futuros.</div>
+<div class="somos-text">
+<p>Toda familia tiene a alguien que decide romper el ciclo...</p>
+<p>Alguien que deja de sobrevivir para empezar a construir...</p>
+<p>Alguien que cambia el “siempre hemos sido así” por un “a partir de hoy será diferente”...</p>
+<p><strong>Tal vez esa persona seas TÚ..</strong></p>
+<p>Bleu Company existe para quienes tienen el valor de escribir un nuevo capítulo y romper límites que parecían imposibles.</p>
+<p><strong>Lo que DIOS comienza en una vida, puede bendecir generaciones enteras..!!</strong></p>
+</div>
+<button class="primary-action" data-go="orden">Entrar a Bleu One <span>→</span></button>
+</div>
+</section>
+<section class="screen" id="orden">
+<div class="screen-head"><div><h2>Calculadora de Orden de Compra</h2><p>Ingresa los datos y transcribe manualmente los valores en la orden física.</p></div></div>
+<div class="grid">
+<section class="panel input-panel">
+<h3>1. Ingresa los datos</h3>
+<label class="field"><span>Precio total con IVA</span><div class="money-input"><span>$</span><input id="total" inputmode="numeric" value="0"/></div></label>
+<label class="field"><span>Depósito pagado hoy</span><div class="money-input"><span>$</span><input id="deposito" inputmode="numeric" value="0"/></div><small id="depositHint">Debe ser mínimo el 5% del precio total.</small></label>
+<label class="field"><span>Número de cuotas mensuales</span><select id="cuotas"></select><small>Permitido: mínimo 2 y máximo 27 cuotas.</small></label>
+<div class="hero-result mn-card"><span>MN</span><strong id="mgValor">$ 0</strong></div>
+<div class="alert ok" id="alerta">Depósito correcto.</div>
+</section>
+<section class="panel result-panel">
+<div class="result-title"><h3>2. Así debe quedar la orden</h3><span class="badge">Para transcribir</span></div>
+<div class="order-form">
+<div class="row"><span>Precio de compra</span><strong id="precioCompra">$ 0</strong></div>
+<div class="row"><span>Costo de envío</span><strong>$ 0</strong></div>
+<div class="row"><span>IVA</span><strong id="iva">$ 0</strong></div>
+<div class="row featured"><span>Precio total</span><strong id="precioTotal">$ 0</strong></div>
+<div class="row"><span>Depósito pagado hoy</span><strong id="depositoHoy">$ 0</strong></div>
+<div class="row muted"><span>Fecha depósito adicional</span><strong>Omitir</strong></div>
+<div class="row muted"><span>Depósito adicional</span><strong>Omitir</strong></div>
+<div class="row"><span>Saldo a financiar</span><strong id="saldo">$ 0</strong></div>
+<div class="row"><span>Tasa fija remuneratoria efectiva anual</span><strong>28.32%</strong></div>
+<div class="row"><span>Tasa de interés vigente a la fecha de hoy</span><strong>2.10%</strong></div>
+<div class="row"><span>Número de cuotas mensuales</span><strong id="cuotasOut">0</strong></div>
+<div class="row final"><span>Pago mínimo mensual</span><strong id="pagoMinimo">$ 0</strong></div>
+</div>
+<div class="formula" id="formula">Pago mínimo mensual = saldo a financiar × porcentaje de la tabla.</div>
+</section>
+</div>
+</section>
+<section class="screen" id="cuota"><div class="screen-head"><div><h2>Cuota</h2><p>Calcula cuánto le puedes vender a un cliente según la cuota mensual y el plazo elegido.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Valor de cuota mensual</span><div class="money-input"><span>$</span><input id="cuotaValor" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Meses de financiación</span><select id="cuotaMeses"></select><small>Predeterminado: 27 meses según tabla interna.</small></label></section><section class="panel hero-result"><span>Venta aproximada</span><strong id="cuotaVenta">$ 0</strong><small id="cuotaFormula">Fórmula según tabla.</small></section><div class="formula soft">Una cuota clara evita confusión, y una negociación clara acerca al cliente a la decisión.</div></div></section>
+<section class="screen" id="agregados"><div class="screen-head"><div><h2>Agregados</h2><p>Calcula el total del cliente y su pago mensual según la tabla de financiación.</p></div></div><div class="grid"><section class="panel"><h3>Datos del agregado</h3><label class="field"><span>Saldo del cliente</span><div class="money-input"><span>$</span><input id="agSaldo" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Nueva compra <small>(IVA incluido)</small></span><div class="money-input"><span>$</span><input id="agCompra" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Cuota inicial <small>(opcional)</small></span><div class="money-input"><span>$</span><input id="agInicial" inputmode="numeric" placeholder="0" value=""/></div><small>Los agregados no necesitan cuota inicial, pero puedes escribirla si aplica.</small></label><label class="field"><span>Meses de financiación</span><select id="agMeses"></select></label></section><section class="panel"><h3>Resultado del agregado</h3><div class="order-form"><div class="row"><span>Saldo del cliente</span><strong id="agSaldoOut">$ 0</strong></div><div class="row"><span>Nueva compra IVA incluido</span><strong id="agCompraOut">$ 0</strong></div><div class="row"><span>Cuota inicial</span><strong id="agInicialOut">$ 0</strong></div><div class="row featured"><span>Total a financiar</span><strong id="agTotal">$ 0</strong></div><div class="row final"><span>Pago mensual aproximado</span><strong id="agPago">$ 0</strong></div></div><div class="formula" id="agFormula">Selecciona meses y escribe los valores para calcular.</div><div class="formula soft">Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.</div></section></div></section>
+<section class="screen" id="nombres"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Fórmula: volumen del mes ÷ 185.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
+<section class="screen" id="ascenso">
+<div class="screen-head"><div><h2>Ascensos</h2><p>Elige tu siguiente meta y revisa tu progreso con claridad.</p></div></div>
+<div class="ascenso-picker" id="ascensoCards"></div>
+<div class="grid ascenso-layout">
+<section class="panel ascenso-input-panel">
+<div class="result-title"><h3 id="ascensoTituloInput">JD</h3><span class="badge">Meta activa</span></div>
+<div class="formula soft" id="ascensoDescripcion">Selecciona un ascenso para ver la meta.</div>
+<div class="clean-block" id="jdMesesBox">
+<p class="muted-text">Este ascenso se mide únicamente por volumen. Tienes 3 meses para lograr US$20.000 y cada mes debe tener mínimo US$4.000.</p>
+<div class="month-grid">
+<label class="field"><span>Mes 1</span><div class="money-input"><span>US$</span><input id="jdMes1" inputmode="numeric" placeholder="0" value=""/></div></label>
+<label class="field"><span>Mes 2</span><div class="money-input"><span>US$</span><input id="jdMes2" inputmode="numeric" placeholder="0" value=""/></div></label>
+<label class="field"><span>Mes 3</span><div class="money-input"><span>US$</span><input id="jdMes3" inputmode="numeric" placeholder="0" value=""/></div></label>
+</div>
+<div class="alert ok" id="jdAlerta">Ingresa los valores de cada mes.</div>
+</div>
+<div class="clean-block" id="otrosAscensosBox">
+<p class="muted-text">Puedes ingresar tu avance como volumen de venta o como compras. Los resultados son aproximados.</p>
+<label class="field"><span>¿Qué dato vas a ingresar?</span><select id="ascensoTipoActual"><option value="venta">Volumen de venta</option><option value="compra">Compras</option></select></label>
+<label class="field"><span>Valor que llevas a la fecha en USD</span><div class="money-input"><span>US$</span><input id="ascensoVol" inputmode="numeric" placeholder="0" value=""/></div></label>
+<label class="field"><span>Meses que faltan</span><input class="plain-input" id="ascensoMeses" inputmode="numeric" placeholder="Ej: 6" value=""/></label>
+</div>
+<small id="ascensoNota">Los valores son aproximados. JD es el único ascenso que se mide solo por volumen.</small>
+</section>
+<section class="panel ascenso-result-panel">
+<div class="result-title"><h3 id="ascensoTitulo">Meta</h3><span class="badge" id="ascensoPct">0%</span></div>
+<div class="progress big-progress"><div id="ascensoBar"></div></div>
+<div class="order-form compact-results">
+<div class="row featured"><span>Meta aproximada</span><strong id="ascensoMetaVol">US$ 0</strong></div>
+<div class="row"><span id="ascensoActualLabel">Avance actual</span><strong id="ascensoActual">US$ 0</strong></div>
+<div class="row"><span>Faltante</span><strong id="ascensoFalta">US$ 0</strong></div>
+<div class="row"><span>Te falta vender IVA incluido</span><strong id="ascensoFaltaCOP">$ 0 COP</strong></div>
+<div class="row final"><span id="ascensoMensualLabel">Promedio requerido</span><strong id="ascensoMensual">US$ 0</strong></div>
+<div class="row"><span>Nombres semanales aprox.</span><strong id="ascensoNombres">0</strong></div>
+</div>
+<div class="adn-card"><span>💎 ADN BLEU</span><p id="ascensoConsejo">Todos los caminos deben conducir a mejorar nuestro 4 en 14.</p><button id="otroAdn" type="button">Otro ADN Bleu →</button></div>
+<div class="formula soft" id="ascensoExtra">El ascenso se construye con seguimiento semanal y actividad diaria.</div>
+</section>
+</div>
+</section>
+<section class="screen" id="ticket"><div class="screen-head"><div><h2>Ticket Dorado</h2><p>Cuatrimestre vigente: Mayo, Junio, Julio y Agosto.</p></div></div><div class="grid"><section class="panel"><label class="field"><span>Categoría</span><select id="ticketTipo"><option selected="" value="0">Selecciona una categoría</option><option value="34000">Venta personal — persona sola</option><option value="42000">Venta personal — pareja</option><option value="65000">Volumen de distribución</option><option value="30000">Desarrollo — socios directos nuevos</option><option value="20000">Soy novato del cuatrimestre</option></select></label><div class="formula soft" id="ticketMetaDetalle">Selecciona una categoría para ver su meta específica.</div><label class="field"><span>Volumen acumulado actual en USD</span><div class="money-input"><span>US$</span><input id="ticketVol" inputmode="numeric" value="0"/></div></label></section><section class="panel hero-result"><span>Meta de esta categoría</span><strong id="ticketMeta">—</strong><small id="ticketMetaTexto">Selecciona una categoría</small><hr class="sep"/><span>Avance Ticket Dorado</span><strong id="ticketPct">0%</strong><div class="progress"><div id="ticketBar"></div></div><small id="ticketFalta">Faltan US$ 0 para clasificar.</small></section></div><div class="formula soft">El Ticket Dorado premia la constancia: el que mide su avance, corrige a tiempo y llega.</div></section>
+<section class="screen" id="sistema122"><div class="screen-head"><div><h2>Sistema 122</h2><p>Bonificaciones por socios directos nuevos: primera venta y 2% mensual sobre sus ventas.</p></div></div><div class="grid"><section class="panel"><h3>Datos del mes</h3><label class="field"><span>¿Cuántos socios directos nuevos tienes?</span><input class="plain-input" id="s122Socios" inputmode="numeric" placeholder="0" value=""/></label><label class="field"><span>¿Cuántos ya tienen código y primera venta?</span><input class="plain-input" id="s122Codigos" inputmode="numeric" placeholder="0" value=""/></label><label class="field"><span>Venta acumulada de esos socios en USD</span><div class="money-input"><span>US$</span><input id="s122Ventas" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Tu volumen personal este mes en USD</span><div class="money-input"><span>US$</span><input id="s122Personal" inputmode="numeric" placeholder="0" value=""/></div><small>Para cobrar el 2% mensual debes tener mínimo US$2.000 en volumen personal.</small></label><div class="alert ok" id="s122Alerta">Clasificación pendiente.</div></section><section class="panel"><h3>Bonificación estimada</h3><div class="order-form"><div class="row featured"><span>Bono primera venta</span><strong id="s122Primera">$ 0</strong></div><div class="row"><span>2% sobre ventas de socios</span><strong id="s122DosUsd">US$ 0</strong></div><div class="row"><span>2% convertido a COP</span><strong id="s122DosCop">$ 0</strong></div><div class="row final"><span>Total estimado a recibir</span><strong id="s122Total">$ 0</strong></div></div><div class="formula soft">No hay límite de socios nuevos. El límite real es tu capacidad de asociar, activar y acompañar.</div></section></div></section>
+<section class="screen" id="desarrollo">
+<div class="screen-head"><div><h2>Desarrollo</h2><p>Reclutamiento, asociación y construcción de equipo.</p></div></div>
+<div class="dev-grid">
+<section class="panel dev-card"><span class="dev-icon">🤝</span><h3>Consejos para asociar</h3><p class="muted-text">Busca personas con 3 pilares: trabajadora, humilde de corazón y con ambición sana.</p><div class="formula soft">Los mejores socios normalmente están ocupados. No busques solo al desempleado: busca al empleado inconforme, al trabajador con hambre de crecer y a la persona que ya demostró disciplina.</div></section>
+<section class="panel dev-card"><span class="dev-icon">🎙️</span><h3>Speech</h3><p class="muted-text">Usa esta guía para abrir conversaciones en frío o durante una demostración.</p><button class="primary-action small-action" id="toggleSpeech" type="button">Ver Speech <span>→</span></button><div class="formula speech-box hidden" id="speechBox">Después de preguntar a qué se dedica:<br/><br/>¿Cuánto tiempo lleva haciendo esto?<br/>¿Le gustaría hacer esto por el resto de su vida?<br/>¿Ha pensado alguna vez en un negocio propio?<br/>¿Por qué todavía no lo tiene?<br/><br/>Si le hablara de un negocio donde no se requiere inversión inicial, no hay mensualidades, el entrenamiento es gratis y además ofrece comisiones muy altas, ¿le interesaría?<br/><br/><strong>Lo espero mañana en mi oficina.</strong><br/><br/>Si pregunta: “¿De qué se trata?”<br/>Respuesta: <strong>De ganar dinero.</strong><br/><br/>Si pide más explicación:<br/><strong>Para eso está la oficina. Quiero explicárselo como usted se lo merece, no de afán.</strong><br/><br/><hr class="sep"/>En demostración:<br/>“Señor/a, la compañía está abriendo vacantes para trabajar con nosotros. ¿Usted no conoce a una persona que le interese generar entre 2 a 3 millones extra al mes?”</div></section>
+<section class="panel dev-card"><span class="dev-icon">📈</span><h3>Invitaciones</h3><p class="muted-text">Convierte las invitaciones en entrevistas y las entrevistas en nuevos socios.</p><label class="field"><span>¿Cuántas invitaciones has hecho este mes?</span><input class="plain-input" id="desInv" inputmode="numeric" placeholder="0" value=""/></label><div class="order-form"><div class="row"><span>Entrevistas estimadas</span><strong id="desEntrevistas">0</strong></div><div class="row final"><span>Socios nuevos estimados</span><strong id="desSocios">0</strong></div></div><small>Promedio: de cada 3 invitaciones, 1 entrevista; de cada 3 entrevistas, 1 socio. Necesitas aproximadamente 9 invitaciones para lograr 1 socio.</small></section>
+</div>
+<section class="panel development-resource">
+<div class="resource-icon">📘</div>
+<div class="resource-copy"><span class="eyebrow">Recurso descargable</span><h3>Material para compartir el negocio</h3><p>Presentación de apoyo para entrevistas, conversaciones y seguimiento con candidatos.</p></div>
+<a class="primary-action resource-download" download="Material para compartir el negocio - Bleu Company.pdf" href="assets/material-compartir-negocio.pdf">Descargar PDF <span>↓</span></a>
+</section>
+<div class="adn-card wide"><span>💎 ADN BLEU</span><p>Asociar no es pedir un favor: es abrirle una puerta a alguien con hambre de crecer.</p></div>
+</section>
+<section class="screen mono-screen" id="monoazul">
+<div class="screen-head"><div><p class="eyebrow">Prospección premium</p><h2>Programa Moño Azul</h2><p>Una experiencia exclusiva para clientes VIP que convierte recomendaciones agendadas en ventas y beneficios de alto nivel.</p></div></div>
+<section class="mono-hero panel">
+<div class="mono-cover"><img alt="Programa Moño Azul para clientes VIP" src="assets/programa-mono-azul.jpg"/></div>
+<div class="mono-intro">
+<span class="mono-kicker">🎀 Exclusivo</span>
+<h3>El 4 en 14 es nuestro sistema más poderoso.</h3>
+<p><strong>Moño Azul no lo reemplaza:</strong> es un plus estratégico para generar actividad instantánea con clientes VIP, fortalecer la prospección y abrir nuevas oportunidades.</p>
+<div class="mono-warning">⚠️ El Programa Moño Azul solo puede utilizarse con autorización previa del Distribuidor.</div>
+<div class="mono-facts"><span>30 días máximo</span><span>Cuenta ventas, no visitas</span><span>El cliente agenda</span></div>
+</div>
+</section>
+<div aria-label="Contenido Programa Moño Azul" class="mono-tabs" role="tablist">
+<button class="mono-tab active" data-mono-tab="programa">Cómo funciona</button>
+<button class="mono-tab" data-mono-tab="speech">Speech</button>
+<button class="mono-tab" data-mono-tab="adn">ADN Bleu</button>
+<button class="mono-tab" data-mono-tab="reconocimientos">Reconocimientos</button>
+</div>
+<div class="mono-tab-panel active" id="monoTab-programa">
+<section class="panel mono-explain">
+<div class="result-title"><h3>¿Cómo funciona?</h3><span class="badge">Programa autorizado</span></div>
+<div class="mono-steps">
+<article><b>1</b><div><strong>Selecciona al cliente</strong><p>Elige un cliente con perfil VIP y solicita autorización a tu Distribuidor.</p></div></article>
+<article><b>2</b><div><strong>Activa el programa</strong><p>Explícale con claridad los beneficios y establece una vigencia máxima de 30 días.</p></div></article>
+<article><b>3</b><div><strong>El cliente agenda</strong><p>El éxito está en que el cliente coordine directamente las visitas, no solo comparta contactos.</p></div></article>
+<article><b>4</b><div><strong>Cuenta ventas aprobadas</strong><p>Las visitas no suman. Cada venta aprobada desbloquea o acerca un nuevo nivel de beneficio.</p></div></article>
+<article><b>5</b><div><strong>Haz seguimiento</strong><p>Crea sinergia con el cliente y acompáñalo de forma constante hasta completar el programa.</p></div></article>
+<article><b>6</b><div><strong>Celebra cada avance</strong><p>Envía el reconocimiento premium correspondiente y mantén viva la emoción del programa.</p></div></article>
+</div>
+</section>
+<div class="grid mono-tracker-grid">
+<section class="panel mono-tracker">
+<div class="result-title"><h3>Iniciar Programa Moño Azul</h3><span class="badge">No guarda datos</span></div>
+<p class="muted-text">Esta versión no almacena información. Si recargas la página, deberás ingresar los datos nuevamente.</p>
+<label class="field"><span>Nombre del cliente</span><input autocomplete="off" class="plain-input" id="monoCliente" placeholder="Escribe el nombre" type="text"/></label><label class="field"><span>Nombre de la distribución</span><input autocomplete="off" class="plain-input" id="monoDistribucion" placeholder="Ej. Distribución Sinergy 360" type="text"/></label>
+<label class="field"><span>Fecha de inicio</span><input class="plain-input" id="monoInicio" type="date"/></label>
+<label class="field"><span>Ventas aprobadas</span><select id="monoVentas"><option value="0">0 ventas</option><option value="1">1 venta</option><option value="2">2 ventas</option><option value="3">3 ventas</option><option value="4">4 ventas</option><option value="5">5 ventas</option><option value="6">6 ventas</option><option value="7">7 ventas</option></select></label>
+<div class="mono-time-card"><span>Vigencia del programa</span><strong id="monoFin">Selecciona fecha de inicio</strong><div class="progress mono-time-progress"><div id="monoTiempoBar"></div></div><small id="monoDias">30 días máximo para activar y desarrollar el programa.</small></div>
+</section>
+<section class="panel mono-progress-card">
+<span class="mono-kicker">Avance del cliente</span>
+<div aria-hidden="true" class="mono-bow" id="monoBow"><span></span><i></i></div>
+<strong class="mono-big-number" id="monoVentasOut">0 de 7</strong>
+<div class="progress big-progress"><div id="monoVentasBar"></div></div>
+<div aria-label="Ventas alcanzadas" class="mono-sales-dots" id="monoSalesDots"></div>
+<div class="progress-message encourage" id="monoMensaje">La primera venta inicia el camino. Activa seguimiento desde hoy.</div>
+</section>
+</div>
+<section class="panel mono-benefits">
+<div class="result-title"><h3>Camino hacia el beneficio</h3><span class="badge">Más ventas · Más recompensa</span></div>
+<p class="muted-text">El cliente puede elegir un producto dentro del rango correspondiente al número de ventas aprobadas.</p>
+<div class="mono-levels" id="monoLevels">
+<article data-sales="2"><span>Nivel 1</span><strong>2 ventas</strong><p>$2.000.000 a $2.499.000</p></article>
+<article data-sales="3"><span>Nivel 2</span><strong>3 ventas</strong><p>$2.500.000 a $3.399.000</p></article>
+<article data-sales="4"><span>Nivel 3</span><strong>4 ventas</strong><p>$3.400.000 a $3.999.000</p></article>
+<article data-sales="5"><span>Nivel 4</span><strong>5 ventas</strong><p>$4.000.000 a $5.499.000</p></article>
+<article data-sales="6"><span>Nivel 5</span><strong>6 ventas</strong><p>$5.500.000 a $7.000.000</p></article>
+</div>
+<div class="formula soft" id="monoBenefitMsg">Completa 2 ventas aprobadas para desbloquear el primer nivel de beneficio.</div>
+</section>
+</div>
+<div class="mono-tab-panel" id="monoTab-speech">
+<section class="panel mono-speech-panel">
+<div class="result-title"><h3>Speech para presentar el Programa</h3><button class="small-action mono-copy" id="copyMonoSpeech" type="button">Copiar speech</button></div>
+<div class="mono-speech" id="monoSpeechText">
+<p><strong>Señor(a), quiero contarle algo que normalmente no presentamos a todos nuestros clientes.</strong></p>
+<p>Por la confianza que usted ha depositado en nosotros, existe un programa muy exclusivo llamado <strong>Programa Moño Azul</strong>, creado para reconocer a clientes que disfrutan recomendar calidad a sus familiares y amigos.</p>
+<p>Aquí no buscamos simplemente nombres o teléfonos. Lo valioso es que las personas que usted recomiende vivan nuestra experiencia y que usted mismo nos ayude a coordinar las visitas. Por cada venta aprobada irá desbloqueando beneficios cada vez más exclusivos.</p>
+<p>Tendrá hasta <strong>30 días</strong> y nosotros lo acompañaremos durante todo el proceso. Usted no estará solo: vamos a construir este logro juntos.</p>
+<p><strong>¿Le gustaría que activáramos hoy mismo su Programa Moño Azul?</strong></p>
+</div>
+<div class="mono-objections">
+<details><summary>Si pregunta: “¿Qué tengo que hacer?”</summary><p>Muy sencillo: usted nos ayuda a coordinar personas que realmente disfrutarían conocer nuestros productos. Nosotros hacemos la presentación y el acompañamiento. Cada venta aprobada lo acerca a un beneficio superior.</p></details>
+<details><summary>Si pregunta: “¿Qué gano?”</summary><p>Entre más ventas se logren gracias a sus recomendaciones, podrá elegir productos de mayor valor. Es nuestra manera de agradecer su confianza y reconocer su preferencia.</p></details>
+<details><summary>Si dice: “Solo le envío los contactos”</summary><p>Para que el programa sea exitoso, lo ideal es que usted nos ayude a coordinar directamente las visitas. Cuando el cliente agenda, la confianza es mayor y las probabilidades de éxito aumentan.</p></details>
+</div>
+</section>
+</div>
+<div class="mono-tab-panel" id="monoTab-adn">
+<section class="panel mono-adn-lux">
+<span class="mono-kicker">💎 ADN BLEU · Programa Moño Azul</span>
+<blockquote id="monoAdnText">Moño Azul no reemplaza el 4 en 14: es un plus que lo complementa y genera más actividad instantánea.</blockquote>
+<button class="primary-action small-action" id="otroMonoAdn" type="button">Otro ADN Bleu <span>→</span></button>
+</section>
+</div>
+<div class="mono-tab-panel" id="monoTab-reconocimientos">
+<section class="panel mono-recognition-panel">
+<div class="result-title"><h3>Reconocimientos premium para el cliente</h3><span class="badge">Imagen PNG</span></div>
+<p class="muted-text">Personaliza el nombre del cliente y de la distribución. Revisa la vista previa y descarga una pieza premium lista para compartir por WhatsApp.</p>
+<div class="mono-recognition-controls"><label class="field"><span>Nombre del cliente</span><input autocomplete="off" class="plain-input" id="monoClienteDescarga" placeholder="Nombre del cliente" type="text"/></label><label class="field"><span>Nombre de la distribución</span><input autocomplete="off" class="plain-input" id="monoDistribucionDescarga" placeholder="Nombre de la distribución" type="text"/></label></div><div class="mono-download-grid" id="monoDownloadGrid"></div><div class="mono-preview-wrap"><div class="result-title"><h3>Vista previa</h3><span class="badge">Formato historia</span></div><canvas aria-label="Vista previa del reconocimiento" height="1350" id="monoPreviewCanvas" width="1080"></canvas></div>
+</section>
+</div>
+<div class="formula soft mono-closing">Moño Azul históricamente ha ayudado a muchos asesores y distribuidores a construir su mejor mes. El resultado nace de la autorización, el entusiasmo, el seguimiento y la ejecución.</div>
+</section>
+<section class="screen" id="moto">
+<div class="screen-head"><div><h2>Tickets de Moto</h2><p>Celebramos el cierre del primer semestre y a quienes convirtieron su constancia en una gran victoria.</p></div></div>
+<section class="panel moto-winners">
+<div class="moto-photo-wrap"><img alt="Natalia Bolívar y Santiago Parra, ganadores de la moto 0 km" class="moto-winners-photo" src="assets/ganadores-moto-primer-semestre-2026.jpg"/></div>
+<div class="moto-winners-copy">
+<span class="winner-kicker">🏍️ Ganadores del primer semestre</span>
+<h3>Natalia Bolívar &amp; Santiago Parra</h3>
+<p class="winner-title">Ganadores de la Moto 0 KM</p>
+<p>Felicitamos su disciplina, actividad y constancia. Este reconocimiento demuestra que cada venta, cada seguimiento y cada día de trabajo sí cuentan.</p>
+<div class="formula soft moto-next">Mantente atento a la próxima premiación y al nuevo camino hacia la siguiente Moto 0 KM.</div>
+</div>
+</section>
+<div class="formula soft">Los grandes premios no se ganan en un solo día: se construyen con actividad sostenida.</div>
+</section>
+<section class="screen" id="ingresos"><div class="screen-head"><div><h2>Proyección de ingresos</h2><p>Valores aproximados. Tasa usada: US$1 = $3.443,59 COP.</p></div></div><div class="grid">
+<section class="panel"><h3>1. Ganancias según nivel</h3><p class="muted-text"><strong>Importante:</strong> ingresa únicamente volumen de <strong>VENTA PERSONAL</strong>. Los ingresos son aproximados según el nivel.</p><label class="field"><span>Nivel</span><select id="ingRol"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Volumen de venta personal en USD</span><div class="money-input"><span>US$</span><input id="ingVol" inputmode="numeric" placeholder="0" value=""/></div></label><div class="order-form"><div class="row featured"><span>Ingreso aproximado USD</span><strong id="ingUsd">US$ 0</strong></div><div class="row"><span>Ingreso aproximado COP</span><strong id="ingCop">$ 0</strong></div></div></section>
+<section class="panel"><h3>2. ¿Cuánto quiero ganar?</h3><p class="muted-text"><strong>Importante:</strong> escribe cuánto quieres ganar en pesos colombianos. Bleu One lo convierte a dólares y calcula el volumen de <strong>VENTA PERSONAL</strong> aproximado y los nombres necesarios.</p><label class="field"><span>Nivel</span><select id="ingRolDeseado"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Quiero ganar este mes en COP</span><div class="money-input"><span>$</span><input id="ingDeseadoCop" inputmode="numeric" placeholder="0" value=""/></div></label><div class="order-form"><div class="row"><span>Equivalente aproximado en USD</span><strong id="ingDeseadoUsd">US$ 0</strong></div><div class="row final"><span>Volumen de venta personal necesario</span><strong id="ingVolNecesario">US$ 0</strong></div><div class="row"><span>Nombres semanales necesarios</span><strong id="ingNombres">0</strong></div></div></section></div><div class="formula soft">Los ingresos son aproximados y están basados exclusivamente en VENTA PERSONAL. El ingreso crece cuando la actividad crece; tu meta de dinero debe convertirse en meta de volumen y nombres.</div></section>
+<section class="screen" id="admin"><div class="screen-head"><div><h2>Administración de ingresos</h2><p>Una guía simple para no gastar todo lo que entra y proteger la reinversión del negocio.</p></div></div><div class="grid"><section class="panel"><h3>Define tu etapa</h3><p class="muted-text">Emprendedor: separa el 25% de lo que recibes para generar más demostraciones. JD o Distribuidor: si no tienes salario fijo, toma máximo el 30% para ti y protege el resto para operación, equipo y crecimiento.</p><label class="field"><span>Tipo</span><select id="adminTipo"><option value="emprendedor">Emprendedor</option><option value="jd">Distribuidor Junior / Distribuidor</option></select></label><label class="field"><span>Dinero recibido en COP</span><div class="money-input"><span>$</span><input id="adminMonto" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel"><h3>Distribución sugerida</h3><div class="formula soft" id="adminExplica">El objetivo es convertir cada pago en combustible para más actividad.</div><div class="order-form"><div class="row featured"><span id="adminReservaLabel">Guardar para demostraciones</span><strong id="adminReserva">$ 0</strong></div><div class="row final"><span id="adminDisponibleLabel">Disponible después de separar</span><strong id="adminDisponible">$ 0</strong></div></div></section></div><div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div></section>
+<section class="screen" id="toppers">
+<div class="screen-head"><div><h2>Salón de los Toppers</h2><p>Consulta el histórico de Junio y sigue en vivo el avance de Julio 2026.</p></div></div>
+<section class="panel toppers-hero">
+<div class="trophy">🏆</div>
+<h3>SALÓN DE LOS TOPPERS</h3>
+<p><strong>Julio 2026 está en marcha.</strong><br/><span class="topper-subline">Los Toppers de Julio se actualizarán semanalmente. Por el momento, visualiza y felicita también a los Toppers que cerraron Junio.</span></p>
+<div class="countdown-label">Tiempo restante para finalizar Julio</div>
+<div class="countdown" id="topCountdown"><div><strong>00</strong><span>Días</span></div><div><strong>00</strong><span>Horas</span></div><div><strong>00</strong><span>Minutos</span></div><div><strong>00</strong><span>Segundos</span></div></div>
+</section>
+<div aria-label="Mes del ranking" class="topper-month-tabs" role="tablist">
+<button class="topper-month-tab" data-month="junio">Junio 2026 · Histórico</button>
+<button class="topper-month-tab active" data-month="julio">Julio 2026 · A la fecha</button>
+</div>
+<div class="topper-month-note" id="topperMonthNote">Ranking de Julio a la fecha. El mes aún está en competencia.</div>
+<div class="topper-tabs"><button class="topper-tab active" data-top="personal">Venta personal</button><button class="topper-tab" data-top="junior">Mejor Distribuidor Junior</button><button class="topper-tab" data-top="distribuidores">Mejor Distribuidor</button></div>
+<section class="panel podium-panel"><div class="result-title"><h3 id="podiumTitle">Venta personal</h3><span class="badge">Top 5</span></div><div class="podium" id="podium"></div><div class="topper-list" id="topperList"></div><div class="formula soft">El reconocimiento honra el resultado. La disciplina construye el camino para volver a estar aquí.</div></section>
+<div class="modal hidden" id="topperModal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div class="modal-medal" id="modalMedal">🥇</div><h3 id="modalName">Nombre</h3><p id="modalCity">Ciudad</p><p class="modal-distribution" id="modalDistribution"></p><strong id="modalVolume">US$ 0</strong><small id="modalCategory">Categoría</small></div></div>
+</section>
+</main>
+</div>
+<script src="app.js"></script>
 </body>
 </html>

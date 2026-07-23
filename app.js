@@ -533,7 +533,15 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     'El éxito está en que el cliente mismo agende las visitas, no únicamente en que envíe contactos.',
     'Haz sinergia con el cliente y un seguimiento exhaustivo para que el programa sea exitoso.',
     'Moño Azul históricamente ha ayudado a muchos asesores y distribuidores a construir su mejor mes.',
-    'Todos los caminos deben seguir fortaleciendo el 4 en 14: Moño Azul es un acelerador, nunca un reemplazo.'
+    'Todos los caminos deben seguir fortaleciendo el 4 en 14: Moño Azul es un acelerador, nunca un reemplazo.',
+    'La exclusividad no está solo en el beneficio: está en la experiencia que construyes alrededor del cliente.',
+    'Un cliente acompañado con excelencia puede convertirse en la puerta de entrada a todo un nuevo mercado.',
+    'La emoción abre la conversación; el seguimiento disciplinado convierte esa emoción en resultados.',
+    'Cada reconocimiento enviado a tiempo renueva el compromiso del cliente con su siguiente meta.',
+    'No administres contactos: administra confianza, agenda y experiencia.',
+    'Cuando el cliente siente que el programa también es suyo, comienza a defender el resultado contigo.',
+    'La mejor forma de cuidar la percepción del programa es cumplir cada promesa con precisión.',
+    'Un Programa Moño Azul bien ejecutado se siente exclusivo antes, durante y después de cada venta.'
   ];
   const messages=[
     'La primera venta inicia el camino. Activa seguimiento desde hoy.',
@@ -597,7 +605,21 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
   }
   q('monoVentas')?.addEventListener('change',update);
   q('monoInicio')?.addEventListener('change',update);
+  const syncRecognitionFields=()=>{
+    const c=q('monoCliente')?.value||''; const d=q('monoDistribucion')?.value||'';
+    if(q('monoClienteDescarga') && document.activeElement!==q('monoClienteDescarga')) q('monoClienteDescarga').value=c;
+    if(q('monoDistribucionDescarga') && document.activeElement!==q('monoDistribucionDescarga')) q('monoDistribucionDescarga').value=d;
+    renderRecognition(2,q('monoPreviewCanvas'));
+  };
+  ['monoCliente','monoDistribucion','monoClienteDescarga','monoDistribucionDescarga'].forEach(id=>q(id)?.addEventListener('input',()=>{
+    if(id==='monoClienteDescarga' && q('monoCliente')) q('monoCliente').value=q(id).value;
+    if(id==='monoDistribucionDescarga' && q('monoDistribucion')) q('monoDistribucion').value=q(id).value;
+    if(id==='monoCliente' && q('monoClienteDescarga')) q('monoClienteDescarga').value=q(id).value;
+    if(id==='monoDistribucion' && q('monoDistribucionDescarga')) q('monoDistribucionDescarga').value=q(id).value;
+    renderRecognition(Number(root.dataset.previewSale||2),q('monoPreviewCanvas'));
+  }));
   update();
+  setTimeout(syncRecognitionFields,80);
 
   q('otroMonoAdn')?.addEventListener('click',()=>{adnIdx=(adnIdx+1)%adn.length;q('monoAdnText').textContent=adn[adnIdx];});
   q('copyMonoSpeech')?.addEventListener('click',async()=>{
@@ -608,7 +630,8 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
   const ordinal=['Primera','Segunda','Tercera','Cuarta','Quinta','Sexta','Séptima'];
   const grid=q('monoDownloadGrid');
   if(grid){
-    grid.innerHTML=ordinal.map((word,i)=>`<article class="mono-download-card"><div><strong>${word} venta</strong><br><span>Reconocimiento personalizado</span></div><button type="button" data-mono-download="${i+1}">Descargar PNG</button></article>`).join('');
+    grid.innerHTML=ordinal.map((word,i)=>`<article class="mono-download-card"><div><strong>${word} venta</strong><br><span>Pieza personalizada premium</span></div><div class="mono-download-actions"><button type="button" data-mono-preview="${i+1}">Vista previa</button><button type="button" data-mono-download="${i+1}">Descargar PNG</button></div></article>`).join('');
+    grid.querySelectorAll('[data-mono-preview]').forEach(btn=>btn.addEventListener('click',()=>{const n=Number(btn.dataset.monoPreview);root.dataset.previewSale=n;renderRecognition(n,q('monoPreviewCanvas'));q('monoPreviewCanvas')?.scrollIntoView({behavior:'smooth',block:'center'});}));
     grid.querySelectorAll('[data-mono-download]').forEach(btn=>btn.addEventListener('click',()=>downloadRecognition(Number(btn.dataset.monoDownload))));
   }
 
@@ -620,29 +643,270 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     return ['¡FELICITACIONES!',`Has logrado tu ${ordinal[sale-1].toLowerCase()} venta.`,`Cada venta te acerca a beneficios más exclusivos.`];
   }
   function wrap(ctx,text,x,y,maxWidth,lineHeight){
-    const words=text.split(' ');let line='';let yy=y;
+    const words=String(text).split(' ');let line='';let yy=y;
     for(const word of words){const test=line+word+' ';if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line.trim(),x,yy);line=word+' ';yy+=lineHeight}else line=test}
     if(line)ctx.fillText(line.trim(),x,yy);return yy;
   }
-  function downloadRecognition(sale){
-    const name=(q('monoCliente')?.value||'CLIENTE VIP').trim().toUpperCase();
-    const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');
-    const bg=ctx.createLinearGradient(0,0,1080,1350);bg.addColorStop(0,'#02050c');bg.addColorStop(.55,'#071735');bg.addColorStop(1,'#02040a');ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1350);
-    const glow=ctx.createRadialGradient(820,170,20,820,170,520);glow.addColorStop(0,'rgba(29,91,203,.45)');glow.addColorStop(1,'rgba(2,5,12,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,1080,700);
-    ctx.strokeStyle='#d9aa45';ctx.lineWidth=4;ctx.strokeRect(48,48,984,1254);ctx.strokeStyle='rgba(217,170,69,.35)';ctx.lineWidth=1;ctx.strokeRect(70,70,940,1210);
-    // bow
-    ctx.save();ctx.translate(810,105);ctx.fillStyle='#0c3b91';ctx.strokeStyle='#e0b64f';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(-92,42,104,67,-.35,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.ellipse(92,42,104,67,.35,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#1255bd';ctx.fillRect(-34,8,68,88);ctx.strokeRect(-34,8,68,88);ctx.restore();
-    ctx.textAlign='center';ctx.fillStyle='#f0cf76';ctx.font='700 32px Georgia';ctx.fillText('PROGRAMA',540,150);ctx.font='900 98px Georgia';ctx.fillText('MOÑO AZUL',540,250);ctx.fillStyle='#ffffff';ctx.font='italic 42px Georgia';ctx.fillText('Exclusividad que se gana',540,312);
-    const [title,line1,line2]=recognitionCopy(sale);
-    ctx.fillStyle='#f0cf76';ctx.font='900 54px Arial';ctx.fillText(title,540,460);
-    ctx.fillStyle='#ffffff';ctx.font='900 48px Arial';wrap(ctx,name,540,555,860,58);
-    ctx.fillStyle='#f1d27d';ctx.font='900 120px Georgia';ctx.fillText(String(sale),540,760);
-    ctx.fillStyle='#ffffff';ctx.font='700 40px Arial';ctx.fillText(`${ordinal[sale-1].toUpperCase()} VENTA`,540,825);
-    ctx.fillStyle='#e7edf8';ctx.font='500 34px Arial';wrap(ctx,line1,540,930,850,48);
-    ctx.fillStyle='#f1d27d';ctx.font='700 31px Arial';wrap(ctx,line2,540,1045,850,44);
-    ctx.fillStyle='#9fb0cb';ctx.font='500 25px Arial';ctx.fillText(new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'}),540,1165);
-    ctx.fillStyle='#f0cf76';ctx.font='700 29px Georgia';ctx.fillText('BLEU COMPANY SAS',540,1240);
-    ctx.fillStyle='#8d9bb2';ctx.font='500 22px Arial';ctx.fillText('Gracias por elegirnos. Gracias por confiar.',540,1280);
-    const a=document.createElement('a');a.download=`Programa-Mono-Azul-${sale}-venta-${name.replace(/[^A-Z0-9]+/g,'-')}.png`;a.href=canvas.toDataURL('image/png');a.click();
+  function drawLuxuryBow(ctx,cx,cy,scale=1){
+    ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);
+    const ribbon=ctx.createLinearGradient(-220,-120,220,140);ribbon.addColorStop(0,'#061b47');ribbon.addColorStop(.35,'#0c4eb6');ribbon.addColorStop(.62,'#082c72');ribbon.addColorStop(1,'#031435');
+    ctx.shadowColor='rgba(31,100,235,.65)';ctx.shadowBlur=34;ctx.fillStyle=ribbon;ctx.strokeStyle='rgba(162,199,255,.72)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(-26,-18);ctx.bezierCurveTo(-92,-142,-270,-126,-244,-20);ctx.bezierCurveTo(-224,68,-102,56,-24,16);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(26,-18);ctx.bezierCurveTo(92,-142,270,-126,244,-20);ctx.bezierCurveTo(224,68,102,56,24,16);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.shadowBlur=18;ctx.beginPath();ctx.moveTo(-36,20);ctx.lineTo(-116,224);ctx.lineTo(-12,172);ctx.lineTo(8,34);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(36,20);ctx.lineTo(116,224);ctx.lineTo(12,172);ctx.lineTo(-8,34);ctx.closePath();ctx.fill();ctx.stroke();
+    const knot=ctx.createRadialGradient(-18,-18,8,0,0,74);knot.addColorStop(0,'#2b79e7');knot.addColorStop(.5,'#0c4aa7');knot.addColorStop(1,'#031739');ctx.fillStyle=knot;ctx.beginPath();ctx.roundRect(-62,-58,124,112,34);ctx.fill();ctx.stroke();
+    ctx.restore();
   }
+  function renderRecognition(sale,canvas){
+    if(!canvas) return;
+    sale=Math.max(1,Math.min(7,Number(sale)||1));
+    const name=((q('monoClienteDescarga')?.value||q('monoCliente')?.value||'CLIENTE VIP').trim()||'CLIENTE VIP').toUpperCase();
+    const distribution=((q('monoDistribucionDescarga')?.value||q('monoDistribucion')?.value||'TU DISTRIBUCIÓN').trim()||'TU DISTRIBUCIÓN').toUpperCase();
+    canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');
+    const bg=ctx.createLinearGradient(0,0,1080,1350);bg.addColorStop(0,'#01040b');bg.addColorStop(.38,'#061530');bg.addColorStop(.72,'#020817');bg.addColorStop(1,'#000207');ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1350);
+    // silk-like light folds
+    for(let i=0;i<7;i++){const x=80+i*170;const g=ctx.createLinearGradient(x-130,0,x+130,1350);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,i%2?'rgba(21,66,145,.08)':'rgba(255,255,255,.025)');g.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=g;ctx.fillRect(x-150,0,300,1350)}
+    const aura=ctx.createRadialGradient(540,370,40,540,370,530);aura.addColorStop(0,'rgba(26,99,224,.32)');aura.addColorStop(.45,'rgba(12,47,112,.16)');aura.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=aura;ctx.fillRect(0,0,1080,900);
+    // premium frames
+    const gold=ctx.createLinearGradient(0,0,1080,0);gold.addColorStop(0,'#7b5418');gold.addColorStop(.22,'#f0d58e');gold.addColorStop(.5,'#b9852e');gold.addColorStop(.78,'#f6dfa1');gold.addColorStop(1,'#765015');ctx.strokeStyle=gold;ctx.lineWidth=4;ctx.strokeRect(42,42,996,1266);ctx.lineWidth=1;ctx.globalAlpha=.55;ctx.strokeRect(66,66,948,1218);ctx.globalAlpha=1;
+    // corner ornaments
+    ctx.strokeStyle=gold;ctx.lineWidth=3;[[92,92,1,1],[988,92,-1,1],[92,1258,1,-1],[988,1258,-1,-1]].forEach(([x,y,sx,sy])=>{ctx.beginPath();ctx.moveTo(x,y+sy*70);ctx.quadraticCurveTo(x,y,x+sx*70,y);ctx.stroke();ctx.beginPath();ctx.arc(x+sx*18,y+sy*18,6,0,Math.PI*2);ctx.stroke()});
+    drawLuxuryBow(ctx,540,285,.86);
+    ctx.textAlign='center';ctx.fillStyle='#e7c674';ctx.font='700 26px Georgia';ctx.letterSpacing='8px';ctx.fillText('PROGRAMA',540,118);ctx.letterSpacing='0px';ctx.font='900 70px Georgia';ctx.fillText('MOÑO AZUL',540,184);
+    const [title,line1,line2]=recognitionCopy(sale);
+    ctx.fillStyle='#ead085';ctx.font='800 34px Arial';ctx.fillText(title,540,535);
+    ctx.fillStyle='#ffffff';ctx.font='900 52px Arial';wrap(ctx,name,540,620,820,62);
+    ctx.strokeStyle='rgba(234,208,133,.45)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(200,700);ctx.lineTo(880,700);ctx.stroke();
+    ctx.fillStyle='#e9c86f';ctx.font='900 132px Georgia';ctx.fillText(String(sale).padStart(2,'0'),540,840);
+    ctx.fillStyle='#f8fafc';ctx.font='800 36px Arial';ctx.letterSpacing='5px';ctx.fillText(`${ordinal[sale-1].toUpperCase()} VENTA`,540,900);ctx.letterSpacing='0px';
+    ctx.fillStyle='#dce5f4';ctx.font='500 30px Arial';wrap(ctx,line1,540,988,790,43);
+    ctx.fillStyle='#f0d58b';ctx.font='700 28px Arial';wrap(ctx,line2,540,1084,820,40);
+    ctx.strokeStyle='rgba(234,208,133,.34)';ctx.beginPath();ctx.moveTo(250,1160);ctx.lineTo(830,1160);ctx.stroke();
+    ctx.fillStyle='#f2d88d';ctx.font='700 26px Georgia';ctx.letterSpacing='3px';ctx.fillText(distribution,540,1212);ctx.letterSpacing='0px';
+    ctx.fillStyle='#8fa0bb';ctx.font='500 21px Arial';ctx.fillText(new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'}),540,1255);
+  }
+  function downloadRecognition(sale){
+    const canvas=document.createElement('canvas');renderRecognition(sale,canvas);
+    const name=((q('monoClienteDescarga')?.value||q('monoCliente')?.value||'CLIENTE-VIP').trim()).replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ0-9]+/g,'-');
+    const a=document.createElement('a');a.download=`Programa-Mono-Azul-${sale}-venta-${name}.png`;a.href=canvas.toDataURL('image/png',1);a.click();
+  }})();
+
+// ADN BLEU en todos los módulos
+(function initGlobalAdnBleu(){
+  const libraries={
+    orden:[
+      'Una orden bien explicada no solo evita errores: transmite seguridad desde el primer minuto.',
+      'La claridad financiera también es una forma de servir al cliente.',
+      'Cuando dominas los números, negocias con tranquilidad y cierras con autoridad.',
+      'La confianza crece cuando cada cifra coincide con lo que prometiste.',
+      'El profesionalismo se nota en los detalles que otros suelen pasar por alto.',
+      'No corras al llenar una orden: la precisión protege la venta y la relación.',
+      'Una venta sólida comienza con una conversación clara y termina con una orden correcta.',
+      'Cada cálculo exacto fortalece la percepción de valor de tu asesoría.',
+      'El cliente recuerda cómo lo hiciste sentir, pero también agradece que todo haya quedado claro.',
+      'La excelencia comercial también se escribe en números bien presentados.',
+      'Revisar dos veces tarda minutos; corregir una mala orden puede costar días.',
+      'La transparencia no debilita el cierre: lo hace sostenible.',
+      'Una orden sin dudas le permite al cliente disfrutar su decisión.',
+      'La precisión es una disciplina silenciosa que construye reputación.',
+      'No entregues solo productos: entrega certeza, acompañamiento y confianza.'
+    ],
+    cuota:[
+      'Una cuota clara evita confusión, y una negociación clara acerca al cliente a la decisión.',
+      'No vendas una cifra mensual: muestra la solución que esa cifra hace posible.',
+      'Cuando el cliente entiende su opción, deja de defenderse y empieza a decidir.',
+      'La mejor cuota es la que el cliente puede honrar con tranquilidad.',
+      'Ayudar a decidir también significa cuidar la capacidad de pago.',
+      'La flexibilidad abre puertas; la claridad mantiene esas puertas abiertas.',
+      'Un buen asesor convierte números complejos en decisiones sencillas.',
+      'El valor no está en bajar la cuota, sino en elevar la comprensión del beneficio.',
+      'Escucha primero la realidad del cliente y luego construye la alternativa.',
+      'Negociar con empatía crea clientes que vuelven y recomiendan.',
+      'La cuota correcta no presiona: encaja.',
+      'Cada opción debe acercar al cliente a una compra responsable.',
+      'La seguridad con la que explicas la cuota se convierte en seguridad para comprar.',
+      'No improvises números frente al cliente; prepárate para liderar la conversación.',
+      'Una decisión cómoda hoy puede convertirse en una relación duradera mañana.'
+    ],
+    agregados:[
+      'Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.',
+      'El cliente que vuelve ya confió una vez; tu tarea es honrar aún más esa confianza.',
+      'Agregar valor no es vender por vender: es completar mejor la experiencia.',
+      'Cada nueva compra debe sentirse como una evolución, no como una presión.',
+      'Conocer el saldo demuestra preparación y respeto por la realidad del cliente.',
+      'La recompra nace de una primera experiencia extraordinaria.',
+      'Antes de ofrecer más, confirma cuánto valor ha recibido el cliente hasta hoy.',
+      'Un agregado inteligente resuelve una necesidad que ya estaba esperando respuesta.',
+      'La confianza acumulada vale más que cualquier descuento improvisado.',
+      'El mejor momento para ampliar una solución es cuando el cliente ya reconoce su valor.',
+      'Una explicación simple convierte un cálculo complejo en una decisión cómoda.',
+      'Cuida la relación como si cada agregado fuera una nueva primera venta.',
+      'La fidelización comienza cuando el servicio continúa después de la entrega.',
+      'No busques aumentar el ticket; busca aumentar el resultado del cliente.',
+      'Un cliente bien atendido no siente que le vendieron más: siente que lo asesoraron mejor.'
+    ],
+    nombres:[
+      'Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.',
+      'Sin nombres no hay paraíso; con nombres trabajados hay futuro.',
+      'Tu siguiente venta probablemente ya existe en una conversación que aún no has iniciado.',
+      'La agenda vacía no se llena con preocupación, se llena con prospección.',
+      'Los nombres son semillas: el seguimiento determina cuáles se convierten en resultados.',
+      'No necesitas conocer a todo el mundo; necesitas trabajar bien a quienes ya conoces.',
+      'La abundancia comienza cuando dejas de administrar escasez en tu lista.',
+      'Cada nombre nuevo reduce la dependencia de una sola oportunidad.',
+      'Prospectar no es molestar: es abrir una posibilidad con respeto y convicción.',
+      'La actividad de hoy protege el volumen de las próximas semanas.',
+      'Tu lista no se termina; se expande cada vez que entregas una buena experiencia.',
+      'El miedo a llamar cuesta más oportunidades que cualquier respuesta negativa.',
+      'No califiques a las personas antes de permitirles conocer la oportunidad.',
+      'Una semana extraordinaria casi siempre fue preparada con nombres días antes.',
+      'La constancia en los nombres convierte metas grandes en acciones diarias.'
+    ],
+    ascenso:[
+      'Todos los caminos deben conducir a mejorar nuestro 4 en 14.',
+      'El ascenso no ocurre el día del reconocimiento; ocurre en cada día que decidiste cumplir.',
+      'La meta te muestra la distancia, pero la disciplina construye el puente.',
+      'No persigas el rango: conviértete en la persona capaz de sostenerlo.',
+      'Cada mes mínimo protege la consistencia que tu próximo nivel necesita.',
+      'El volumen es el resultado visible de hábitos que nadie aplaude.',
+      'Tu siguiente ascenso comienza cuando tu estándar deja de negociar con tus excusas.',
+      'Avanzar lento con dirección siempre será mejor que correr sin sistema.',
+      'La presión disminuye cuando conviertes la meta mensual en actividad semanal.',
+      'Un rango nuevo exige una identidad nueva antes de exigir un resultado nuevo.',
+      'No esperes sentirte listo: el proceso te prepara mientras avanzas.',
+      'El liderazgo empieza cuando tu compromiso deja de depender del ánimo.',
+      'Cada seguimiento pendiente es una parte del ascenso que aún no has construido.',
+      'El reconocimiento dura un momento; la transformación permanece.',
+      'La cima se alcanza con actividad, pero se sostiene con carácter.'
+    ],
+    ticket:[
+      'Los grandes premios no cambian la disciplina: la hacen visible.',
+      'Cada semana cuenta cuando la competencia se gana por acumulación.',
+      'No mires cuánto falta; identifica qué actividad debes repetir hoy.',
+      'El Ticket Dorado premia el resultado, pero primero transforma el estándar.',
+      'La competencia saludable revela capacidades que la comodidad mantenía escondidas.',
+      'Tu posición de hoy no define tu cierre; tu actividad de hoy sí lo influencia.',
+      'Un gran cuatrimestre se construye con cuatro meses que no se abandonan.',
+      'No compitas contra nombres: compite contra tu versión anterior.',
+      'La constancia hace posible que una meta ambiciosa deje de parecer lejana.',
+      'Cada venta suma dos veces: al volumen y a la confianza con la que continúas.',
+      'El premio inspira, pero el hábito que desarrollas vale todavía más.',
+      'Mantente en movimiento incluso cuando el tablero todavía no refleje tu esfuerzo.',
+      'Los cierres extraordinarios pertenecen a quienes sostienen la actividad ordinaria.',
+      'No necesitas un día perfecto; necesitas no desaparecer del proceso.',
+      'La oportunidad permanece abierta mientras tú permanezcas activo.'
+    ],
+    sistema122:[
+      'Tu ingreso crece cuando ayudas a otros a producir su primera victoria.',
+      'Patrocinar no es sumar personas: es multiplicar capacidades.',
+      'La primera venta de un nuevo socio puede cambiar la percepción que tiene de sí mismo.',
+      'El residual comienza con una conversación, pero se sostiene con acompañamiento.',
+      'No busques muchos directos sin dirección; construye directos con sistema.',
+      'Cada socio bien activado puede convertirse en una nueva historia familiar.',
+      'El 2% es una consecuencia; el verdadero activo es una persona creciendo contigo.',
+      'Tu volumen personal protege el derecho a participar del crecimiento que impulsas.',
+      'El patrocinador que acompaña crea cultura; el que solo inscribe crea dependencia.',
+      'No hay límite para el desarrollo cuando tampoco hay límite para servir.',
+      'La duplicación ocurre cuando lo sencillo se repite con excelencia.',
+      'Ayuda a lograr la primera venta rápido: la velocidad inicial construye creencia.',
+      'Un socio activo vale más que una lista larga de personas desconectadas.',
+      'Construir profundidad exige paciencia, ejemplo y conversaciones constantes.',
+      'El mejor ingreso residual nace de liderazgo activo, no de expectativa pasiva.'
+    ],
+    desarrollo:[
+      'Asociar no es pedir un favor: es abrirle una puerta a alguien con hambre de crecer.',
+      'No busques personas desocupadas; busca personas inconformes con su siguiente nivel.',
+      'Una invitación poderosa despierta curiosidad sin prometer lo que aún no se ha construido.',
+      'El desarrollo comienza cuando dejas de pensar solo en tus ventas.',
+      'Cada líder que formas amplía el impacto que tú solo podrías alcanzar.',
+      'La humildad aprende, el trabajo ejecuta y la ambición saludable sostiene.',
+      'No necesitas convencer a todos; necesitas encontrar a quienes ya están buscando más.',
+      'Una entrevista puede parecer pequeña y terminar cambiando generaciones.',
+      'El seguimiento después de la invitación demuestra que tu visión es seria.',
+      'La duplicación exige que enseñes lo que haces y hagas lo que enseñas.',
+      'Construye personas antes de construir organigramas.',
+      'El candidato correcto muchas veces está ocupado porque ya sabe producir.',
+      'Tu historia puede inspirar, pero tu sistema debe darle una ruta para avanzar.',
+      'Invitar con convicción es compartir una posibilidad, no perseguir aprobación.',
+      'El legado empieza cuando alguien crece porque tú decidiste creer primero.'
+    ],
+    moto:[
+      'Los grandes premios no se ganan en un solo día: se construyen con actividad sostenida.',
+      'Cada ticket representa una decisión de no abandonar el ritmo.',
+      'El premio final hace visible todo lo que nadie vio durante el proceso.',
+      'No esperes a la última semana para construir lo que exige meses de constancia.',
+      'La actividad acumulada convierte posibilidades pequeñas en resultados extraordinarios.',
+      'Quien celebra a los ganadores también aprende el camino para convertirse en uno.',
+      'La competencia termina; el estándar que desarrollaste puede quedarse para siempre.',
+      'Cada venta te acerca al premio y te fortalece para metas aún mayores.',
+      'No dependas de la suerte: aumenta tus probabilidades con ejecución.',
+      'El verdadero motor de la competencia es la disciplina diaria.',
+      'Mira a los ganadores como evidencia de que el sistema sí recompensa la constancia.',
+      'Una meta emocionante puede despertar una versión de ti que aún no conocías.',
+      'Los resultados acumulados siempre terminan hablando más fuerte que las excusas.',
+      'La próxima historia de victoria puede comenzar con tu actividad de hoy.',
+      'Prepárate antes de que anuncien el premio; los ganadores casi siempre empiezan primero.'
+    ],
+    ingresos:[
+      'El ingreso crece cuando la actividad crece; convierte tu meta de dinero en meta de volumen y nombres.',
+      'Una cifra deseada sin un plan semanal es solo una intención.',
+      'No persigas dinero directamente: construye el valor y la actividad que lo producen.',
+      'Tu proyección debe inspirarte, pero también decirte exactamente qué hacer mañana.',
+      'El volumen convierte sueños abstractos en resultados medibles.',
+      'Cada nombre trabajado es una pequeña parte del ingreso que quieres construir.',
+      'La ambición saludable no se avergüenza de ponerle número a sus metas.',
+      'Ganar más exige aprender a producir más valor de manera consistente.',
+      'La meta mensual se vuelve posible cuando deja de depender de los últimos días.',
+      'No confundas esperanza con estrategia: proyecta, divide y ejecuta.',
+      'Tu ingreso futuro está conectado con las conversaciones que hoy estás evitando.',
+      'Una meta grande necesita un calendario, no solo entusiasmo.',
+      'El dinero amplifica hábitos; construye primero hábitos que merezcan ser amplificados.',
+      'No reduzcas la meta por miedo: mejora el sistema que debe sostenerla.',
+      'La libertad financiera comienza cuando entiendes cómo se produce cada peso.'
+    ],
+    admin:[
+      'La disciplina financiera no limita el crecimiento: lo protege.',
+      'No todo lo que entra está disponible para gastar.',
+      'La reinversión convierte el ingreso de hoy en oportunidades para mañana.',
+      'Quien administra con visión puede sostener lo que logró con esfuerzo.',
+      'Separar primero evita lamentar después.',
+      'Tu negocio necesita combustible antes de entregarte comodidad.',
+      'La riqueza no depende solo de cuánto produces, sino de cuánto conservas y multiplicas.',
+      'Cada peso debe recibir una misión antes de que aparezca una tentación.',
+      'La caja del negocio no es una extensión de la billetera personal.',
+      'Administrar bien en pequeño te prepara para liderar cifras mayores.',
+      'El crecimiento sin control financiero puede convertirse en una ilusión costosa.',
+      'Reinvertir no es perder dinero: es contratar al futuro para que trabaje por ti.',
+      'La estabilidad se construye cuando los buenos meses financian los meses de expansión.',
+      'No eleves tus gastos al mismo ritmo que elevas tus ingresos.',
+      'La libertad llega cuando el dinero deja de desaparecer sin dirección.'
+    ],
+    toppers:[
+      'El reconocimiento honra el resultado. La disciplina construye el camino para volver a estar aquí.',
+      'El podio no separa a los capaces de los incapaces; muestra quién sostuvo mejor la actividad.',
+      'Celebra sin compararte y observa sin justificarte.',
+      'Cada Topper demuestra que el estándar puede elevarse otra vez.',
+      'El ranking cambia; la excelencia que desarrollas puede permanecer.',
+      'No mires el podio para sentirte menos: míralo para recordar lo que es posible.',
+      'Reconocer a otros fortalece una cultura donde todos quieren crecer.',
+      'La posición es temporal; el carácter construido durante la competencia es permanente.',
+      'Quien hoy aparece primero también tuvo días donde comenzó desde cero.',
+      'El verdadero Topper inspira resultados más allá de su propio nombre.',
+      'La excelencia no necesita ruido, pero merece reconocimiento.',
+      'Subir posiciones exige hacer hoy algo distinto a lo que hiciste ayer.',
+      'El podio se conquista con volumen y se honra con humildad.',
+      'Tu nombre puede estar aquí cuando tu actividad esté a la altura de tu visión.',
+      'El próximo reconocimiento comienza en la próxima llamada.'
+    ]
+  };
+  Object.entries(libraries).forEach(([id,phrases])=>{
+    const screen=document.getElementById(id); if(!screen || screen.querySelector('.module-tabs')) return;
+    const head=screen.querySelector('.screen-head'); if(!head) return;
+    const tabs=document.createElement('div');tabs.className='module-tabs';tabs.innerHTML='<button class="module-tab active" data-view="herramienta">Herramienta</button><button class="module-tab" data-view="adn">ADN BLEU</button>';
+    head.insertAdjacentElement('afterend',tabs);
+    const panel=document.createElement('section');panel.className='panel module-adn-panel';panel.innerHTML=`<div class="adn-inner"><span class="adn-label">ADN BLEU · ${head.querySelector('h2')?.textContent||''}</span><blockquote>${phrases[0]}</blockquote><button type="button">Otro ADN Bleu →</button></div>`;screen.appendChild(panel);
+    let idx=0;const quote=panel.querySelector('blockquote');panel.querySelector('button').addEventListener('click',()=>{idx=(idx+1)%phrases.length;quote.animate([{opacity:.15,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:320});quote.textContent=phrases[idx]});
+    tabs.addEventListener('click',e=>{const b=e.target.closest('.module-tab');if(!b)return;tabs.querySelectorAll('.module-tab').forEach(x=>x.classList.toggle('active',x===b));screen.classList.toggle('adn-mode',b.dataset.view==='adn')});
+  });
 })();
