@@ -541,7 +541,6 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     'No administres contactos: administra confianza, agenda y experiencia.',
     'Cuando el cliente siente que el programa también es suyo, comienza a defender el resultado contigo.',
     'La mejor forma de cuidar la percepción del programa es cumplir cada promesa con precisión.',
-    'Un Programa Moño Azul bien ejecutado se siente exclusivo antes, durante y después de cada venta.'
   ];
   const messages=[
     'La primera venta inicia el camino. Activa seguimiento desde hoy.',
@@ -621,7 +620,22 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
   update();
   setTimeout(syncRecognitionFields,80);
 
-  q('otroMonoAdn')?.addEventListener('click',()=>{adnIdx=(adnIdx+1)%adn.length;q('monoAdnText').textContent=adn[adnIdx];});
+  const monoBubble=document.createElement('aside');
+  monoBubble.className='adn-chat-bubble';
+  monoBubble.setAttribute('aria-live','polite');
+  monoBubble.innerHTML=`<div class="adn-chat-head"><span class="adn-diamond">💎</span><strong>ADN BLEU</strong></div><div class="adn-typing"><i></i><i></i><i></i></div><p></p><button type="button" aria-label="Mostrar otra frase ADN BLEU">Otra frase →</button>`;
+  root.appendChild(monoBubble);
+  const monoQuote=monoBubble.querySelector('p');
+  const showMonoAdn=()=>{
+    monoBubble.classList.add('is-typing');
+    setTimeout(()=>{
+      adnIdx=(adnIdx+1)%adn.length;
+      monoQuote.textContent=adn[adnIdx];
+      monoBubble.classList.remove('is-typing');
+    },520);
+  };
+  monoQuote.textContent=adn[Math.floor(Math.random()*adn.length)];
+  monoBubble.querySelector('button').addEventListener('click',showMonoAdn);
   q('copyMonoSpeech')?.addEventListener('click',async()=>{
     const text=q('monoSpeechText').innerText.trim();
     try{await navigator.clipboard.writeText(text);q('copyMonoSpeech').textContent='Speech copiado ✓';setTimeout(()=>q('copyMonoSpeech').textContent='Copiar speech',1800)}catch(e){q('copyMonoSpeech').textContent='Selecciona y copia';}
@@ -901,12 +915,30 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     ]
   };
   Object.entries(libraries).forEach(([id,phrases])=>{
-    const screen=document.getElementById(id); if(!screen || screen.querySelector('.module-tabs')) return;
-    const head=screen.querySelector('.screen-head'); if(!head) return;
-    const tabs=document.createElement('div');tabs.className='module-tabs';tabs.innerHTML='<button class="module-tab active" data-view="herramienta">Herramienta</button><button class="module-tab" data-view="adn">ADN BLEU</button>';
-    head.insertAdjacentElement('afterend',tabs);
-    const panel=document.createElement('section');panel.className='panel module-adn-panel';panel.innerHTML=`<div class="adn-inner"><span class="adn-label">ADN BLEU · ${head.querySelector('h2')?.textContent||''}</span><blockquote>${phrases[0]}</blockquote><button type="button">Otro ADN Bleu →</button></div>`;screen.appendChild(panel);
-    let idx=0;const quote=panel.querySelector('blockquote');panel.querySelector('button').addEventListener('click',()=>{idx=(idx+1)%phrases.length;quote.animate([{opacity:.15,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:320});quote.textContent=phrases[idx]});
-    tabs.addEventListener('click',e=>{const b=e.target.closest('.module-tab');if(!b)return;tabs.querySelectorAll('.module-tab').forEach(x=>x.classList.toggle('active',x===b));screen.classList.toggle('adn-mode',b.dataset.view==='adn')});
+    const screen=document.getElementById(id);
+    if(!screen || screen.querySelector('.adn-chat-bubble')) return;
+    const oldTabs=screen.querySelector('.module-tabs');
+    const oldPanel=screen.querySelector('.module-adn-panel');
+    if(oldTabs) oldTabs.remove();
+    if(oldPanel) oldPanel.remove();
+    screen.classList.remove('adn-mode');
+
+    const bubble=document.createElement('aside');
+    bubble.className='adn-chat-bubble';
+    bubble.setAttribute('aria-live','polite');
+    bubble.innerHTML=`<div class="adn-chat-head"><span class="adn-diamond">💎</span><strong>ADN BLEU</strong></div><div class="adn-typing"><i></i><i></i><i></i></div><p></p><button type="button" aria-label="Mostrar otra frase ADN BLEU">Otra frase →</button>`;
+    screen.appendChild(bubble);
+
+    let idx=Math.floor(Math.random()*phrases.length);
+    const quote=bubble.querySelector('p');
+    quote.textContent=phrases[idx];
+    bubble.querySelector('button').addEventListener('click',()=>{
+      bubble.classList.add('is-typing');
+      setTimeout(()=>{
+        idx=(idx+1)%phrases.length;
+        quote.textContent=phrases[idx];
+        bubble.classList.remove('is-typing');
+      },520);
+    });
   });
 })();
