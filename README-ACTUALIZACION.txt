@@ -1,13 +1,10 @@
-BLEU ONE v3.0 — GIMNASIOS DE ALTO RENDIMIENTO
+BLEU ONE v3.1 — GIMNASIOS CLAROS Y POR DIFICULTAD
 
-- Gimnasio 4 en 14 reconstruido con 3 niveles.
-- Se eliminó Entrenamiento aleatorio.
-- Cuatro opciones plausibles y respuesta correcta mezclada.
-- Explicaciones de cada juego.
-- Orden Perfecto avanzado con diagnóstico visual de errores.
-- Completa el Speech con 50 ejercicios.
-- Exámenes oscuros de 3 preguntas antes de avanzar.
-- Moño Azul: solo cuentan ventas desde una paellera en adelante.
-- Nuevo Gimnasio Ventas con 5 juegos y 50 casos por juego.
-- Demo virtual con estado emocional y tips.
-- Porcentajes temporales de sesión y progresión más exigente.
+- Preguntas distintas para Principiante, Intermedio y Experto en ambos gimnasios.
+- Lenguaje más sencillo y cercano.
+- Menos repeticiones: bancos mezclados sin repetir de inmediato.
+- Gimnasio Ventas: 15 clientes posibles y 15 situaciones diferentes por cliente.
+- Demo virtual con estado emocional y consejos.
+- Exámenes de los pasos 4 en 14: tres preguntas, permiten continuar con errores y entregan consejos.
+- Mover programas explicado como reactivación de programas antiguos, siempre con autorización del Distribuidor.
+- Avance de sesión más exigente.
