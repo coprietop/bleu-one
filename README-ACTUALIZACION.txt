@@ -1,10 +1,9 @@
-BLEU ONE v3.1 — GIMNASIOS CLAROS Y POR DIFICULTAD
+BLEU ONE v3.2
 
-- Preguntas distintas para Principiante, Intermedio y Experto en ambos gimnasios.
+- Nuevo módulo Experto en la Demo con los 7 pasos.
+- Gimnasio 4 en 14: mínimo 15 casos distintos por juego y nivel.
+- Entrena tu instantánea recupera guía en tiempo real por segundos.
+- Gimnasio de Ventas: 15 clientes y 15 situaciones por nivel.
 - Lenguaje más sencillo y cercano.
-- Menos repeticiones: bancos mezclados sin repetir de inmediato.
-- Gimnasio Ventas: 15 clientes posibles y 15 situaciones diferentes por cliente.
-- Demo virtual con estado emocional y consejos.
-- Exámenes de los pasos 4 en 14: tres preguntas, permiten continuar con errores y entregan consejos.
-- Mover programas explicado como reactivación de programas antiguos, siempre con autorización del Distribuidor.
-- Avance de sesión más exigente.
+- Contenido sin mencionar nombres comerciales dentro de los nuevos módulos.
+- Caché actualizado.
