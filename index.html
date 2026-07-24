@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <meta content="#05070c" name="theme-color"/>
-<title>Bleu One v1.9 · Academia y Gimnasio 4 en 14</title>
+<title>Bleu One v3.0 · Gimnasios de Alto Rendimiento</title>
 <link href="manifest.json" rel="manifest"/>
 <link href="styles.css" rel="stylesheet"/>
 </head>
@@ -25,6 +25,7 @@
 <button class="nav-item" data-screen="desarrollo">Desarrollo</button>
 <button class="nav-item" data-screen="experto414">Experto en 4 en 14</button>
 <button class="nav-item" data-screen="gimnasio414">Gimnasio 4 en 14</button>
+<button class="nav-item" data-screen="gimnasioventas">Gimnasio Ventas</button>
 <button class="nav-item" data-screen="monoazul">Programa Moño Azul</button>
 <button class="nav-item" data-screen="moto">Tickets Moto</button>
 <button class="nav-item" data-screen="ingresos">Proyección Ingresos</button>
@@ -269,6 +270,24 @@
 
 
 
+
+<section class="screen gym-screen sales-gym-screen" id="gimnasioventas">
+  <section class="panel gym-hero sales-hero">
+    <div><span class="eyebrow">La demo convierte la oportunidad</span><h3>🏆 Gimnasio Ventas</h3><p>Una buena demo depende de un buen 4 en 14. Aquí entrenas diagnóstico, psicología, objeciones, cierres y conducción de la demostración.</p></div>
+    <div class="mastery-ring"><strong id="salesMasteryScore">0%</strong><span>Maestría de esta sesión</span></div>
+  </section>
+  <section class="panel difficulty-panel"><div><span class="eyebrow">Nivel de entrenamiento</span><h3>Elige tu dificultad</h3><p>El nivel cambia la ambigüedad, la presión y la profundidad de cada caso.</p></div><div class="difficulty-switch" id="salesDifficulty"><button data-level="beginner" class="active">Principiante</button><button data-level="intermediate">Intermedio</button><button data-level="expert">Experto</button></div></section>
+  <div class="mastery-bars panel sales-mastery"><div><span>Diagnóstico</span><i><b id="salesBarDiagnosis"></b></i></div><div><span>Objeciones</span><i><b id="salesBarObjections"></b></i></div><div><span>Cierres</span><i><b id="salesBarClosings"></b></i></div><div><span>Psicología</span><i><b id="salesBarPsychology"></b></i></div><small>El porcentaje solo corresponde a esta sesión. El nivel experto exige volumen, precisión y consistencia.</small></div>
+  <div class="gym-menu sales-menu">
+    <button class="gym-mode active" data-sales-game="objections">🛡️ Rebata la objeción</button>
+    <button class="gym-mode" data-sales-game="closing">🔐 El mejor cierre</button>
+    <button class="gym-mode" data-sales-game="psychology">🧠 Psicología de compra</button>
+    <button class="gym-mode" data-sales-game="demo">🎭 Demo virtual</button>
+    <button class="gym-mode" data-sales-game="diagnosis">🩺 Diagnóstico comercial</button>
+  </div>
+  <section class="panel gym-stage" id="salesGymStage"><div class="gym-placeholder"><span>🏆</span><h3>Gimnasio Ventas</h3><p>Selecciona un juego y desarrolla criterio comercial con casos progresivos.</p></div></section>
+</section>
+
 <section class="screen mono-screen" id="monoazul">
 <div class="screen-head"><div><p class="eyebrow">Prospección premium</p><h2>Programa Moño Azul</h2><p>Una experiencia exclusiva para clientes VIP que convierte recomendaciones agendadas en ventas y beneficios de alto nivel.</p></div></div>
 <section class="mono-hero panel">
@@ -278,7 +297,7 @@
 <h3>El 4 en 14 es nuestro sistema más poderoso.</h3>
 <p><strong>Moño Azul no lo reemplaza:</strong> es un plus estratégico para generar actividad instantánea con clientes VIP, fortalecer la prospección y abrir nuevas oportunidades.</p>
 <div class="mono-warning">⚠️ El Programa Moño Azul solo puede utilizarse con autorización previa del Distribuidor.</div>
-<div class="mono-facts"><span>30 días máximo</span><span>Cuenta ventas, no visitas</span><span>El cliente agenda</span></div>
+<div class="mono-facts"><span>30 días máximo</span><span>Ventas desde una paellera</span><span>El cliente agenda</span></div>
 </div>
 </section>
 <div aria-label="Contenido Programa Moño Azul" class="mono-tabs" role="tablist">
@@ -293,7 +312,7 @@
 <article><b>1</b><div><strong>Selecciona al cliente</strong><p>Elige un cliente con perfil VIP y solicita autorización a tu Distribuidor.</p></div></article>
 <article><b>2</b><div><strong>Activa el programa</strong><p>Explícale con claridad los beneficios y establece una vigencia máxima de 30 días.</p></div></article>
 <article><b>3</b><div><strong>El cliente agenda</strong><p>El éxito está en que el cliente coordine directamente las visitas, no solo comparta contactos.</p></div></article>
-<article><b>4</b><div><strong>Cuenta ventas aprobadas</strong><p>Las visitas no suman. Cada venta aprobada desbloquea o acerca un nuevo nivel de beneficio.</p></div></article>
+<article><b>4</b><div><strong>Cuenta ventas aprobadas</strong><p>Las visitas no suman. Solo cuentan ventas aprobadas desde una paellera en adelante. Cada venta válida desbloquea o acerca un nuevo nivel de beneficio.</p></div></article>
 <article><b>5</b><div><strong>Haz seguimiento</strong><p>Crea sinergia con el cliente y acompáñalo de forma constante hasta completar el programa.</p></div></article>
 <article><b>6</b><div><strong>Celebra cada avance</strong><p>Envía el reconocimiento premium correspondiente y mantén viva la emoción del programa.</p></div></article>
 </div>
