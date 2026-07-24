@@ -1,4 +1,4 @@
-const CACHE='bleu-one-v3-2-experto-demo-15-casos';
+const CACHE='bleu-one-v3-3-gimnasios-simplificados-visual-corregido';
 const ASSETS=['./','index.html','styles.css','app.js','manifest.json','assets/logo-bleu.png','assets/ganadores-moto-primer-semestre-2026.jpg','assets/programa-mono-azul.jpg','assets/material-compartir-negocio.pdf'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});

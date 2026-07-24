@@ -1,9 +1,11 @@
-BLEU ONE v3.2
+BLEU ONE v3.3
 
-- Nuevo módulo Experto en la Demo con los 7 pasos.
-- Gimnasio 4 en 14: mínimo 15 casos distintos por juego y nivel.
-- Entrena tu instantánea recupera guía en tiempo real por segundos.
-- Gimnasio de Ventas: 15 clientes y 15 situaciones por nivel.
-- Lenguaje más sencillo y cercano.
-- Contenido sin mencionar nombres comerciales dentro de los nuevos módulos.
-- Caché actualizado.
+- Corrige fondos blancos y contraste en Academia 4 en 14, Experto en la Demo y ambos gimnasios.
+- Práctica rápida de Experto en la Demo: 5 preguntas reales por paso.
+- Corrige el consejo sobre metales: explicación sencilla para el cliente y estudio adicional para el asesor.
+- Recuadros “Error que debes evitar” en rojo elegante transparente.
+- Gimnasio 4 en 14 simplificado a 5 juegos distintos.
+- Orden Perfecto vuelve a ordenar únicamente los 8 pasos y muestra exactamente cada error.
+- Gimnasio de Ventas simplificado a 5 juegos con bancos exclusivos.
+- Preguntas sin repetición inmediata durante la sesión.
+- Instantánea con guía activa por tiempos.

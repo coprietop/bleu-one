@@ -211,3 +211,57 @@ body.locked #somos{min-height:100vh;width:100%;padding:22px;display:grid!importa
 .demo-learning-card h3{font-size:28px}.demo-purpose{font-size:18px;color:#f0d999;margin:10px 0 22px}.demo-info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.demo-info-grid article{padding:18px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}.demo-info-grid h4{margin:0 0 8px;color:#f0d58c}.demo-info-grid p,.demo-info-grid li{color:#c9d5e7;line-height:1.55}.demo-tip-stack{display:grid;gap:10px;margin-top:18px}.demo-tip-stack div{padding:14px 16px;border-left:3px solid #dfb756;background:rgba(223,183,86,.08);border-radius:8px 14px 14px 8px;color:#e9eef7}
 .game-counter{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#9fb0c8;font-size:13px}.level-note{padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04);margin-bottom:14px;color:#c6d2e4}.timer-live-guide{margin-top:16px;padding:18px;border-radius:18px;background:rgba(223,183,86,.08);border:1px solid rgba(223,183,86,.24)}.timer-live-guide span{display:block;color:#e6c472;font-size:12px;letter-spacing:.12em;font-weight:800}.timer-live-guide strong{display:block;margin-top:6px;font-size:20px}.timer-live-guide p{margin:7px 0 0;color:#cbd6e6}.timer-phase-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.timer-phase-list article{padding:13px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}.timer-phase-list b{color:#e6c472}.timer-phase-list small{display:block;margin-top:4px;color:#aebdd1}
 @media(max-width:800px){.demo-time-guide{flex-direction:column;align-items:stretch}.demo-info-grid{grid-template-columns:1fr}.timer-phase-list{grid-template-columns:1fr 1fr}}
+
+/* ===== Bleu One v3.3 · Correcciones visuales y gimnasios simplificados ===== */
+#experto414 .game-options button,
+#gimnasio414 .game-options button,
+#expertodemo .game-options button,
+#gimnasioventas .game-options button,
+#experto414 .quiz-question label,
+#expertodemo .quiz-question label,
+.learning-dialog .game-options button {
+  background:linear-gradient(145deg,rgba(12,27,53,.96),rgba(5,13,29,.98))!important;
+  color:#f5f7fb!important;
+  border:1px solid rgba(121,157,211,.28)!important;
+  box-shadow:none!important;
+}
+#experto414 .game-options button:hover,
+#gimnasio414 .game-options button:hover,
+#expertodemo .game-options button:hover,
+#gimnasioventas .game-options button:hover {border-color:rgba(224,186,89,.72)!important;background:rgba(19,38,70,.98)!important}
+#experto414 .game-options button span,
+#gimnasio414 .game-options button span,
+#expertodemo .game-options button span,
+#gimnasioventas .game-options button span {color:#f5f7fb!important}
+#experto414 .game-options button b,
+#gimnasio414 .game-options button b,
+#expertodemo .game-options button b,
+#gimnasioventas .game-options button b {color:#f2d783!important;background:rgba(226,184,70,.12)!important}
+#experto414 .game-options button.correct,
+#gimnasio414 .game-options button.correct,
+#expertodemo .game-options button.correct,
+#gimnasioventas .game-options button.correct {background:rgba(21,111,75,.22)!important;border-color:rgba(58,211,137,.72)!important}
+#experto414 .game-options button.wrong,
+#gimnasio414 .game-options button.wrong,
+#expertodemo .game-options button.wrong,
+#gimnasioventas .game-options button.wrong {background:rgba(136,31,49,.24)!important;border-color:rgba(241,91,112,.7)!important}
+#experto414 .game-feedback,
+#gimnasio414 .game-feedback,
+#expertodemo .game-feedback,
+#gimnasioventas .game-feedback {color:#f5f7fb!important;background:rgba(10,22,43,.92)!important;border:1px solid rgba(121,157,211,.25)!important}
+#experto414 .game-feedback.bad,
+#gimnasio414 .game-feedback.bad,
+#expertodemo .game-feedback.bad,
+#gimnasioventas .game-feedback.bad {background:rgba(123,29,45,.25)!important;border-color:rgba(235,91,111,.45)!important}
+.demo-info-grid article:nth-child(4),
+.danger-card,.error-warning,.expert-error-card {background:linear-gradient(145deg,rgba(112,22,39,.28),rgba(56,10,22,.34))!important;border:1px solid rgba(238,87,109,.48)!important;color:#fff!important;box-shadow:inset 0 1px rgba(255,255,255,.03)!important}
+.demo-info-grid article:nth-child(4) h4,.danger-card h4,.error-warning h4,.expert-error-card h4 {color:#ff9eae!important}
+.game-question{color:#fff!important;line-height:1.45}
+.case-context{color:#dbe6f7!important;background:rgba(255,255,255,.045)!important;border-left:3px solid #d8ad47!important}
+.expert-insight article{background:rgba(8,31,55,.88)!important;color:#edf4ff!important;border:1px solid rgba(104,160,208,.25)!important}
+.how-game{background:rgba(7,24,46,.88)!important;color:#edf4ff!important;border:1px solid rgba(111,153,203,.24)!important}
+.gym-simple-menu{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:18px 0}
+.gym-simple-menu button{min-height:62px;border-radius:15px;border:1px solid rgba(119,157,208,.25);background:rgba(7,20,39,.88);color:#e9f1ff;font-weight:800;padding:12px;cursor:pointer}
+.gym-simple-menu button.active{border-color:#d9ad47;background:linear-gradient(145deg,rgba(50,42,20,.75),rgba(11,24,44,.95));color:#f5d879}
+.order-result-list{display:grid;gap:8px;margin-top:16px}.order-result-row{display:grid;grid-template-columns:38px 1fr;gap:10px;align-items:center;padding:12px;border-radius:12px;background:rgba(10,24,45,.9);border:1px solid rgba(120,157,205,.22);color:#f4f7fb}.order-result-row.bad{background:rgba(119,25,42,.24);border-color:rgba(238,82,106,.55)}.order-result-row.good{background:rgba(16,104,70,.2);border-color:rgba(62,208,139,.45)}
+@media(max-width:900px){.gym-simple-menu{grid-template-columns:repeat(2,minmax(0,1fr))}}
