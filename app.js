@@ -1500,3 +1500,222 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     document.getElementById('salesDifficulty').onclick=e=>{const b=e.target.closest('button');if(!b)return;level=b.dataset.level;sales.querySelectorAll('#salesDifficulty button').forEach(x=>x.classList.toggle('active',x===b));render()};document.getElementById('s33menu').onclick=e=>{const b=e.target.closest('button');if(!b)return;game=b.dataset.game;sales.querySelectorAll('#s33menu button').forEach(x=>x.classList.toggle('active',x===b));render()};render();
   }
 })();
+
+// ===== Bleu One v3.4 · Gimnasio de Ventas reconstruido =====
+(()=>{
+  const sales=document.getElementById('gimnasioventas');
+  const stage=document.getElementById('salesGymStage');
+  if(!sales||!stage) return;
+
+  const oldMenu=sales.querySelector('.gym-simple-menu, .sales-menu, .gym-menu');
+  const menu=document.createElement('div');
+  menu.className='gym-simple-menu sales-core-menu';
+  menu.id='salesCoreMenu';
+  menu.innerHTML=`
+    <button class="active" data-core-game="demo">🎯 Simulador de demostraciones</button>
+    <button data-core-game="objections">🛡️ Entrenador de objeciones</button>
+    <button data-core-game="negotiation">🤝 Negociación y cierres</button>`;
+  if(oldMenu) oldMenu.replaceWith(menu); else stage.before(menu);
+
+  const oldDifficulty=document.getElementById('salesDifficulty');
+  let difficulty=oldDifficulty;
+  if(oldDifficulty){
+    difficulty=oldDifficulty.cloneNode(true);
+    oldDifficulty.replaceWith(difficulty);
+  }
+
+  let level='beginner';
+  let game='demo';
+  const bags=new Map();
+  const stats={confidence:65,interest:55,participation:55,energy:85,correct:0,total:0};
+  const levelName={beginner:'Principiante',intermediate:'Intermedio',expert:'Experto'};
+
+  function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+  function nextFresh(list,key){
+    let bag=bags.get(key);
+    if(!bag||!bag.length){bag=shuffle(list.map((_,i)=>i));const last=bags.get(key+'-last');if(bag.length>1&&bag[0]===last)[bag[0],bag[1]]=[bag[1],bag[0]]}
+    const idx=bag.shift();bags.set(key,bag);bags.set(key+'-last',idx);return {item:list[idx],idx};
+  }
+  function scoreColor(v){return v>=75?'good':v>=45?'mid':'low'}
+  function renderMeters(){
+    return `<div class="sales-live-meters">
+      ${[['Confianza',stats.confidence],['Interés',stats.interest],['Participación',stats.participation],['Energía',stats.energy]].map(([n,v])=>`<div><span>${n}</span><b>${v}%</b><i><em class="${scoreColor(v)}" style="width:${v}%"></em></i></div>`).join('')}
+    </div>`;
+  }
+  function setStats(delta){Object.entries(delta||{}).forEach(([k,v])=>stats[k]=Math.max(0,Math.min(100,stats[k]+v)));stats.total++;}
+  function answerCard(container,data,onDone){
+    const opts=shuffle(data.options.map((text,i)=>({text,good:i===data.answer})));
+    container.innerHTML=`
+      <div class="sales-question-card">
+        ${data.label?`<span class="question-label">${data.label}</span>`:''}
+        <div class="case-context">${data.context}</div>
+        <h3>${data.question}</h3>
+        <div class="game-options sales-varied-options"></div>
+        <div class="game-feedback" hidden></div>
+        <div class="sales-coach" hidden>
+          <article><span>💭 Lo que puede estar pensando el cliente</span><p>${data.thought}</p></article>
+          <article><span>⭐ Por qué esta opción funciona mejor</span><p>${data.why}</p></article>
+          <article><span>💡 Consejo para la próxima</span><p>${data.tip}</p></article>
+        </div>
+        <button class="primary-action sales-next" hidden>${data.nextLabel||'Continuar'} <span>→</span></button>
+      </div>`;
+    const box=container.querySelector('.game-options'),fb=container.querySelector('.game-feedback'),coach=container.querySelector('.sales-coach'),next=container.querySelector('.sales-next');
+    opts.forEach((o,idx)=>{const b=document.createElement('button');b.innerHTML=`<b>${String.fromCharCode(65+idx)}</b><span>${o.text}</span>`;b.onclick=()=>{
+      [...box.children].forEach(x=>x.disabled=true);
+      b.classList.add(o.good?'correct':'wrong');
+      if(!o.good)[...box.children].find(x=>x.__good)?.classList.add('correct');
+      fb.hidden=false;fb.className='game-feedback '+(o.good?'good':'bad');
+      fb.innerHTML=o.good?'✓ <strong>Muy bien.</strong> Esta decisión ayuda a que la demostración avance.':'Esta opción podría servir, pero había una mejor para este momento.';
+      coach.hidden=false;next.hidden=false;setStats(o.good?data.goodDelta:data.badDelta);if(o.good)stats.correct++;
+    };b.__good=o.good;box.appendChild(b)});
+    next.onclick=onDone;
+  }
+
+  const clients={
+    beginner:[
+      {name:'Marta y Luis',profile:'Pareja amable, dos hijos. Marta cocina todos los días.',priority:'tiempo',mood:'colaboradores',hook:'Llegan del trabajo cansados y quieren cocinar más rápido.'},
+      {name:'Carlos',profile:'Pensionado, vive con su esposa y valora la duración.',priority:'garantía',mood:'tranquilo',hook:'No quiere volver a comprar utensilios en muchos años.'},
+      {name:'Diana y Andrés',profile:'Pareja joven, primera vivienda propia.',priority:'ahorro',mood:'curiosos',hook:'Están organizando sus gastos y comparan todo.'},
+      {name:'Gloria',profile:'Madre de tres hijos. Cocina a diario.',priority:'salud',mood:'amable',hook:'Quiere reducir grasa y sal en las comidas.'},
+      {name:'Sebastián',profile:'Le gusta la tecnología y hacer recetas nuevas.',priority:'facilidad',mood:'entusiasta',hook:'Quiere cocinar sin ser experto.'},
+      {name:'Paola y Camilo',profile:'Ambos trabajan y comparten las tareas del hogar.',priority:'tiempo',mood:'participativos',hook:'Tienen poco tiempo entre semana.'},
+      {name:'Rosa',profile:'Vive con su hija y su nieta.',priority:'salud',mood:'cálida',hook:'Le preocupa cuidar a tres generaciones.'},
+      {name:'Felipe',profile:'Soltero, recibe amigos y cocina los fines de semana.',priority:'versatilidad',mood:'relajado',hook:'Le gusta preparar varias recetas con pocos utensilios.'},
+      {name:'Natalia y Jorge',profile:'Pareja que paga arriendo y controla el presupuesto.',priority:'ahorro',mood:'prudentes',hook:'Necesitan ver que la cuota sea cómoda.'},
+      {name:'Ricardo',profile:'Empresario con agenda apretada.',priority:'exclusividad',mood:'directo',hook:'Valora productos durables y premium.'},
+      {name:'Sandra',profile:'Docente, muy conversadora y familiar.',priority:'facilidad',mood:'sociable',hook:'Quiere soluciones sencillas para cocinar.'},
+      {name:'Iván y Laura',profile:'Tienen un bebé y están cambiando hábitos.',priority:'salud',mood:'atentos',hook:'Buscan preparar alimentos con menos añadidos.'},
+      {name:'Marcos',profile:'Cocina para toda su familia los domingos.',priority:'capacidad',mood:'curioso',hook:'Necesita preparar bastante comida sin complicarse.'},
+      {name:'Elena',profile:'Compra pensando en largo plazo.',priority:'garantía',mood:'serena',hook:'Pregunta por respaldo y mantenimiento.'},
+      {name:'Óscar y Viviana',profile:'Pareja muy organizada con sus finanzas.',priority:'ahorro',mood:'analíticos',hook:'Quieren entender bien antes de decidir.'}
+    ],
+    intermediate:[
+      {name:'Marcela y Hernán',profile:'Ella quiere ahorrar tiempo; él solo habla de precio.',priority:'mixta',mood:'divididos',hook:'Necesitas involucrar a ambos sin tomar partido.'},
+      {name:'Julián',profile:'Analítico, hace muchas preguntas y compara marcas.',priority:'respaldo',mood:'cuestionador',hook:'Quiere pruebas claras, no discursos.'},
+      {name:'Andrea y Mateo',profile:'Ella cocina; él administra el dinero.',priority:'mixta',mood:'reservados',hook:'La decisión debe construirse entre los dos.'},
+      {name:'Lucía',profile:'Tuvo una mala experiencia con otra compra financiada.',priority:'confianza',mood:'desconfiada',hook:'Necesita claridad antes de hablar de cuota.'},
+      {name:'Germán',profile:'Dice que ya tiene buenos utensilios.',priority:'diferenciación',mood:'seguro',hook:'No puedes atacar lo que ya tiene; debes mostrar diferencias.'},
+      {name:'Carolina y Samuel',profile:'Tienen capacidad, pero siempre aplazan decisiones.',priority:'urgencia',mood:'indecisos',hook:'Debes ayudarles a concretar sin presionar.'},
+      {name:'Patricia',profile:'Habla mucho y cambia de tema constantemente.',priority:'orden',mood:'dispersa',hook:'Necesitas mantener una conversación amable y enfocada.'},
+      {name:'Miguel',profile:'Poco expresivo; responde con monosílabos.',priority:'lectura',mood:'frío',hook:'Debes usar preguntas sencillas y observar reacciones.'},
+      {name:'Lorena y David',profile:'Se contradicen sobre quién cocina y quién decide.',priority:'roles',mood:'tensos',hook:'Aclara roles sin generar incomodidad.'},
+      {name:'Wilson',profile:'Quiere conocer precios antes de ver la demostración.',priority:'proceso',mood:'impaciente',hook:'Debes mantener su interés sin saltarte toda la experiencia.'},
+      {name:'Mónica',profile:'Le interesa la salud, pero teme que cocinar sea complicado.',priority:'facilidad',mood:'insegura',hook:'Convierte la demostración en algo fácil de imaginar.'},
+      {name:'Esteban y Sara',profile:'Tienen ingresos variables.',priority:'cuota',mood:'prudentes',hook:'La opción debe adaptarse a meses buenos y normales.'},
+      {name:'Claudia',profile:'Está interesada, pero consulta todo con sus hijos adultos.',priority:'decisión',mood:'dependiente',hook:'Debes definir quién necesita participar.'},
+      {name:'Ramiro',profile:'Valora exclusividad, pero odia sentirse vendido.',priority:'experiencia',mood:'exigente',hook:'La asesoría debe sentirse personalizada.'},
+      {name:'Yolanda y César',profile:'La demo empezó tarde y ya están cansados.',priority:'tiempo',mood:'fatigados',hook:'Debes acelerar sin perder claridad.'}
+    ],
+    expert:[
+      {name:'Valentina y Nicolás',profile:'Ella desea comprar; él cuestiona cada cifra y evita decidir.',priority:'equilibrio',mood:'tensos',hook:'Una mala frase puede convertir la demo en discusión.'},
+      {name:'Álvaro',profile:'Abogado, pide sustento de cada afirmación.',priority:'precisión',mood:'escéptico',hook:'Debes hablar sencillo sin hacer afirmaciones absolutas.'},
+      {name:'Sofía',profile:'Chef aficionada, conoce materiales y técnicas.',priority:'desempeño',mood:'experta',hook:'No puedes tratarla como principiante.'},
+      {name:'Hugo y Marcela',profile:'Tienen capacidad, pero arrastran varias deudas.',priority:'responsabilidad',mood:'preocupados',hook:'El cierre debe ser responsable, no solo posible.'},
+      {name:'Tatiana',profile:'Está interesada, pero dice “sí” para evitar incomodidad.',priority:'compromiso',mood:'evasiva',hook:'Debes diferenciar cortesía de intención real.'},
+      {name:'Diego',profile:'Empresario impaciente; recibe llamadas durante la demo.',priority:'control',mood:'distraído',hook:'Necesitas recuperar atención sin confrontarlo.'},
+      {name:'Beatriz y Fernando',profile:'Discuten entre ellos sobre dinero frente a ti.',priority:'armonía',mood:'conflictivos',hook:'No debes convertirte en árbitro ni tomar partido.'},
+      {name:'Mauricio',profile:'Dice que todo le gusta, pero nunca se compromete.',priority:'decisión',mood:'amable-evasivo',hook:'Debes pasar de aprobación general a una decisión concreta.'},
+      {name:'Adriana',profile:'Pregunta por descuento antes de probar la comida.',priority:'valor',mood:'negociadora',hook:'No debes regalar valor antes de construirlo.'},
+      {name:'Cristóbal',profile:'Tuvo productos premium y no se impresiona fácilmente.',priority:'diferencia',mood:'exigente',hook:'Debes descubrir qué sí le importa.'},
+      {name:'Inés',profile:'Quiere comprar para ayudar al asesor, no por necesidad.',priority:'necesidad',mood:'bondadosa',hook:'Debes evitar una venta débil o arrepentida.'},
+      {name:'Tomás y Juliana',profile:'Ambos quieren, pero ninguno admite cuánto puede pagar.',priority:'capacidad',mood:'reservados',hook:'Necesitas obtener cifras sin invadir.'},
+      {name:'Cecilia',profile:'Está cansada y responde con impaciencia al final.',priority:'ritmo',mood:'agotada',hook:'Debes simplificar el cierre y respetar su energía.'},
+      {name:'Roberto',profile:'Rechaza el crédito por una mala experiencia bancaria.',priority:'confianza financiera',mood:'defensivo',hook:'No basta con decir que la financiación es fácil.'},
+      {name:'Laura y Sergio',profile:'Uno quiere el set grande; el otro pide empezar pequeño.',priority:'acuerdo',mood:'divididos',hook:'Debes encontrar una decisión que ambos puedan sostener.'}
+    ]
+  };
+
+  function demoStepData(client,step){
+    const p=client.priority;
+    const common=[
+      {label:'LLEGADA',context:`Llegas a la casa de ${client.name}. ${client.profile}`,question:'¿Cómo iniciarías la visita?',options:['Saludar, aprender sus nombres y hacer una pregunta natural sobre la familia.','Sacar inmediatamente los utensilios para aprovechar el tiempo.','Preguntar cuánto dinero pueden invertir antes de sentarte.','Entregar el catálogo y pedir que marquen lo que les guste.'],answer:0,thought:'Quiere saber si puede sentirse cómodo contigo antes de escucharte.',why:'La confianza se construye antes de hablar de producto.',tip:'Escucha más de lo que hablas en los primeros minutos.',goodDelta:{confidence:12,participation:7},badDelta:{confidence:-12,energy:-4}},
+      {label:'ROMPEHIELO',context:`Durante la conversación descubres: ${client.hook}`,question:`¿Qué información te conviene profundizar ahora?`,options:p==='tiempo'?['Cuánto tardan hoy en cocinar y qué momento del día les pesa más.','Qué color de utensilios prefieren.','Cuántos años tiene el barrio.','Si conocen a alguien que quiera comprar.']:p==='salud'?['Qué hábitos desean cambiar y quién prepara normalmente los alimentos.','Cuánto pagarían por verse más saludables.','Qué marca usan hoy.','Si quieren recibir un catálogo por WhatsApp.']:p==='ahorro'||p==='cuota'?['Qué gastos quieren reducir y cuánto pueden separar cómodamente al mes.','Qué producto comprarían si fuera gratis.','Cuántos vecinos tienen.','Qué utensilio es el más nuevo.']:['Qué valoran más al cocinar: tiempo, salud, facilidad, duración o exclusividad.','Qué opción es la más costosa.','Si quieren comprar hoy.','Qué banco utilizan.'],answer:0,thought:'Cuando hablas de su realidad, siente que la demostración fue pensada para su familia.',why:'La prioridad del cliente te indica qué beneficio debes destacar después.',tip:'No supongas que todos compran por salud.',goodDelta:{confidence:6,interest:12,participation:10},badDelta:{interest:-8,participation:-7}},
+      {label:'PRESENTACIÓN',context:`La familia ya conversa contigo con naturalidad.`,question:'¿Cómo presentarías el respaldo de la compañía?',options:['En menos de dos minutos: experiencia, respaldo, innovación y presencia en el país; luego haría una pregunta.','Contaría toda la historia de la compañía desde su fundación.','Mostraría primero precios para demostrar seriedad.','Usaría palabras técnicas para sonar más preparado.'],answer:0,thought:'Quiere seguridad, pero no una conferencia.',why:'Este paso debe generar respaldo sin enfriar la conversación.',tip:'Corto, claro y conectado con una pregunta.',goodDelta:{confidence:10,energy:2},badDelta:{energy:-12,interest:-6}},
+      {label:'METALES',context:`La familia va contigo a la cocina y quiere sacar los utensilios más nuevos.`,question:'¿Qué harías?',options:['Pediría con naturalidad el utensilio de los huevos, el chocolate y el arroz: los que realmente usan.','Aceptaría los más nuevos para no incomodar.','Escogería yo mismo sin preguntar.','Omitiría la prueba y explicaría solo de memoria.'],answer:0,thought:'Puede sentir pena de mostrar utensilios viejos o muy usados.',why:'La comparación debe hacerse con lo que realmente usan todos los días.',tip:'Pon el agua y el bicarbonato primero; explica los materiales mientras hierve.',goodDelta:{interest:10,participation:10},badDelta:{interest:-8,confidence:-5}},
+      {label:'COCINADO',context:`La prueba terminó. Vas a preparar los alimentos y la familia observa.`,question:'¿Cuál es la mejor siguiente acción?',options:['Enjuagar bien, precalentar el utensilio seco y mostrar cómo el pollo libera su propia grasa.','Agregar bastante aceite para evitar que se pegue.','Poner todos los ingredientes en frío y subir el fuego al máximo.','Explicar la receta durante veinte minutos antes de cocinar.'],answer:0,thought:'Quiere ver algo sencillo que pueda repetir en su casa.',why:'La demostración debe convertir beneficios en algo visible y fácil.',tip:'Al degustar, deja el pollo para el final porque suele generar mayor impacto.',goodDelta:{interest:14,participation:6,energy:4},badDelta:{interest:-12,energy:-8}},
+      {label:'BROCHURE',context:`Después de degustar, la familia muestra interés y pregunta por opciones.`,question:'¿Cómo usarías el brochure?',options:['Empezaría por la opción más completa, observaría qué llama su atención y bajaría según su necesidad.','Abriría directamente en lo más económico.','Mostraría todas las páginas sin detenerme.','Entregaría el brochure y guardaría silencio hasta que escojan.'],answer:0,thought:'Está comparando valor, no solo precios.',why:'El anclaje ayuda a entender las opciones desde una referencia alta.',tip:'Asesora: no muestres por mostrar.',goodDelta:{interest:10,confidence:4},badDelta:{interest:-9,energy:-6}},
+      {label:'NEGOCIACIÓN',context:`La familia ya conoce la opción y pregunta por la cuota.`,question:'¿Qué harías antes de recomendar un valor mensual?',options:['Preguntaría cuánto puede separar cada adulto después de sus gastos y sumaría una capacidad cómoda.','Mostraría la cuota máxima que apruebe el sistema.','Preguntaría solo a quien parece ganar más.','Ocultaría el valor total y hablaría únicamente del pago mensual.'],answer:0,thought:'Necesita sentir que la opción cabe en su vida, no que le están imponiendo una cifra.',why:'La cuota debe construirse desde una capacidad real y responsable.',tip:'Vender cuotas no significa esconder cifras. Explica todo con claridad.',goodDelta:{confidence:12,interest:8},badDelta:{confidence:-15,interest:-8}}
+    ];
+    return common[step];
+  }
+
+  function playDemo(){
+    const {item:client,idx}=nextFresh(clients[level],`sales34-demo-client-${level}`);
+    Object.assign(stats,{confidence:65,interest:55,participation:55,energy:85,correct:0,total:0});
+    let step=0;const elapsed=[0,12,28,45,70,88,105,125];
+    function draw(){
+      if(step>=7){
+        const avg=Math.round((stats.confidence+stats.interest+stats.participation+stats.energy)/4);
+        stage.innerHTML=`<div class="sales-story-result"><span>🎬 ASÍ TERMINÓ ESTA DEMOSTRACIÓN</span><h3>${client.name}</h3>${renderMeters()}<div class="story-ending ${avg>=75?'success':avg>=50?'partial':'lost'}"><strong>${avg>=75?'La familia quedó lista para tomar una decisión.':avg>=50?'La familia mantuvo interés, pero quedaron dudas.':'La demostración perdió fuerza antes del cierre.'}</strong><p>${stats.correct} de 7 decisiones fortalecieron la experiencia.</p></div><div class="sales-timeline">${['Llegada','Rompehielo','Compañía','Metales','Cocinado','Brochure','Negociación'].map((x,i)=>`<span class="${i<stats.correct?'good':''}">${x}</span>`).join('')}</div><button class="primary-action" id="newDemoStory">Visitar otra familia <span>→</span></button></div>`;
+        document.getElementById('newDemoStory').onclick=playDemo;return;
+      }
+      const d=demoStepData(client,step);const mins=Math.floor(elapsed[step]/60),secs=elapsed[step]%60;
+      stage.innerHTML=`<div class="game-head"><div><span class="game-kicker">${levelName[level]} · Familia ${idx+1} de 15</span><h3>🎯 Simulador de demostraciones</h3></div><span class="badge">${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')} h</span></div><div class="sales-client-profile"><div><span>CLIENTE</span><h4>${client.name}</h4><p>${client.profile}</p></div><div class="client-mood">${stats.confidence<45?'🤨 Desconfiado':stats.energy<45?'😒 Cansado':stats.interest>75?'😍 Muy interesado':'🙂 Atento'}</div></div>${renderMeters()}<div class="sales-time-tip">⏱ ${elapsed[step]>=60&&step<5?'Ya pasó una hora. La familia debería estar cerca de degustar.':'Vas bien de tiempo. Mantén el ritmo y no expliques de más.'}</div><div id="salesStoryQuestion"></div>`;
+      answerCard(document.getElementById('salesStoryQuestion'),{...d,nextLabel:'Siguiente momento',goodDelta:d.goodDelta,badDelta:d.badDelta},()=>{step++;draw()});
+    }draw();
+  }
+
+  const objections={
+    beginner:[
+      ['“Está muy caro.”','¿Qué responderías primero?',['“¿Qué parte le pareció más costosa: el valor total o la cuota mensual?”','“No es caro si piensa en la garantía.”','“Le puedo bajar el precio.”','“Entonces miremos algo pequeño.”'],0,'Puede estar hablando de valor, cuota o miedo a comprometerse.','La pregunta descubre qué significa “caro” para esa persona.','No discutas el precio antes de entender la preocupación.'],
+      ['“No tengo dinero ahora.”','¿Qué dirías?',['“Entiendo. ¿Se refiere al depósito inicial o a la cuota mensual?”','“Puede pedir prestado.”','“Entonces no se puede hacer nada.”','“Le guardo el precio indefinidamente.”'],0,'Quiere proteger su presupuesto y evitar una presión inmediata.','Separar depósito de cuota permite encontrar el verdadero obstáculo.','Una objeción general necesita una pregunta concreta.'],
+      ['“Déjeme pensarlo.”','¿Cómo seguirías?',['“Claro. ¿Qué parte quisiera pensar con más calma?”','“Listo, yo le escribo en un mes.”','“No hay nada que pensar.”','“Le doy cinco minutos.”'],0,'Todavía hay una duda que no ha expresado.','Preguntar con respeto permite saber qué falta para decidir.','No cierres la conversación con una frase vaga.'],
+      ['“Tengo que hablarlo con mi esposo.”','¿Qué harías?',['“Perfecto. ¿Qué aspecto cree que él querrá revisar primero?”','“Compre sin decirle.”','“Entonces vuelva a llamarme.”','“Seguro él va a decir que no.”'],0,'Quiere compartir la decisión o evitar decidir sola.','La pregunta prepara una conversación real y ayuda a identificar la duda.', 'Involucra a quien comparte la decisión.'],
+      ['“Ya tengo ollas.”','¿Qué responderías?',['“Claro. ¿Qué es lo que más le gusta de las que usa hoy?”','“Estas son mejores.”','“Entonces véndalas.”','“Eso no importa.”'],0,'Quiere que respetes lo que ya tiene.','Reconocer su experiencia abre la puerta para mostrar diferencias sin atacar.','Nunca descalifiques lo que el cliente ya compró.'],
+      ['“No me gusta comprar a crédito.”','¿Qué dirías?',['“Lo entiendo. ¿Qué experiencia le hizo sentirse así?”','“Todos compran financiado.”','“El crédito es obligatorio.”','“No se preocupe por el total.”'],0,'Puede existir una mala experiencia anterior.','Comprender el origen permite hablar de opciones con transparencia.','Primero recupera confianza; después explica alternativas.'],
+      ['“La cuota me queda alta.”','¿Qué harías?',['“Revisemos una opción que quede cómoda sin perder lo que más necesita.”','“Haga un esfuerzo.”','“Le alargamos el plazo sin explicar.”','“Entonces no compre.”'],0,'Quiere proteger sus gastos mensuales.','La solución debe ser sostenible para la familia.','Una venta responsable también cuida el después.'],
+      ['“No cocino mucho.”','¿Qué responderías?',['“¿Quién cocina normalmente y qué parte le resulta más incómoda?”','“Entonces no le sirve.”','“Aprenderá por obligación.”','“Igual debería comprar.”'],0,'Puede no cocinar por falta de tiempo, habilidad o gusto.','La pregunta descubre si existe una necesidad escondida.','No confundas “no cocino” con “no necesito”.'],
+      ['“Quiero comparar.”','¿Qué dirías?',['“Claro. ¿Qué tres cosas serán más importantes para comparar?”','“No encontrará nada igual.”','“Eso es perder tiempo.”','“Le bajo el precio para que no compare.”'],0,'Quiere sentir que toma una decisión informada.','Definir criterios ayuda a comparar valor, no solo precio.','Ayuda al cliente a decidir, no a defenderse.'],
+      ['“No quiero decidir hoy.”','¿Qué harías?',['“Entiendo. ¿Qué necesitaría quedar claro hoy para avanzar con tranquilidad?”','“La promoción se acaba ya.”','“Entonces cancelo todo.”','“Le llamo todos los días.”'],0,'Puede sentir presión o falta de claridad.','La pregunta reduce presión y descubre lo pendiente.','Urgencia no es amenaza.'],
+      ['“Mi cocina es muy pequeña.”','¿Qué responderías?',['“¿Qué piezas usa más y cuánto espacio tiene disponible?”','“Tiene que remodelar.”','“Compre el set más grande.”','“Eso no afecta.”'],0,'Le preocupa la utilidad diaria y el espacio.','La respuesta adapta la solución a su realidad.','La mejor opción no siempre es la más grande.'],
+      ['“No sé si lo voy a usar.”','¿Qué dirías?',['“¿Qué recetas prepara más y qué le gustaría hacer más fácil?”','“Seguro sí lo usa.”','“Eso depende de usted.”','“La garantía lo resuelve.”'],0,'Teme pagar por algo que termine guardado.','Conectar con recetas reales aumenta la utilidad percibida.','Aterriza el producto en su vida diaria.'],
+      ['“Es mucha plata por utensilios.”','¿Qué responderías?',['“Entiendo. Además del producto, ¿qué valor le daría al ahorro de tiempo, duración y acompañamiento?”','“Es una inversión, punto.”','“No piense en el precio.”','“Le regalo algo para compensar.”'],0,'Está reduciendo todo a la categoría “utensilios”.','La respuesta amplía el valor sin negar su percepción.','Reafirma valor sin discutir.'],
+      ['“Mis hijos no están de acuerdo.”','¿Qué harías?',['“¿Qué es lo que más les preocupa a ellos?”','“La decisión es suya.”','“No les cuente.”','“Ellos no entienden.”'],0,'Necesita armonía familiar para decidir.','Identificar la preocupación permite incluirla en la conversación.','No pongas al cliente contra su familia.'],
+      ['“Quiero empezar después.”','¿Qué dirías?',['“¿Qué tendría que cambiar para que después sea un mejor momento?”','“Le respeto el precio para siempre.”','“Después será más caro.”','“Entonces no le interesa.”'],0,'Puede estar aplazando por dinero, miedo o falta de prioridad.','La pregunta convierte “después” en una razón concreta.','Las fechas vagas esconden dudas reales.']
+    ],
+    intermediate:[],expert:[]
+  };
+  objections.intermediate=objections.beginner.map((x,i)=>{const y=JSON.parse(JSON.stringify(x));y[0]=['“Me gusta, pero prefiero esperar a que bajen las tasas.”','“La cuota cabe, pero no quiero otra obligación.”','“No quiero tomar una decisión emocional.”','“Mi pareja no vio toda la demostración.”','“Ya tuve un producto premium y no fue lo que esperaba.”','“No quiero que consulten mi crédito.”','“Prefiero ahorrar y comprar de contado.”','“Yo casi no estoy en la casa.”','“En internet vi algo parecido más barato.”','“No me gusta que me presionen con promociones.”','“El set que me gusta ocupa demasiado espacio.”','“Me preocupa que después nadie me acompañe.”','“El producto me encanta; la financiación no.”','“Mis hijos dicen que es innecesario.”','“Tal vez el próximo semestre.”'][i];y[1]='¿Qué respuesta mantendría mejor la conversación?';return y});
+  objections.expert=objections.beginner.map((x,i)=>{const y=JSON.parse(JSON.stringify(x));y[0]=['“No es caro; simplemente hoy no quiero comprometer liquidez.”','“Podría pagarla, pero no sé si sea una decisión inteligente.”','“Pensarlo no significa que tenga una objeción.”','“Mi esposa dijo que sí, pero yo no participé en la decisión.”','“Ya conozco todos esos beneficios.”','“No le temo al crédito; no confío en las condiciones.”','“El problema no es la cuota, es pagar tantos meses.”','“No cocino, pero mi familia sí; yo solo pago.”','“La comparación online tiene mejores especificaciones.”','“La urgencia me hace desconfiar.”','“La opción ideal no cabe en mi espacio; la pequeña no me convence.”','“La garantía suena bien, pero ¿quién responde dentro de veinte años?”','“Puedo comprar, pero no quiero financiar consumo.”','“Mis hijos creen que estoy comprando por emoción.”','“El próximo semestre tendría más flujo, aunque hoy también puedo.”'][i];y[1]='¿Qué dirías sin discutir ni regalar valor?';return y});
+
+  function playObjections(){
+    const {item:o,idx}=nextFresh(objections[level],`sales34-obj-${level}`);
+    const [context,question,options,answer,thought,why,tip]=o;
+    stage.innerHTML=`<div class="game-head"><div><span class="game-kicker">${levelName[level]} · Objeción ${idx+1} de 15</span><h3>🛡️ Entrenador de objeciones</h3></div><span class="badge">Conversación real</span></div><div class="how-game"><span>¿CÓMO FUNCIONA?</span><p>Lee lo que dijo el cliente y elige una respuesta que ayude a descubrir la duda real. No todas las objeciones se responden igual.</p></div><div id="salesObjQuestion"></div>`;
+    answerCard(document.getElementById('salesObjQuestion'),{label:'EL CLIENTE DICE',context,question,options,answer,thought,why,tip,nextLabel:'Otra objeción',goodDelta:{confidence:8,interest:5},badDelta:{confidence:-8,interest:-4}},playObjections);
+  }
+
+  const negotiations={
+    beginner:[
+      ['La esposa puede separar $80.000 quincenales y el esposo $100.000.','¿Qué capacidad mensual usarías como referencia?',['$360.000 mensuales, siempre validando que sea cómoda para ambos.','$180.000 mensuales porque no se suman.','$720.000 mensuales porque son dos quincenas por persona.','La cuota máxima que permita el sistema.'],0,'Quieren una opción que no desordene su hogar.','La suma quincenal de ambos da una referencia mensual de $360.000.','Confirma la cifra antes de usar la calculadora.'],
+      ['La familia pide ver una opción grande y una más pequeña.','¿Cómo presentarías la decisión?',['“¿Prefieren la opción más completa o comenzar con la que cubre lo esencial?”','“¿Lo compran sí o no?”','“La grande es la única que vale la pena.”','“Elijan ustedes sin mi ayuda.”'],0,'Necesitan comparar sin sentirse empujados.','La doble alternativa facilita elegir entre dos caminos válidos.','Guía la decisión sin quitar libertad.'],
+      ['El cliente guarda silencio después de conocer la cuota.','¿Qué harías?',['Esperaría unos segundos y preguntaría: “¿Cómo se siente con esa cuota?”','Hablaría de inmediato para llenar el silencio.','Bajaría la cuota sin preguntar.','Retiraría la oferta.'],0,'Está procesando la cifra y observando tu reacción.','El silencio breve y una pregunta abierta permiten una respuesta honesta.','No rescates al cliente de cada silencio.'],
+      ['La pareja quiere pagar de contado, pero conservar liquidez.','¿Qué opción mostrarías?',['Compararía claramente contado y financiación para que decidan según su flujo.','Insistiría en contado porque es mejor para ti.','Ocultaría la financiación.','Elegiría por ellos.'],0,'Quieren cuidar el dinero disponible sin pagar de más.','La comparación transparente permite tomar una decisión informada.','Presenta números, no presión.'],
+      ['El cliente pide empezar con algo más pequeño.','¿Qué harías?',['Buscaría una opción menor que conserve el beneficio que más valoró.','Diría que solo se vende el set grande.','Eliminaría piezas al azar.','Ofrecería un descuento sin cambiar la opción.'],0,'Quiere reducir riesgo sin abandonar la compra.','Una opción inicial puede ser correcta si sigue resolviendo su necesidad.','No sacrifiques la necesidad por bajar la cifra.'],
+      ['La esposa quiere comprar y el esposo aún duda.','¿Cómo avanzarías?',['Preguntaría al esposo qué necesita aclarar antes de sentirse cómodo.','Pediría a la esposa que lo convenza.','Ignoraría al esposo.','Cerraría solo con ella.'],0,'Él necesita participar en una decisión compartida.','Incluir su duda evita una compra con conflicto posterior.','Nunca conviertas a un miembro de la pareja en adversario.'],
+      ['El cliente acepta la cuota, pero no el depósito inicial.','¿Qué aclararías?',['Qué monto puede cubrir hoy y qué alternativas reales existen sin prometer excepciones.','Que el depósito no importa.','Que firme y pague después.','Que pida dinero prestado.'],0,'La barrera está en el dinero inmediato, no en la cuota.','Separar ambas cifras permite buscar una opción responsable.','No prometas condiciones que no están autorizadas.'],
+      ['La familia pregunta cuál escogerías tú.','¿Qué responderías?',['Recomendaría una opción explicando cómo coincide con lo que ellos dijeron necesitar.','Escogería la más cara.','Diría que todas son iguales.','Evitaría recomendar para no comprometerme.'],0,'Buscan orientación profesional, no una orden.','Una recomendación razonada demuestra escucha y criterio.','Asesorar es explicar el porqué.'],
+      ['La familia quiere una opción que pueda ampliar después.','¿Qué cierre usarías?',['“Empecemos con esta solución y dejamos claro qué podrían agregar más adelante.”','“Compre todo hoy o perderá la oportunidad.”','“No se puede ampliar.”','“Después vemos.”'],0,'Quieren comenzar sin cerrar futuras posibilidades.','El cierre por avance reduce el miedo a equivocarse.','Define el siguiente paso, no una promesa vaga.'],
+      ['El cliente responde “sí” a todos los beneficios, pero no decide.','¿Qué harías?',['Resumiría sus respuestas y preguntaría cuál de dos opciones desea iniciar.','Volvería a repetir toda la demostración.','Esperaría indefinidamente.','Le daría más regalos.'],0,'Está de acuerdo, pero necesita una guía concreta para actuar.','El resumen conecta sus propios motivos con una decisión.', 'Usa lo que el cliente ya dijo, no argumentos nuevos.'],
+      ['La pareja duda entre 12 y 24 meses.','¿Cómo ayudarías?',['Compararía cuota, costo total y comodidad de cada plazo.','Mostraría solo la cuota más baja.','Elegiría el plazo más largo sin explicar.','Evitaría hablar del costo total.'],0,'Quieren equilibrar pago mensual y duración.','La transparencia permite elegir sin sorpresas.','Siempre explica plazo y valor total.'],
+      ['El cliente tiene ingresos variables.','¿Qué capacidad usarías?',['Una cuota que pueda sostener incluso en un mes normal, no en su mejor mes.','La cifra de su mejor mes.','La máxima aprobación posible.','Una cuota elegida al azar.'],0,'Teme quedar apretado cuando baje el ingreso.','La venta debe sobrevivir a los meses normales.','Responsabilidad primero, volumen después.'],
+      ['La familia dice “queremos la última mejor opción”.','¿Qué harías?',['Confirmaría qué significa “mejor” para ellos antes de presentar una alternativa final.','Daría el descuento más alto.','Inventaría una promoción.','Repetiría la misma opción con otro nombre.'],0,'Puede significar menor cuota, más producto o mejor relación valor-precio.','Definir “mejor” evita negociar contra ti mismo.','No ofrezcas algo sin saber qué buscan.'],
+      ['El cliente acepta, pero no entrega documentos.','¿Cómo cerrarías el siguiente paso?',['Explicaría uno por uno qué documento falta y lo completaríamos en ese momento.','Dejaría todo para otro día.','Llenaría datos sin verificar.','Diría que no son importantes.'],0,'Puede sentirse confundido o cansado por la papelería.','Un proceso claro mantiene el compromiso hasta el final.','La venta no termina hasta que la documentación esté correcta.'],
+      ['La pareja quiere pensarlo hasta mañana.','¿Qué harías?',['Preguntaría qué falta por resolver y dejaría un siguiente contacto con hora concreta.','Aceptaría un “luego hablamos” sin fecha.','Amenazaría con perder el precio.','Llamaría cada hora.'],0,'Quieren espacio, pero la decisión puede enfriarse.','Resolver dudas y acordar una próxima acción mantiene claridad sin presión.','Nunca cierres con “cualquier cosa me avisa”.']
+    ],intermediate:[],expert:[]
+  };
+  negotiations.intermediate=negotiations.beginner.map((x,i)=>{const y=JSON.parse(JSON.stringify(x));y[0]=['La pareja puede pagar $360.000, pero quiere reservar margen para imprevistos.','La opción completa resuelve todo; la inicial cubre solo la prioridad principal.','El silencio aparece después de ver el valor total, no la cuota.','El contado tiene descuento, pero usaría casi todos sus ahorros.','La opción pequeña cabe, pero no incluye lo que más valoraron.','Ella quiere comprar por salud; él duda por el plazo.','El depósito cabe si reducen otra obligación ese mes.','Te piden que recomiendes sin conocer aún su prioridad final.','Quieren empezar pequeño, pero esperan beneficios del set grande.','Aceptan todos los beneficios, pero evitan escoger plazo.','La cuota corta es alta; la larga es cómoda pero aumenta el costo total.','Los ingresos varían mucho entre temporadas.','“La mejor opción” para ella es más piezas; para él, menor cuota.','La papelería está lista, pero falta verificar un ingreso.','Quieren decidir mañana porque un familiar les aconseja esperar.'][i];return y});
+  negotiations.expert=negotiations.beginner.map((x,i)=>{const y=JSON.parse(JSON.stringify(x));y[0]=['La capacidad matemática es $500.000, pero emocionalmente solo aceptan $350.000.','Dos opciones son sostenibles: una maximiza valor y otra minimiza riesgo.','El cliente guarda silencio y la pareja evita mirarse entre sí.','El contado ahorra dinero, pero compromete el fondo de emergencia.','La opción pequeña no resuelve todo; la grande sí, pero exige disciplina financiera.','Ella quiere comprar; él teme repetir una deuda que salió mal.','El depósito requiere mover dinero que estaba destinado a otra obligación.','Te piden una recomendación y sabes que la opción más rentable no es la más cómoda.','Quieren ampliar después, pero el precio futuro es incierto.','Aceptan el valor, pero dicen “no somos de decidir rápido”.','El plazo largo mejora el flujo, pero el cliente rechaza pagar más intereses.','Los ingresos dependen de comisiones y no existe un salario fijo.','Cada miembro de la pareja define “mejor” de forma opuesta.','El documento de ingresos no coincide con lo conversado.','El familiar que aconseja esperar no estuvo en la demostración.'][i];return y});
+
+  function playNegotiation(){
+    const {item:o,idx}=nextFresh(negotiations[level],`sales34-neg-${level}`);
+    const [context,question,options,answer,thought,why,tip]=o;
+    stage.innerHTML=`<div class="game-head"><div><span class="game-kicker">${levelName[level]} · Caso ${idx+1} de 15</span><h3>🤝 Negociación y cierres</h3></div><span class="badge">Decisión responsable</span></div><div class="how-game"><span>¿CÓMO FUNCIONA?</span><p>Elige la forma más clara de convertir interés en una decisión. Aquí entrenas cuotas, pareja, opciones, silencios y cierre de papelería.</p></div><div id="salesNegQuestion"></div>`;
+    answerCard(document.getElementById('salesNegQuestion'),{label:'SITUACIÓN REAL',context,question,options,answer,thought,why,tip,nextLabel:'Otro caso',goodDelta:{confidence:8,interest:8},badDelta:{confidence:-8,interest:-6}},playNegotiation);
+  }
+
+  function renderGame(){if(game==='demo')playDemo();else if(game==='objections')playObjections();else playNegotiation()}
+  difficulty?.addEventListener('click',e=>{const b=e.target.closest('button[data-level]');if(!b)return;level=b.dataset.level;difficulty.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderGame()});
+  menu.addEventListener('click',e=>{const b=e.target.closest('button[data-core-game]');if(!b)return;game=b.dataset.coreGame;menu.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderGame()});
+  renderGame();
+})();

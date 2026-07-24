@@ -1,11 +1,8 @@
-BLEU ONE v3.3
+BLEU ONE v3.4 — GIMNASIO DE VENTAS RECONSTRUIDO
 
-- Corrige fondos blancos y contraste en Academia 4 en 14, Experto en la Demo y ambos gimnasios.
-- Práctica rápida de Experto en la Demo: 5 preguntas reales por paso.
-- Corrige el consejo sobre metales: explicación sencilla para el cliente y estudio adicional para el asesor.
-- Recuadros “Error que debes evitar” en rojo elegante transparente.
-- Gimnasio 4 en 14 simplificado a 5 juegos distintos.
-- Orden Perfecto vuelve a ordenar únicamente los 8 pasos y muestra exactamente cada error.
-- Gimnasio de Ventas simplificado a 5 juegos con bancos exclusivos.
-- Preguntas sin repetición inmediata durante la sesión.
-- Instantánea con guía activa por tiempos.
+- El Gimnasio de Ventas queda en tres experiencias: Simulador de demostraciones, Entrenador de objeciones y Negociación y cierres.
+- Cada nivel usa 15 familias o casos distintos.
+- Las respuestas cambian según la situación; ya no se repite la misma fórmula.
+- El Simulador muestra confianza, interés, participación, energía, tiempo y estado del cliente.
+- Objeciones y negociación usan bancos separados y no repiten un caso hasta recorrer el nivel.
+- El progreso corresponde únicamente a la sesión actual.
