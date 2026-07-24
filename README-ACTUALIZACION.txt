@@ -1,6 +1,6 @@
-Bleu One v4.0
-- Demo Virtual: 45 familias (15 por nivel).
-- 15 decisiones únicas por familia: 675 preguntas.
-- 4 respuestas exclusivas por decisión: 2.700 opciones sin textos repetidos.
-- Dificultad real por nivel, estados dinámicos, finales y retroalimentación.
+Bleu One v4.1 · Demo Experience
+- El módulo “Gimnasio Ventas” ahora se llama “Demo Experience”.
+- Se eliminaron los apartados independientes de Objeciones y Negociación y cierres.
+- Todo ese entrenamiento permanece integrado naturalmente dentro de las 45 demostraciones.
+- 15 familias por nivel, 15 decisiones únicas por familia y respuestas exclusivas.
 - Los demás módulos permanecen sin cambios.
