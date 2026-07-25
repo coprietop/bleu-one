@@ -1,6 +1,6 @@
-Bleu One v4.1 · Demo Experience
-- El módulo “Gimnasio Ventas” ahora se llama “Demo Experience”.
-- Se eliminaron los apartados independientes de Objeciones y Negociación y cierres.
-- Todo ese entrenamiento permanece integrado naturalmente dentro de las 45 demostraciones.
-- 15 familias por nivel, 15 decisiones únicas por familia y respuestas exclusivas.
-- Los demás módulos permanecen sin cambios.
+Bleu One v6.2
+
+Corrección definitiva del módulo Demo Experience / Experto en Ventas:
+- Se desactivaron cuatro controladores heredados dentro de app.js.
+- Quedó un único controlador para las 6 familias.
+- Se renovó el nombre del script y la caché del service worker para evitar archivos antiguos.
