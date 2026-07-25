@@ -1,4 +1,4 @@
-const CACHE='bleu-one-v5-2-1-demo-experience';
+const CACHE='bleu-one-v6-demo-experience';
 const ASSETS=['./','index.html','styles.css','app.js','sales-simulator-v4.js','manifest.json','assets/logo-bleu.png','assets/ganadores-moto-primer-semestre-2026.jpg','assets/programa-mono-azul.jpg','assets/material-compartir-negocio.pdf'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
