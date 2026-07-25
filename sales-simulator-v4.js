@@ -300,8 +300,12 @@ window.BLEU_DEMO_FAMILIES = [
 ];
 
 (()=>{
- const root=document.getElementById('gimnasioventas'); if(!root) return;
- const stage=document.getElementById('salesGymStage'); if(!stage) return;
+ // v6.1: aislar Demo Experience de los controladores antiguos que quedaron en app.js.
+ // Reemplazar el nodo completo elimina todos los listeners heredados sin afectar el resto de Bleu One.
+ const legacyRoot=document.getElementById('gimnasioventas'); if(!legacyRoot) return;
+ const root=legacyRoot.cloneNode(true);
+ legacyRoot.replaceWith(root);
+ const stage=root.querySelector('#salesGymStage'); if(!stage) return;
  const families=window.BLEU_DEMO_FAMILIES;
  let current=0, scene=0, points=0, maxPoints=0;
  let state={confidence:50,energy:60,participation:50,purchase:25,control:50};
