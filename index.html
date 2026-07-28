@@ -17,6 +17,7 @@
 <button class="nav-item active" data-screen="somos">Somos Bleu</button>
 <button class="nav-item" data-screen="orden">Orden de Compra</button>
 <button class="nav-item" data-screen="cuota">Cuota</button>
+<button class="nav-item" data-screen="simuladorfin">Simulador Financiamiento</button>
 <button class="nav-item" data-screen="agregados">Agregados</button>
 <button class="nav-item" data-screen="nombres">Nombres</button>
 <button class="nav-item" data-screen="ascenso">Ascensos</button>
@@ -91,6 +92,47 @@
 </div>
 </section>
 <section class="screen" id="cuota"><div class="screen-head"><div><h2>Cuota</h2><p>Calcula cuánto le puedes vender a un cliente según la cuota mensual y el plazo elegido.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Valor de cuota mensual</span><div class="money-input"><span>$</span><input id="cuotaValor" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Meses de financiación</span><select id="cuotaMeses"></select><small>Predeterminado: 27 meses según tabla interna.</small></label></section><section class="panel hero-result"><span>Venta aproximada</span><strong id="cuotaVenta">$ 0</strong><small id="cuotaFormula">Fórmula según tabla.</small></section><div class="formula soft">Una cuota clara evita confusión, y una negociación clara acerca al cliente a la decisión.</div></div></section>
+<section class="screen" id="simuladorfin">
+<div class="screen-head"><div><h2>Simulador de financiamiento <span class="badge">Mes vencido</span></h2><p>Visualiza cómo cada cuota se distribuye entre intereses y capital, y cómo un abono extraordinario puede reducir tiempo e intereses.</p></div></div>
+<div class="finance-sim-grid">
+<section class="panel finance-input-panel">
+<h3>Datos de la simulación</h3>
+<label class="field"><span>Valor de compra</span><div class="money-input"><span>$</span><input id="finCompra" inputmode="numeric" placeholder="0" value=""/></div></label>
+<label class="field"><span>Depósito pagado hoy</span><div class="money-input"><span>$</span><input id="finDeposito" inputmode="numeric" placeholder="0" value=""/></div></label>
+<label class="field"><span>Meses de financiación</span><select id="finMeses"></select><small>La cuota usa exactamente la tabla interna de Orden de Compra.</small></label>
+<div class="finance-extra-box">
+<div class="result-title"><h3>Abono extraordinario</h3><span class="badge">Opcional</span></div>
+<label class="field"><span>Mes en que realizará el abono</span><select id="finMesExtra"><option value="0">Sin abono adicional</option></select></label>
+<label class="field"><span>Valor del abono adicional</span><div class="money-input"><span>$</span><input id="finExtra" inputmode="numeric" placeholder="0" value=""/></div></label>
+<div class="formula soft"><strong>Tip financiero:</strong> se recomienda mantener la cuota y reducir el plazo. Disminuir la cuota puede prolongar el financiamiento y aumentar los intereses pagados en el tiempo.</div>
+</div>
+</section>
+<section class="panel finance-summary-panel">
+<h3>Resultado estimado</h3>
+<div class="finance-kpis">
+<article><span>Saldo financiado</span><strong id="finSaldo">$ 0</strong></article>
+<article><span>Cuota mensual estimada</span><strong id="finCuota">$ 0</strong></article>
+<article><span>Intereses sin abono</span><strong id="finInteresBase">$ 0</strong></article>
+<article><span>Última cuota estimada</span><strong id="finUltima">$ 0</strong></article>
+</div>
+<div class="finance-impact" id="finImpacto">
+<div><span>Tiempo reducido</span><strong id="finMesesAhorro">0 meses</strong></div>
+<div><span>Ahorro estimado en intereses</span><strong id="finAhorroInteres">$ 0</strong></div>
+<div><span>Nueva duración estimada</span><strong id="finNuevaDuracion">0 meses</strong></div>
+</div>
+<div class="finance-bars"><div><span>Capital</span><i><b id="finCapitalBar"></b></i><strong id="finCapitalPct">0%</strong></div><div><span>Intereses</span><i><b id="finInterestBar"></b></i><strong id="finInterestPct">0%</strong></div></div>
+</section>
+</div>
+<section class="panel finance-table-panel">
+<div class="result-title"><div><span class="eyebrow">Detalle mensual</span><h3>Tabla de amortización aproximada</h3></div><span class="badge" id="finTablaBadge">0 meses</span></div>
+<div class="finance-table-wrap"><table class="finance-table"><thead><tr><th>Mes</th><th>Saldo inicial</th><th>Cuota</th><th>Interés</th><th>Capital</th><th>Abono extra</th><th>Saldo final</th></tr></thead><tbody id="finTablaBody"></tbody></table></div>
+</section>
+<div class="finance-compare-grid">
+<section class="panel"><span class="eyebrow">Comparación transparente</span><h3>Mes vencido vs. interés fijo equivalente</h3><div class="finance-compare-cards"><article><span>Interés mes vencido</span><strong>2,10% mensual</strong><small>El interés se calcula cada mes sobre el saldo pendiente.</small></article><article><span>Interés fijo mensual equivalente</span><strong id="finTasaFija">0%</strong><small id="finFixedNote">Se calcula según el plazo y el total estimado de intereses.</small></article></div><div class="order-form"><div class="row"><span>Total estimado mes vencido</span><strong id="finTotalMv">$ 0</strong></div><div class="row final"><span>Total estimado con tasa fija equivalente</span><strong id="finTotalFijo">$ 0</strong></div></div></section>
+<section class="panel finance-explain"><span class="eyebrow">Lo que debe ver el cliente</span><h3>El interés disminuye mes a mes</h3><p>Al comenzar, una parte mayor de la cuota corresponde a intereses. A medida que baja el saldo, el interés mensual disminuye y una porción mayor se aplica a capital.</p><div class="formula soft">La última cuota puede ser más baja cuando todos los pagos se realizan oportunamente y no existen moras, cargos adicionales ni cambios en las condiciones.</div></section>
+</div>
+<div class="formula soft finance-disclaimer"><strong>Importante:</strong> esta tabla es una proyección aproximada y tiene fines informativos. El resultado real depende de las fechas de pago, el comportamiento del cliente, abonos extraordinarios, mora, cargos y condiciones contractuales. Evite morosidades para conservar la proyección.</div>
+</section>
 <section class="screen" id="agregados"><div class="screen-head"><div><h2>Agregados</h2><p>Calcula el total del cliente y su pago mensual según la tabla de financiación.</p></div></div><div class="grid"><section class="panel"><h3>Datos del agregado</h3><label class="field"><span>Saldo del cliente</span><div class="money-input"><span>$</span><input id="agSaldo" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Nueva compra <small>(IVA incluido)</small></span><div class="money-input"><span>$</span><input id="agCompra" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Cuota inicial <small>(opcional)</small></span><div class="money-input"><span>$</span><input id="agInicial" inputmode="numeric" placeholder="0" value=""/></div><small>Los agregados no necesitan cuota inicial, pero puedes escribirla si aplica.</small></label><label class="field"><span>Meses de financiación</span><select id="agMeses"></select></label></section><section class="panel"><h3>Resultado del agregado</h3><div class="order-form"><div class="row"><span>Saldo del cliente</span><strong id="agSaldoOut">$ 0</strong></div><div class="row"><span>Nueva compra IVA incluido</span><strong id="agCompraOut">$ 0</strong></div><div class="row"><span>Cuota inicial</span><strong id="agInicialOut">$ 0</strong></div><div class="row featured"><span>Total a financiar</span><strong id="agTotal">$ 0</strong></div><div class="row final"><span>Pago mensual aproximado</span><strong id="agPago">$ 0</strong></div></div><div class="formula" id="agFormula">Selecciona meses y escribe los valores para calcular.</div><div class="formula soft">Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.</div></section></div></section>
 <section class="screen" id="nombres"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Fórmula: volumen del mes ÷ 185.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
 <section class="screen" id="ascenso">
@@ -431,6 +473,7 @@
 </div>
 <script src="app-v75.js?v=75"></script>
 <script src="sales-simulator-v75.js?v=75"></script>
+<script src="finance-simulator-v77.js?v=77"></script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
