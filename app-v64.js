@@ -297,7 +297,7 @@ document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click'
   window.scrollTo({top:0,behavior:'smooth'});
 }));
 let deferredPrompt; const installBtn=$('installBtn'); window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault(); deferredPrompt=e; installBtn.classList.remove('hidden')}); installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.classList.add('hidden')});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').catch(()=>{})}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js?v=64',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})}
 
 const menuToggle=$('menuToggle');
 menuToggle?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));

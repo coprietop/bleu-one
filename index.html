@@ -7,7 +7,7 @@
 <meta content="#05070c" name="theme-color"/>
 <title>Bleu One v3.0 · Gimnasios de Alto Rendimiento</title>
 <link href="manifest.json" rel="manifest"/>
-<link href="styles.css" rel="stylesheet"/>
+<link href="styles-v64.css?v=64" rel="stylesheet"/>
 </head>
 <body class="locked">
 <div class="app-shell">
@@ -58,14 +58,15 @@
 </div>
 </section>
 <section class="screen" id="orden">
-<div class="screen-head"><div><h2>Calculadora de Orden de Compra</h2><p>Ingresa los datos y transcribe manualmente los valores en la orden física.</p></div></div>
+<div class="screen-head"><div><h2>Calculadora de Orden de Compra <span class="badge">Actualizada · Con y sin interés</span></h2><p>Ingresa los datos y transcribe manualmente los valores en la orden física.</p></div></div>
 <div class="grid">
 <section class="panel input-panel">
 <h3>1. Ingresa los datos</h3>
 <label class="field"><span>Precio total con IVA</span><div class="money-input"><span>$</span><input id="total" inputmode="numeric" value="0"/></div></label>
 <label class="field"><span>Depósito pagado hoy</span><div class="money-input"><span>$</span><input id="deposito" inputmode="numeric" value="0"/></div><small id="depositHint">Debe ser mínimo el 5% del precio total.</small></label>
-<label class="field"><span>Número de cuotas mensuales</span><select id="cuotas"></select><small>Permitido: mínimo 2 y máximo 27 cuotas.</small></label>
-<div class="hero-result mn-card"><span>MN</span><strong id="mgValor">$ 0</strong></div>
+<label class="field"><span>Tipo de financiación</span><select id="tipoFinanciacion"><option value="interes">Con interés</option><option value="sin-interes">Venta sin interés</option></select><small id="tipoFinanciacionHint">La cuota se calcula con la tabla de amortización.</small></label>
+<label class="field"><span>Número de cuotas mensuales</span><select id="cuotas"></select><small id="cuotasHint">Permitido: mínimo 2 y máximo 27 cuotas.</small></label>
+<div class="hero-result mn-card"><span>MN</span><strong id="mgValor">$ 0</strong><small id="mnHint">20% en financiación con interés.</small></div>
 <div class="alert ok" id="alerta">Depósito correcto.</div>
 </section>
 <section class="panel result-panel">
@@ -85,6 +86,7 @@
 <div class="row final"><span>Pago mínimo mensual</span><strong id="pagoMinimo">$ 0</strong></div>
 </div>
 <div class="formula" id="formula">Pago mínimo mensual = saldo a financiar × porcentaje de la tabla.</div>
+<div class="formula soft" id="notaTasas"><strong>Importante:</strong> las tasas de interés deben anotarse siempre en la orden de compra. En una venta sin interés no se aplican durante el plazo seleccionado; sin embargo, si al finalizar ese plazo queda saldo pendiente, ese saldo comenzará a generar intereses según las tasas registradas en la orden.</div>
 </section>
 </div>
 </section>
@@ -144,6 +146,18 @@
 <div class="resource-icon">📘</div>
 <div class="resource-copy"><span class="eyebrow">Recurso descargable</span><h3>Material para compartir el negocio</h3><p>Presentación de apoyo para entrevistas, conversaciones y seguimiento con candidatos.</p></div>
 <a class="primary-action resource-download" download="Material para compartir el negocio - Bleu Company.pdf" href="assets/material-compartir-negocio.pdf">Descargar PDF <span>↓</span></a>
+</section>
+<section class="panel certification-launch" id="certificacionAsesor">
+<div class="result-title"><div><span class="eyebrow">Academia Bleu</span><h3>Evaluación de Asesor Nuevo a Asesor Experimentado <span class="badge">Nueva</span></h3></div><span class="badge">40 preguntas · aprueba con 70%</span></div>
+<p class="muted-text">Objetivo: validar que el asesor domina los conocimientos básicos, técnicos y comerciales necesarios para realizar una demostración profesional, asesorar correctamente al cliente y representar la metodología comercial de Bleu Company SAS.</p>
+<div class="cert-form-grid">
+<label class="field"><span>Nombre completo del asesor</span><input class="plain-input" id="certNombre" placeholder="Nombre y apellido" type="text"/></label>
+<label class="field"><span>Distribución</span><input class="plain-input" id="certDistribucion" placeholder="Nombre de la distribución" type="text"/></label>
+<label class="field"><span>Reclutador</span><input class="plain-input" id="certReclutador" placeholder="Nombre del reclutador" type="text"/></label>
+</div>
+<button class="primary-action" id="startAdvisorExam" type="button">Comenzar evaluación <span>→</span></button>
+<div id="advisorExam" class="advisor-exam hidden"></div>
+<div id="advisorExamResult" class="advisor-result hidden"></div>
 </section>
 <div class="adn-card wide"><span>💎 ADN BLEU</span><p>Asociar no es pedir un favor: es abrirle una puerta a alguien con hambre de crecer.</p></div>
 </section>
@@ -415,7 +429,7 @@
 </section>
 </main>
 </div>
-<script src="app.js"></script>
-<script src="sales-simulator-v62.js"></script>
+<script src="app-v64.js?v=64"></script>
+<script src="sales-simulator-v64.js?v=64"></script>
 </body>
 </html>

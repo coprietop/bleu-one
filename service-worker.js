@@ -1,5 +1,5 @@
-const CACHE='bleu-one-v62-demo-experience-hotfix';
-const ASSETS=['./','index.html','styles.css','app.js','sales-simulator-v62.js','manifest.json','assets/logo-bleu.png','assets/ganadores-moto-primer-semestre-2026.jpg','assets/programa-mono-azul.jpg','assets/material-compartir-negocio.pdf'];
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
-self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r;}).catch(()=>caches.match(e.request)))});
+const CACHE='bleu-one-v64-20260728';
+const ASSETS=['./','index.html','styles-v64.css','app-v64.js','sales-simulator-v64.js','manifest.json','assets/logo-bleu.png','assets/sello-bleu.png','assets/ganadores-moto-primer-semestre-2026.jpg','assets/programa-mono-azul.jpg','assets/material-compartir-negocio.pdf'];
+self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)))});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy));return response}).catch(()=>caches.match(event.request)))});
