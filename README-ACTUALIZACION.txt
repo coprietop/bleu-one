@@ -1,8 +1,16 @@
-BLEU ONE v7.5
+BLEU ONE v7.9 — SIMULADOR FINANCIERO PROFESIONAL
 
-Cambios:
-- Texto del certificado simplificado según solicitud.
-- Eliminado el campo Certificado No.
-- El bloque inferior conserva únicamente Distribución, Reclutador, Puntaje y Fecha.
-- Se mantiene el diseño premium azul marino y oro, los iconos, el sello superior y la marca de agua.
-- Archivos versionados para evitar caché en Vercel.
+Cambios principales:
+- Resumen ejecutivo dinámico con intereses en pesos y porcentaje.
+- Total pagado, plazo real, última cuota y ahorro por abono extraordinario.
+- Comparación de plazo seleccionado frente a 27 meses.
+- Tres gráficas interactivas: capital vs. interés, saldo pendiente y escenario con/sin abono.
+- Tabla de amortización con totales y mes del abono resaltado.
+- Apartado independiente de interés mes vencido vs. fijo mensual equivalente.
+- Tips financieros dinámicos y advertencia de mora.
+
+Despliegue:
+1. Extraer el ZIP.
+2. Reemplazar los archivos del proyecto/repositorio.
+3. Ejecutar los comandos git indicados.
+4. Vercel desplegará automáticamente desde la rama main.
