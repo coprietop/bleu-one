@@ -1,8 +1,11 @@
-BLEU ONE v6.6 — CERTIFICADO PREMIUM
+BLEU ONE v7.0 — CERTIFICADO PREMIUM EJECUTIVO
 
 Cambios:
-- Certificado completamente rediseñado con composición más elegante y premium.
-- Bloque de distribución, reclutador, puntaje, fecha y número de certificado más compacto.
-- Menor separación entre líneas y mejor jerarquía tipográfica.
-- Marcos dorados, ornamentos sutiles, área de firma y sello Bleu transparente.
-- Archivos versionados para evitar que Vercel cargue caché anterior.
+- Certificado rediseñado con fondo azul marino ejecutivo.
+- Marco doble en oro cepillado.
+- Sello Bleu con transparencia real y alta resolución, sin fondo negro.
+- Sello principal perfectamente centrado.
+- Marca de agua institucional muy sutil.
+- Ficha de datos más compacta y elegante.
+- Nombre del asesor con mayor jerarquía visual.
+- Archivos renombrados para evitar caché de Vercel.
