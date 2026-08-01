@@ -377,85 +377,80 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
       ]}
     },
     julio:{
-      label:'Julio 2026', final:false,
+      label:'Julio 2026', final:true,
       personal:{title:'Venta personal', items:[
-        {name:'Sandra Milena Cano', city:'Tocancipá', distribution:'Lions Heart', volume:11993, move:21, highlight:true},
-        {name:'Leidy Rojas & Steven Prieto', city:'Chía', distribution:'Company Lury Blue', volume:11649, move:11},
-        {name:'Nelsen Rocío Vega', city:'Tocancipá', distribution:'Nakuru Company', volume:8837, move:13},
-        {name:'Jessica Paola Calderón', city:'Tocancipá', distribution:'Sabores de Prestigio', volume:8760, move:-3},
-        {name:'María Paula Villarraga & Andrea Juzga', city:'Cajicá', distribution:'Samand Corporation', volume:8486, move:62, highlight:true}
+        {name:'Leidy Rojas & Steven Prieto', city:'Chía', distribution:'Company Lury Blue', volume:21548, move:1},
+        {name:'Sandra Milena Cano', city:'Tocancipá', distribution:'Lion Heart Company', volume:15254, move:-1},
+        {name:'Daniel Humberto Ríos', city:'Tocancipá', distribution:'Taru Company', volume:14097, move:15},
+        {name:'Ma. Paula Bautista & Liliana Hernández', city:'Chía', distribution:'Zoe Corporation', volume:13583, move:17},
+        {name:'Juan Pablo Riaño', city:'Chía', distribution:'Crois GT', volume:13330, move:24}
       ]},
       junior:{title:'Mejor Distribuidor Junior', items:[
-        {name:'Leidy Rojas & Steven Prieto', city:'Chía', distribution:'Company Lury Blue', volume:11649, move:1},
-        {name:'Samuel Camilo Riaño', city:'Chía', distribution:'Exclusive Quality', volume:6700, move:2},
-        {name:'Natalia Bolívar & Santiago Parra', city:'Cajicá', distribution:'JM Global Company', volume:6112, move:2},
-        {name:'Andrea Barriga', city:'Cajicá', distribution:'Lions Fuentes', volume:5197, move:27, highlight:true},
-        {name:'Andrés Moreno', city:'Bogotá', distribution:'Esenzia Vital SAS', volume:4894, move:13}
+        {name:'Leidy Rojas & Steven Prieto', city:'Chía', distribution:'Company Lury Blue', volume:21548, move:0},
+        {name:'Luz Mary Cabrera & Andrés Chía', city:'Tocancipá', distribution:'Jireh Lion', volume:12926, move:5},
+        {name:'Samuel Camilo Riaño', city:'Chía', distribution:'Exclusive Quality', volume:11076, move:-1},
+        {name:'Ximena Aguilar', city:'Cajicá', distribution:'Majestic Fenix', volume:8365, move:7},
+        {name:'Paula Moncada & Sandra Flórez', city:'Sopó', distribution:'Signature Company', volume:7728, move:3}
       ]},
       distribuidores:{title:'Mejor Distribuidor', items:[
-        {name:'Dayana Ayala & Wilmer Núñez', city:'Tocancipá', distribution:'Lion Heart SAS', volume:18337, move:1},
-        {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', distribution:'Taru Company', volume:16021, move:12},
-        {name:'Ana Morales & Christian Prieto', city:'Bogotá', distribution:'Bleu Company', volume:14452, move:0},
-        {name:'María Paula Villarraga & Andrea Juzga', city:'Cajicá', distribution:'Samand Corporation', volume:13861, move:9},
-        {name:'Karol Bernal', city:'Bogotá', distribution:'Aeternum Company', volume:13716, move:7}
+        {name:'Ana Morales & Christian Prieto', city:'Bogotá', distribution:'Bleu Company', volume:31951, move:2},
+        {name:'Rodolfo Tarazona & Edna Ruiz', city:'Tocancipá', distribution:'Taru Company', volume:24795, move:0},
+        {name:'Dayana Ayala & Wilmer Núñez', city:'Tocancipá', distribution:'Lion Heart SAS', volume:24295, move:-2},
+        {name:'Karol Bernal', city:'Bogotá', distribution:'Aeternum Company', volume:21890, move:1},
+        {name:'María Paula Villarraga & Andrea Juzga', city:'Cajicá', distribution:'Samand Corporation', volume:20899, move:-1}
       ]}
+    },
+    agosto:{
+      label:'Agosto 2026', final:false,
+      personal:{title:'Venta personal', items:[]},
+      junior:{title:'Mejor Distribuidor Junior', items:[]},
+      distribuidores:{title:'Mejor Distribuidor', items:[]}
     }
   };
   const medals=['🥇','🥈','🥉','4','5'];
-  let currentMonth='julio';
+  let currentMonth='agosto';
   let currentCategory='personal';
 
   function movementHTML(item){
     if(item.move===null || item.move===undefined) return '<span class="move move-new">En competencia</span>';
     const m=Number(item.move||0);
     if(m>0) return `<span class="move move-up">↑ +${m}</span>${item.highlight?'<em class="rise-badge">🔥 Mayor ascenso</em>':''}`;
-    if(m<0) return `<span class="move move-down">↓ ${m}</span>`;
-    return '<span class="move move-same">—</span>';
+    if(m<0) return `<span class="move move-down">↓ ${Math.abs(m)}</span>`;
+    return '<span class="move move-same">— Se mantiene</span>';
   }
   function movementText(item){
-    if(item.move===null || item.move===undefined) return 'Ranking de Julio a la fecha';
+    if(item.move===null || item.move===undefined) return 'En competencia';
     const m=Number(item.move||0);
-    if(m>0) return `Movimiento: subió ${m} posiciones`;
-    if(m<0) return `Movimiento: bajó ${Math.abs(m)} posiciones`;
+    if(m>0) return `Movimiento: subió ${m} ${m===1?'puesto':'puestos'}`;
+    if(m<0) return `Movimiento: bajó ${Math.abs(m)} ${Math.abs(m)===1?'puesto':'puestos'}`;
     return 'Movimiento: se mantuvo en su posición';
   }
   function launchConfetti(container=document.body){
-    const layer=document.createElement('div');
-    layer.className='confetti-layer';
+    const layer=document.createElement('div'); layer.className='confetti-layer';
     const symbols=['◆','●','✦','■'];
     for(let i=0;i<34;i++){
-      const piece=document.createElement('i');
-      piece.textContent=symbols[i%symbols.length];
-      piece.style.left=`${8+Math.random()*84}%`;
-      piece.style.animationDelay=`${Math.random()*.28}s`;
-      piece.style.animationDuration=`${.85+Math.random()*.7}s`;
-      piece.style.setProperty('--drift',`${-50+Math.random()*100}px`);
-      layer.appendChild(piece);
+      const piece=document.createElement('i'); piece.textContent=symbols[i%symbols.length];
+      piece.style.left=`${8+Math.random()*84}%`; piece.style.animationDelay=`${Math.random()*.28}s`;
+      piece.style.animationDuration=`${.85+Math.random()*.7}s`; piece.style.setProperty('--drift',`${-50+Math.random()*100}px`); layer.appendChild(piece);
     }
-    container.appendChild(layer);
-    setTimeout(()=>layer.remove(),1900);
+    container.appendChild(layer); setTimeout(()=>layer.remove(),1900);
   }
   function openModal(item, idx, category){
     const m=$('topperModal'); if(!m) return;
-    $('modalMedal').textContent=medals[idx] || idx+1;
-    $('modalName').textContent=item.name;
-    $('modalCity').textContent=`📍 ${item.city}`;
-    const dist=$('modalDistribution');
-    if(dist){dist.textContent=item.distribution?`Distribución: ${item.distribution}`:''; dist.style.display=item.distribution?'block':'none';}
-    $('modalVolume').textContent=fmtUSD(item.volume);
-    $('modalCategory').textContent=`${category} · ${rankings[currentMonth].label}`;
-    let movement=$('modalMovement');
-    if(!movement){movement=document.createElement('div');movement.id='modalMovement';movement.className='modal-movement';$('modalCategory').insertAdjacentElement('afterend',movement);}
-    movement.textContent=movementText(item);
-    m.classList.remove('hidden');
-    if(idx===0) requestAnimationFrame(()=>launchConfetti(m.querySelector('.modal-card')));
+    $('modalMedal').textContent=medals[idx] || idx+1; $('modalName').textContent=item.name; $('modalCity').textContent=`📍 ${item.city}`;
+    const dist=$('modalDistribution'); if(dist){dist.textContent=item.distribution?`Distribución: ${item.distribution}`:''; dist.style.display=item.distribution?'block':'none';}
+    $('modalVolume').textContent=fmtUSD(item.volume); $('modalCategory').textContent=`${category} · ${rankings[currentMonth].label}`;
+    let movement=$('modalMovement'); if(!movement){movement=document.createElement('div');movement.id='modalMovement';movement.className='modal-movement';$('modalCategory').insertAdjacentElement('afterend',movement);}
+    movement.textContent=movementText(item); m.classList.remove('hidden'); if(idx===0) requestAnimationFrame(()=>launchConfetti(m.querySelector('.modal-card')));
   }
   function extraInfo(item){return item.distribution?`<small class="topper-distribution">${item.distribution}</small>`:'';}
   function render(){
     if(!$('podium')) return;
-    const month=rankings[currentMonth];
-    const group=month[currentCategory];
-    $('podiumTitle').textContent=`${group.title} · ${month.label}`;
+    const month=rankings[currentMonth]; const group=month[currentCategory]; $('podiumTitle').textContent=`${group.title} · ${month.label}`;
+    if(!group.items.length){
+      $('podium').innerHTML=`<div class="topper-empty"><span>✨</span><h4>Agosto está en marcha</h4><p>El primer ranking de ${group.title.toLowerCase()} se publicará próximamente. Cada nombre, cada demo y cada venta puede llevarte al próximo podio.</p></div>`;
+      $('topperList').innerHTML=''; return;
+    }
     const [a,b,c]=group.items;
     $('podium').innerHTML=`
       <button class="podium-place first podium-enter" data-idx="0"><span class="medal">🥇</span><strong>${a.name}</strong><small>${a.city}</small>${extraInfo(a)}<b>${fmtUSD(a.volume)}</b><span class="movement-wrap">${movementHTML(a)}</span></button>
@@ -469,32 +464,22 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     setTimeout(()=>launchConfetti($('podium')),430);
   }
   function setMonth(monthKey){
-    currentMonth=monthKey;
-    document.querySelectorAll('.topper-month-tab').forEach(b=>b.classList.toggle('active',b.dataset.month===monthKey));
-    const note=$('topperMonthNote');
-    if(note) note.textContent=monthKey==='junio'?'Resultados finales de Junio 2026. Felicitamos a quienes cerraron el mes en el Top 5.':'Ranking de Julio a la fecha. Se actualizará semanalmente hasta el cierre del mes.';
-    render();
+    currentMonth=monthKey; document.querySelectorAll('.topper-month-tab').forEach(b=>b.classList.toggle('active',b.dataset.month===monthKey));
+    const messages={junio:'Resultados finales de Junio 2026. Felicitamos a quienes cerraron el mes en el Top 5.',julio:'Resultados finales de Julio 2026. Un cierre histórico que merece ser celebrado.',agosto:'Agosto está en marcha. El primer ranking se publicará próximamente.'};
+    const note=$('topperMonthNote'); if(note) note.textContent=messages[monthKey]; render();
   }
   document.querySelectorAll('.topper-month-tab').forEach(btn=>btn.addEventListener('click',()=>setMonth(btn.dataset.month)));
-  document.querySelectorAll('.topper-tab').forEach(btn=>btn.addEventListener('click',()=>{
-    document.querySelectorAll('.topper-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active'); currentCategory=btn.dataset.top; render();
-  }));
+  document.querySelectorAll('.topper-tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.topper-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentCategory=btn.dataset.top;render();}));
   $('modalClose')?.addEventListener('click',()=> $('topperModal')?.classList.add('hidden'));
   $('topperModal')?.addEventListener('click',(e)=>{if(e.target.id==='topperModal') $('topperModal').classList.add('hidden');});
 
-  function endOfJulyBogota(){return new Date('2026-08-01T00:00:00-05:00');}
+  function endOfAugustBogota(){return new Date('2026-09-01T00:00:00-05:00');}
   function tick(){
-    const el=$('topCountdown'); if(!el) return;
-    let diff=Math.max(0,endOfJulyBogota().getTime()-Date.now());
-    const d=Math.floor(diff/86400000); diff-=d*86400000;
-    const h=Math.floor(diff/3600000); diff-=h*3600000;
-    const m=Math.floor(diff/60000); diff-=m*60000;
-    const s=Math.floor(diff/1000);
-    const vals=[d,h,m,s].map(x=>String(x).padStart(2,'0'));
-    el.querySelectorAll('strong').forEach((node,i)=>node.textContent=vals[i]);
+    const el=$('topCountdown'); if(!el) return; let diff=Math.max(0,endOfAugustBogota().getTime()-Date.now());
+    const d=Math.floor(diff/86400000); diff-=d*86400000; const h=Math.floor(diff/3600000); diff-=h*3600000; const m=Math.floor(diff/60000); diff-=m*60000; const s=Math.floor(diff/1000);
+    const vals=[d,h,m,s].map(x=>String(x).padStart(2,'0')); el.querySelectorAll('strong').forEach((node,i)=>node.textContent=vals[i]);
   }
-  setMonth('julio'); tick(); setInterval(tick,1000);
+  setMonth('agosto'); tick(); setInterval(tick,1000);
 })();
 
 // Bleu One v1.0 Stable - Presentation Edition enhancements

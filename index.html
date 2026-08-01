@@ -5,9 +5,9 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <meta content="#05070c" name="theme-color"/>
-<title>Bleu One v3.0 · Gimnasios de Alto Rendimiento</title>
+<title>Bleu One v8.0.2 · Planificación y Toppers Agosto</title>
 <link href="manifest.json" rel="manifest"/>
-<link href="styles-v75.css?v=75" rel="stylesheet"/>
+<link href="styles-v75.css?v=802" rel="stylesheet"/>
 </head>
 <body class="locked">
 <div class="app-shell">
@@ -41,7 +41,7 @@
 <button aria-label="Abrir menú" class="menu-toggle" id="menuToggle">☰ Menú</button>
 <header class="topbar">
 <div><p class="eyebrow">Territorio Bleu Company SAS</p><h1>Bleu One</h1></div>
-<button class="install hidden" id="installBtn">Instalar app</button>
+<div class="topbar-actions"><div class="trm-bleu" title="Tasa mensual fija utilizada por Bleu One"><span>TRM BLEU ONE · AGOSTO</span><strong>$3.132,42 COP</strong></div><button class="install hidden" id="installBtn">Instalar app</button></div>
 </header>
 <section class="screen active somos-screen" id="somos">
 <div class="somos-card">
@@ -575,34 +575,35 @@
 </section>
 <div class="formula soft">Los grandes premios no se ganan en un solo día: se construyen con actividad sostenida.</div>
 </section>
-<section class="screen legacy-planning-screen" id="ingresos"><div class="screen-head"><div><h2>Proyección de ingresos</h2><p>Valores aproximados. Tasa usada: US$1 = $3.443,59 COP.</p></div></div><div class="grid">
+<section class="screen legacy-planning-screen" id="ingresos"><div class="screen-head"><div><h2>Proyección de ingresos</h2><p>Valores aproximados. Tasa usada: US$1 = $3.132,42 COP.</p></div></div><div class="grid">
 <section class="panel"><h3>1. Ganancias según nivel</h3><p class="muted-text"><strong>Importante:</strong> ingresa únicamente volumen de <strong>VENTA PERSONAL</strong>. Los ingresos son aproximados según el nivel.</p><label class="field"><span>Nivel</span><select id="ingRol"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Volumen de venta personal en USD</span><div class="money-input"><span>US$</span><input id="ingVol" inputmode="numeric" placeholder="0" value=""/></div></label><div class="order-form"><div class="row featured"><span>Ingreso aproximado USD</span><strong id="ingUsd">US$ 0</strong></div><div class="row"><span>Ingreso aproximado COP</span><strong id="ingCop">$ 0</strong></div></div></section>
 <section class="panel"><h3>2. ¿Cuánto quiero ganar?</h3><p class="muted-text"><strong>Importante:</strong> escribe cuánto quieres ganar en pesos colombianos. Bleu One lo convierte a dólares y calcula el volumen de <strong>VENTA PERSONAL</strong> aproximado y los nombres necesarios.</p><label class="field"><span>Nivel</span><select id="ingRolDeseado"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Quiero ganar este mes en COP</span><div class="money-input"><span>$</span><input id="ingDeseadoCop" inputmode="numeric" placeholder="0" value=""/></div></label><div class="order-form"><div class="row"><span>Equivalente aproximado en USD</span><strong id="ingDeseadoUsd">US$ 0</strong></div><div class="row final"><span>Volumen de venta personal necesario</span><strong id="ingVolNecesario">US$ 0</strong></div><div class="row"><span>Nombres semanales necesarios</span><strong id="ingNombres">0</strong></div></div></section></div><div class="formula soft">Los ingresos son aproximados y están basados exclusivamente en VENTA PERSONAL. El ingreso crece cuando la actividad crece; tu meta de dinero debe convertirse en meta de volumen y nombres.</div></section>
 <section class="screen legacy-planning-screen" id="admin"><div class="screen-head"><div><h2>Administración de ingresos</h2><p>Una guía simple para no gastar todo lo que entra y proteger la reinversión del negocio.</p></div></div><div class="grid"><section class="panel"><h3>Define tu etapa</h3><p class="muted-text">Emprendedor: separa el 25% de lo que recibes para generar más demostraciones. JD o Distribuidor: si no tienes salario fijo, toma máximo el 30% para ti y protege el resto para operación, equipo y crecimiento.</p><label class="field"><span>Tipo</span><select id="adminTipo"><option value="emprendedor">Emprendedor</option><option value="jd">Distribuidor Junior / Distribuidor</option></select></label><label class="field"><span>Dinero recibido en COP</span><div class="money-input"><span>$</span><input id="adminMonto" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel"><h3>Distribución sugerida</h3><div class="formula soft" id="adminExplica">El objetivo es convertir cada pago en combustible para más actividad.</div><div class="order-form"><div class="row featured"><span id="adminReservaLabel">Guardar para demostraciones</span><strong id="adminReserva">$ 0</strong></div><div class="row final"><span id="adminDisponibleLabel">Disponible después de separar</span><strong id="adminDisponible">$ 0</strong></div></div></section></div><div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div></section>
 <section class="screen" id="toppers">
-<div class="screen-head"><div><h2>Salón de los Toppers</h2><p>Consulta el histórico de Junio y sigue en vivo el avance de Julio 2026.</p></div></div>
+<div class="screen-head"><div><h2>Salón de los Toppers</h2><p>Consulta los cierres históricos de Junio y Julio, y sigue la cuenta regresiva de Agosto 2026.</p></div></div>
 <section class="panel toppers-hero">
 <div class="trophy">🏆</div>
 <h3>SALÓN DE LOS TOPPERS</h3>
-<p><strong>Julio 2026 está en marcha.</strong><br/><span class="topper-subline">Los Toppers de Julio se actualizarán semanalmente. Por el momento, visualiza y felicita también a los Toppers que cerraron Junio.</span></p>
-<div class="countdown-label">Tiempo restante para finalizar Julio</div>
+<p><strong>Agosto 2026 está en marcha.</strong><br/><span class="topper-subline">Muy pronto conoceremos a quienes están marcando el ritmo este mes. Por ahora, celebremos a los grandes Toppers que cerraron Julio.</span></p>
+<div class="countdown-label">Tiempo restante para finalizar Agosto</div>
 <div class="countdown" id="topCountdown"><div><strong>00</strong><span>Días</span></div><div><strong>00</strong><span>Horas</span></div><div><strong>00</strong><span>Minutos</span></div><div><strong>00</strong><span>Segundos</span></div></div>
 </section>
 <div aria-label="Mes del ranking" class="topper-month-tabs" role="tablist">
 <button class="topper-month-tab" data-month="junio">Junio 2026 · Histórico</button>
-<button class="topper-month-tab active" data-month="julio">Julio 2026 · A la fecha</button>
+<button class="topper-month-tab" data-month="julio">Julio 2026 · Cierre final</button>
+<button class="topper-month-tab active" data-month="agosto">Agosto 2026 · En marcha</button>
 </div>
-<div class="topper-month-note" id="topperMonthNote">Ranking de Julio a la fecha. El mes aún está en competencia.</div>
+<div class="topper-month-note" id="topperMonthNote">Agosto está en marcha. El primer ranking se publicará próximamente.</div>
 <div class="topper-tabs"><button class="topper-tab active" data-top="personal">Venta personal</button><button class="topper-tab" data-top="junior">Mejor Distribuidor Junior</button><button class="topper-tab" data-top="distribuidores">Mejor Distribuidor</button></div>
 <section class="panel podium-panel"><div class="result-title"><h3 id="podiumTitle">Venta personal</h3><span class="badge">Top 5</span></div><div class="podium" id="podium"></div><div class="topper-list" id="topperList"></div><div class="formula soft">El reconocimiento honra el resultado. La disciplina construye el camino para volver a estar aquí.</div></section>
 <div class="modal hidden" id="topperModal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div class="modal-medal" id="modalMedal">🥇</div><h3 id="modalName">Nombre</h3><p id="modalCity">Ciudad</p><p class="modal-distribution" id="modalDistribution"></p><strong id="modalVolume">US$ 0</strong><small id="modalCategory">Categoría</small></div></div>
 </section>
 </main>
 </div>
-<script src="app-v75.js?v=75"></script>
-<script src="sales-simulator-v75.js?v=75"></script>
-<script src="finance-simulator-v793.js?v=793"></script>
-<script src="planning-v801.js?v=801"></script>
+<script src="app-v75.js?v=802"></script>
+<script src="sales-simulator-v75.js?v=802"></script>
+<script src="finance-simulator-v793.js?v=802"></script>
+<script src="planning-v801.js?v=802"></script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
