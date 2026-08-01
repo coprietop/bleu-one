@@ -1743,11 +1743,94 @@ document.addEventListener('keydown',(e)=>{if(e.key==='Escape')document.body.clas
     const score=Math.round(correct/40*1000)/10; const passed=score>=70;
     result.classList.remove('hidden');
     result.innerHTML=`<div class="cert-result-card ${passed?'passed':'failed'}"><span class="eyebrow">Resultado final</span><h3>${passed?'¡Felicitaciones!':'Aún no has aprobado'}</h3><strong>${score}%</strong><p>${passed?'Has aprobado la Certificación de Asesor Comercial y obtienes la categoría de Asesor Comercial Experimentado.':'Necesitas mínimo 70%. Revisa tus respuestas e inténtalo nuevamente.'}</p></div><div class="module-score-grid">${modules.map((m,i)=>`<div><span>${m.name}</span><strong>${moduleScores[i]}%</strong></div>`).join('')}</div>${passed?`<div class="certificate-actions"><button class="primary-action" id="previewCertificate" type="button">Ver certificado <span>→</span></button><button class="small-action" id="downloadCertificate" type="button">Descargar certificado premium ↓</button></div><div class="certificate-preview-wrap hidden" id="certificatePreviewWrap"><canvas id="certificateCanvas" width="1600" height="1131"></canvas></div>`:`<button class="primary-action" id="retryAdvisorExam" type="button">Presentar nuevamente <span>→</span></button>`}`;
-    if(passed){document.getElementById('previewCertificate').onclick=()=>{drawCertificate(score);document.getElementById('certificatePreviewWrap').classList.remove('hidden');document.getElementById('certificatePreviewWrap').scrollIntoView({behavior:'smooth'});};document.getElementById('downloadCertificate').onclick=()=>{drawCertificate(score,()=>{const a=document.createElement('a');a.download=`Certificado-Asesor-Experimentado-${safeName(document.getElementById('certNombre').value)}.png`;a.href=document.getElementById('certificateCanvas').toDataURL('image/png');a.click();});};}
+    if(passed){
+      document.getElementById('previewCertificate').onclick=()=>{
+        drawCertificate(score);
+        document.getElementById('certificatePreviewWrap').classList.remove('hidden');
+        document.getElementById('certificatePreviewWrap').scrollIntoView({behavior:'smooth'});
+      };
+      const saveButton=document.getElementById('downloadCertificate');
+      saveButton.textContent='Guardar / compartir certificado ↓';
+      saveButton.onclick=()=>saveCertificateImage(score,saveButton);
+    }
     else document.getElementById('retryAdvisorExam').onclick=renderExam;
     result.scrollIntoView({behavior:'smooth',block:'start'});
   }
   const safeName=s=>(s||'Asesor').trim().replace(/[^a-z0-9áéíóúñ]+/gi,'-');
+  async function saveCertificateImage(score,button){
+    const originalText=button?.textContent||'Guardar / compartir certificado ↓';
+    const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||window.matchMedia('(pointer:coarse)').matches;
+    let fallbackWindow=null;
+    // Safari exige que la nueva pestaña nazca directamente del toque del usuario.
+    if(isMobile && !navigator.share){
+      fallbackWindow=window.open('','_blank');
+      if(fallbackWindow){
+        fallbackWindow.document.write('<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Preparando certificado…</title><style>body{margin:0;background:#071522;color:#fff;font-family:Arial,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px;box-sizing:border-box}p{opacity:.8}</style></head><body><div><h2>Preparando certificado…</h2><p>En unos segundos podrás guardarlo o compartirlo.</p></div></body></html>');
+        fallbackWindow.document.close();
+      }
+    }
+    try{
+      if(button){button.disabled=true;button.textContent='Preparando certificado…';}
+      await new Promise((resolve,reject)=>{
+        drawCertificate(score,resolve);
+        setTimeout(()=>reject(new Error('No fue posible generar el certificado.')),12000);
+      });
+      const canvas=document.getElementById('certificateCanvas');
+      if(!canvas) throw new Error('No se encontró el certificado.');
+      const blob=await new Promise((resolve,reject)=>{
+        if(canvas.toBlob){
+          canvas.toBlob(value=>value?resolve(value):reject(new Error('No fue posible crear la imagen.')),'image/png',1);
+        }else{
+          try{
+            const data=canvas.toDataURL('image/png',1).split(',')[1];
+            const binary=atob(data);const bytes=new Uint8Array(binary.length);
+            for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+            resolve(new Blob([bytes],{type:'image/png'}));
+          }catch(error){reject(error)}
+        }
+      });
+      const filename=`Certificado-Asesor-Experimentado-${safeName(document.getElementById('certNombre').value)}.png`;
+      const file=new File([blob],filename,{type:'image/png',lastModified:Date.now()});
+
+      // En iPhone/Android, compartir archivo es el flujo más confiable para Guardar en Fotos o Archivos.
+      if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
+        try{
+          await navigator.share({
+            title:'Certificado de Asesor Comercial Experimentado',
+            text:'Certificado generado por Bleu One',
+            files:[file]
+          });
+          return;
+        }catch(error){
+          if(error && error.name==='AbortError') return;
+          // Continúa al modo alternativo si el navegador rechaza el archivo.
+        }
+      }
+
+      const url=URL.createObjectURL(blob);
+      if(isMobile){
+        const target=fallbackWindow && !fallbackWindow.closed ? fallbackWindow : window.open('','_blank');
+        if(target){
+          target.document.open();
+          target.document.write(`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>${filename}</title><style>body{margin:0;background:#071522;color:#fff;font-family:Arial,sans-serif;text-align:center;padding:16px;box-sizing:border-box}img{display:block;width:100%;height:auto;max-width:1400px;margin:0 auto 18px;border-radius:10px;box-shadow:0 18px 60px rgba(0,0,0,.45)}p{margin:8px auto 16px;max-width:680px;line-height:1.45;color:#e7d8ae}a{display:inline-block;background:#d7b568;color:#071522;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:999px}</style></head><body><p><strong>Certificado listo.</strong><br>En iPhone toca Compartir y elige “Guardar imagen” o mantén presionada la imagen. En Android usa Descargar o Compartir.</p><img src="${url}" alt="Certificado de Asesor Comercial Experimentado"><a href="${url}" download="${filename}">Descargar imagen</a></body></html>`);
+          target.document.close();
+          setTimeout(()=>URL.revokeObjectURL(url),120000);
+          return;
+        }
+      }
+
+      const a=document.createElement('a');
+      a.href=url;a.download=filename;a.rel='noopener';
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),15000);
+    }catch(error){
+      if(fallbackWindow && !fallbackWindow.closed) fallbackWindow.close();
+      console.error(error);
+      alert('No fue posible guardar el certificado. Abre la vista previa y toma una captura, o inténtalo nuevamente.');
+    }finally{
+      if(button){button.disabled=false;button.textContent=originalText;}
+    }
+  }
   function drawCertificate(score,done){
     const canvas=document.getElementById('certificateCanvas'); if(!canvas)return; const c=canvas.getContext('2d');
     const nombre=document.getElementById('certNombre').value.trim()||'NOMBRE DEL ASESOR';
