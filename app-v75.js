@@ -1,5 +1,5 @@
 const porcentajes = {2:51.63,3:34.79,4:26.38,5:21.33,6:17.96,7:15.56,8:13.76,9:12.36,10:11.24,11:10.33,12:9.56,13:8.92,14:8.37,15:7.89,16:7.47,17:7.11,18:6.78,19:6.49,20:6.22,21:5.99,22:5.77,23:5.58,24:5.40,25:5.18,26:5.03,27:5.00};
-const COP_RATE = 3443.59;
+const COP_RATE = 3132.42;
 const $ = (id)=>document.getElementById(id);
 const moneyCOP = new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
 const numFmt = new Intl.NumberFormat('es-CO',{maximumFractionDigits:0});

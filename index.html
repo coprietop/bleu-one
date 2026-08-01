@@ -19,7 +19,7 @@
 <button class="nav-item" data-screen="cuota">Cuota</button>
 <button class="nav-item" data-screen="simuladorfin">Simulador Financiamiento</button>
 <button class="nav-item" data-screen="agregados">Agregados</button>
-<button class="nav-item" data-screen="nombres">Nombres</button>
+<button class="nav-item" data-screen="planificacion">Planificación</button>
 <button class="nav-item" data-screen="ascenso">Ascensos</button>
 <button class="nav-item" data-screen="ticket">Ticket Dorado</button>
 <button class="nav-item" data-screen="sistema122">Sistema 122</button>
@@ -30,8 +30,8 @@
 <button class="nav-item" data-screen="gimnasioventas">Demo Experience</button>
 <button class="nav-item" data-screen="monoazul">Programa Moño Azul</button>
 <button class="nav-item" data-screen="moto">Tickets Moto</button>
-<button class="nav-item" data-screen="ingresos">Proyección Ingresos</button>
-<button class="nav-item" data-screen="admin">Administración</button>
+
+
 <button class="nav-item" data-screen="toppers">Toppers</button>
 </nav>
 <div class="side-note"><strong>Bleu One</strong><span>Una sola app. Todo el territorio. Todas las herramientas.</span></div>
@@ -154,7 +154,115 @@
 </section>
 
 <section class="screen" id="agregados"><div class="screen-head"><div><h2>Agregados</h2><p>Calcula el total del cliente y su pago mensual según la tabla de financiación.</p></div></div><div class="grid"><section class="panel"><h3>Datos del agregado</h3><label class="field"><span>Saldo del cliente</span><div class="money-input"><span>$</span><input id="agSaldo" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Nueva compra <small>(IVA incluido)</small></span><div class="money-input"><span>$</span><input id="agCompra" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Cuota inicial <small>(opcional)</small></span><div class="money-input"><span>$</span><input id="agInicial" inputmode="numeric" placeholder="0" value=""/></div><small>Los agregados no necesitan cuota inicial, pero puedes escribirla si aplica.</small></label><label class="field"><span>Meses de financiación</span><select id="agMeses"></select></label></section><section class="panel"><h3>Resultado del agregado</h3><div class="order-form"><div class="row"><span>Saldo del cliente</span><strong id="agSaldoOut">$ 0</strong></div><div class="row"><span>Nueva compra IVA incluido</span><strong id="agCompraOut">$ 0</strong></div><div class="row"><span>Cuota inicial</span><strong id="agInicialOut">$ 0</strong></div><div class="row featured"><span>Total a financiar</span><strong id="agTotal">$ 0</strong></div><div class="row final"><span>Pago mensual aproximado</span><strong id="agPago">$ 0</strong></div></div><div class="formula" id="agFormula">Selecciona meses y escribe los valores para calcular.</div><div class="formula soft">Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.</div></section></div></section>
-<section class="screen" id="nombres"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Fórmula: volumen del mes ÷ 185.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
+
+<section class="screen" id="planificacion">
+  <div class="screen-head"><div><h2>Planificación</h2><p>Convierte tu meta mensual en un plan diario de acción.</p></div></div>
+  <div class="purpose-card planning-purpose"><strong>PLANIFICACIÓN BLEU</strong><p>No adivines cuánto debes trabajar. Convierte tu meta en actividad y tu actividad en ingreso.</p></div>
+
+  <section class="panel planning-ticket">
+    <div><span class="planning-kicker">Indicador territorial</span><h3>Ticket promedio actual del territorio Bleu</h3><p>Este valor es fijo para todas las proyecciones del módulo.</p></div>
+    <strong>US$ 1.200</strong>
+  </section>
+
+  <div class="planning-tabs" role="tablist" aria-label="Herramientas de planificación">
+    <button class="planning-tab active" data-planning-tab="meta" type="button">Desde mi meta</button>
+    <button class="planning-tab" data-planning-tab="actividad" type="button">Desde mi actividad</button>
+    <button class="planning-tab" data-planning-tab="ingreso" type="button">Mi ingreso</button>
+    <button class="planning-tab" data-planning-tab="admin" type="button">Cómo administrarlo</button>
+  </div>
+
+  <div class="planning-pane active" data-planning-pane="meta">
+    <div class="grid planning-input-grid">
+      <section class="panel">
+        <h3>Define tu meta</h3>
+        <label class="field"><span>Meta de VENTA PERSONAL del mes</span><div class="money-input"><span>US$</span><input id="planMetaUsd" inputmode="numeric" placeholder="12.000" value="12000"/></div></label>
+        <label class="field"><span>Nivel actual</span><select id="planRol"><option value="emprendedor">Emprendedor</option><option value="junior">Distribuidor Junior</option><option value="distribuidor">Distribuidor</option></select></label>
+        <label class="field"><span>Venta personal acumulada este mes</span><div class="money-input"><span>US$</span><input id="planVendidoActual" inputmode="numeric" placeholder="0" value="0"/></div></label>
+        <div class="planning-progress-wrap"><div class="planning-progress-head"><span>Avance de la meta</span><strong id="planMetaPct">0%</strong></div><div class="progress"><div id="planMetaBar"></div></div><p id="planMetaMessage" class="progress-message"></p></div>
+      </section>
+      <section class="panel planning-mission">
+        <span>Tu única misión esta semana</span>
+        <strong id="planNombresSemanaMeta">0</strong>
+        <b>NOMBRES</b>
+        <small>Indicador principal calculado con la ecuación Bleu: meta mensual ÷ 285.</small>
+      </section>
+    </div>
+
+    <section class="panel planning-funnel-panel">
+      <div class="result-title"><h3>Embudo estimado del mes</h3><span class="badge">VENTA PERSONAL</span></div>
+      <div class="planning-funnel">
+        <div class="funnel-step names"><span>Nombres mensuales</span><strong id="planNombresMesMeta">0</strong><small id="planNombresDiaMeta">0 por día de trabajo</small></div>
+        <i>↓</i>
+        <div class="funnel-step"><span>Citas agendadas</span><strong id="planCitasMeta">0</strong><small>3 a 4 citas por cada 10 nombres</small></div>
+        <i>↓</i>
+        <div class="funnel-step"><span>Demostraciones</span><strong id="planDemosMeta">0</strong><small>1 demo efectiva por cada 2 citas</small></div>
+        <i>↓</i>
+        <div class="funnel-step"><span>Ventas aproximadas</span><strong id="planVentasMeta">0</strong><small>1 venta por cada 3 demos</small></div>
+        <i>↓</i>
+        <div class="funnel-step income"><span>Volumen proyectado</span><strong id="planVolumenMeta">US$ 0</strong><small>Basado en ticket territorial de US$ 1.200</small></div>
+      </div>
+    </section>
+
+    <div class="grid planning-summary-grid">
+      <section class="panel"><h3>Lo que falta</h3><div class="order-form"><div class="row"><span>Volumen faltante</span><strong id="planFaltanteUsd">US$ 0</strong></div><div class="row"><span>Ventas aproximadas por lograr</span><strong id="planVentasFaltantes">0</strong></div><div class="row featured"><span>Nombres semanales desde hoy</span><strong id="planNombresFaltantes">0</strong></div></div></section>
+      <section class="panel"><h3>Plan semanal sugerido</h3><p class="muted-text">Distribución sencilla de lunes a sábado.</p><div id="planWeeklyGrid" class="planning-week-grid"></div></section>
+    </div>
+  </div>
+
+  <div class="planning-pane" data-planning-pane="actividad">
+    <div class="grid planning-input-grid">
+      <section class="panel">
+        <h3>¿Qué pasa si aumento mi actividad?</h3>
+        <label class="field"><span>Nombres que trabajarás por semana</span><input class="plain-input" id="planNombresSemanaSim" inputmode="numeric" placeholder="70" value="70"/></label>
+        <div class="formula soft">Mueve este número y observa cómo cambia todo el embudo. La ganancia es el resultado; los nombres son la causa.</div>
+      </section>
+      <section class="panel planning-income-highlight"><span>Ingreso aproximado mensual</span><strong id="planIngresoSimCop">$ 0</strong><small>Estimación de VENTA PERSONAL según el nivel seleccionado.</small></section>
+    </div>
+
+    <section class="panel planning-funnel-panel">
+      <div class="result-title"><h3>Proyección desde la actividad</h3><span class="badge" id="planScenarioBadge">70 nombres / semana</span></div>
+      <div class="planning-funnel compact">
+        <div class="funnel-step names"><span>Nombres al mes</span><strong id="planNombresSimMes">0</strong></div><i>→</i>
+        <div class="funnel-step"><span>Citas</span><strong id="planCitasSim">0</strong></div><i>→</i>
+        <div class="funnel-step"><span>Demos</span><strong id="planDemosSim">0</strong></div><i>→</i>
+        <div class="funnel-step"><span>Ventas</span><strong id="planVentasSim">0</strong></div><i>→</i>
+        <div class="funnel-step income"><span>Volumen</span><strong id="planVolumenSim">US$ 0</strong></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="result-title"><h3>Comparador de escenarios</h3><span class="badge">Actividad → resultado</span></div>
+      <div class="planning-table-wrap"><table class="planning-table"><thead><tr><th>Indicador</th><th>Ritmo mínimo</th><th>Ritmo recomendado</th><th>Tu nuevo ritmo</th></tr></thead><tbody id="planComparisonBody"></tbody></table></div>
+      <div class="formula soft" id="planComparisonTip"></div>
+    </section>
+
+    <section class="panel">
+      <div class="result-title"><h3>Radar Bleu</h3><span class="badge">Enfoque de actividad</span></div>
+      <div class="planning-radar" id="planRadar"></div>
+    </section>
+  </div>
+
+  <div class="planning-pane" data-planning-pane="ingreso">
+    <div class="grid planning-summary-grid">
+      <section class="panel planning-income-card"><span>Meta de VENTA PERSONAL</span><strong id="planIngresoMetaUsd">US$ 0</strong><small>Volumen mensual seleccionado.</small></section>
+      <section class="panel planning-income-card gold"><span>Ingreso aproximado mensual</span><strong id="planIngresoMetaCop">$ 0</strong><small>Sin mostrar porcentajes internos.</small></section>
+      <section class="panel planning-income-card"><span>Potencial anual</span><strong id="planIngresoAnualCop">$ 0</strong><small>Si mantienes el mismo ritmo durante 12 meses.</small></section>
+    </div>
+    <section class="panel"><h3>Importante</h3><div class="formula soft">Los ingresos mostrados son aproximados y corresponden exclusivamente a <strong>VENTA PERSONAL</strong>. Pueden variar según aprobación, devoluciones, comportamiento de pago y plan de compensación vigente.</div></section>
+  </div>
+
+  <div class="planning-pane" data-planning-pane="admin">
+    <div class="grid planning-summary-grid">
+      <section class="panel"><h3>Administración sugerida</h3><p class="muted-text" id="planAdminIntro"></p><div class="order-form"><div class="row featured"><span id="planAdminReserveLabel">Reserva sugerida</span><strong id="planAdminReserve">$ 0</strong></div><div class="row final"><span id="planAdminAvailableLabel">Disponible sugerido</span><strong id="planAdminAvailable">$ 0</strong></div></div></section>
+      <section class="panel"><h3>Consejos según tu nivel</h3><div id="planAdminAdvice" class="planning-advice-list"></div></section>
+    </div>
+    <div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div>
+  </div>
+
+  <section class="panel planning-adn"><span>💎 ADN BLEU</span><p id="planAdnText">Las metas no se alcanzan con motivación, sino con actividad organizada.</p><button class="primary-action small-action" id="planAdnNext" type="button">Otra frase</button></section>
+</section>
+
+<section class="screen legacy-planning-screen" id="nombres"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Fórmula: volumen del mes ÷ 185.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
 <section class="screen" id="ascenso">
 <div class="screen-head"><div><h2>Ascensos</h2><p>Elige tu siguiente meta y revisa tu progreso con claridad.</p></div></div>
 <div class="ascenso-picker" id="ascensoCards"></div>
@@ -467,10 +575,10 @@
 </section>
 <div class="formula soft">Los grandes premios no se ganan en un solo día: se construyen con actividad sostenida.</div>
 </section>
-<section class="screen" id="ingresos"><div class="screen-head"><div><h2>Proyección de ingresos</h2><p>Valores aproximados. Tasa usada: US$1 = $3.443,59 COP.</p></div></div><div class="grid">
+<section class="screen legacy-planning-screen" id="ingresos"><div class="screen-head"><div><h2>Proyección de ingresos</h2><p>Valores aproximados. Tasa usada: US$1 = $3.443,59 COP.</p></div></div><div class="grid">
 <section class="panel"><h3>1. Ganancias según nivel</h3><p class="muted-text"><strong>Importante:</strong> ingresa únicamente volumen de <strong>VENTA PERSONAL</strong>. Los ingresos son aproximados según el nivel.</p><label class="field"><span>Nivel</span><select id="ingRol"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Volumen de venta personal en USD</span><div class="money-input"><span>US$</span><input id="ingVol" inputmode="numeric" placeholder="0" value=""/></div></label><div class="order-form"><div class="row featured"><span>Ingreso aproximado USD</span><strong id="ingUsd">US$ 0</strong></div><div class="row"><span>Ingreso aproximado COP</span><strong id="ingCop">$ 0</strong></div></div></section>
 <section class="panel"><h3>2. ¿Cuánto quiero ganar?</h3><p class="muted-text"><strong>Importante:</strong> escribe cuánto quieres ganar en pesos colombianos. Bleu One lo convierte a dólares y calcula el volumen de <strong>VENTA PERSONAL</strong> aproximado y los nombres necesarios.</p><label class="field"><span>Nivel</span><select id="ingRolDeseado"><option value="0.162">Emprendedor</option><option value="0.38">Distribuidor Junior</option><option value="0.47">Distribuidor</option></select></label><label class="field"><span>Quiero ganar este mes en COP</span><div class="money-input"><span>$</span><input id="ingDeseadoCop" inputmode="numeric" placeholder="0" value=""/></div></label><div class="order-form"><div class="row"><span>Equivalente aproximado en USD</span><strong id="ingDeseadoUsd">US$ 0</strong></div><div class="row final"><span>Volumen de venta personal necesario</span><strong id="ingVolNecesario">US$ 0</strong></div><div class="row"><span>Nombres semanales necesarios</span><strong id="ingNombres">0</strong></div></div></section></div><div class="formula soft">Los ingresos son aproximados y están basados exclusivamente en VENTA PERSONAL. El ingreso crece cuando la actividad crece; tu meta de dinero debe convertirse en meta de volumen y nombres.</div></section>
-<section class="screen" id="admin"><div class="screen-head"><div><h2>Administración de ingresos</h2><p>Una guía simple para no gastar todo lo que entra y proteger la reinversión del negocio.</p></div></div><div class="grid"><section class="panel"><h3>Define tu etapa</h3><p class="muted-text">Emprendedor: separa el 25% de lo que recibes para generar más demostraciones. JD o Distribuidor: si no tienes salario fijo, toma máximo el 30% para ti y protege el resto para operación, equipo y crecimiento.</p><label class="field"><span>Tipo</span><select id="adminTipo"><option value="emprendedor">Emprendedor</option><option value="jd">Distribuidor Junior / Distribuidor</option></select></label><label class="field"><span>Dinero recibido en COP</span><div class="money-input"><span>$</span><input id="adminMonto" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel"><h3>Distribución sugerida</h3><div class="formula soft" id="adminExplica">El objetivo es convertir cada pago en combustible para más actividad.</div><div class="order-form"><div class="row featured"><span id="adminReservaLabel">Guardar para demostraciones</span><strong id="adminReserva">$ 0</strong></div><div class="row final"><span id="adminDisponibleLabel">Disponible después de separar</span><strong id="adminDisponible">$ 0</strong></div></div></section></div><div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div></section>
+<section class="screen legacy-planning-screen" id="admin"><div class="screen-head"><div><h2>Administración de ingresos</h2><p>Una guía simple para no gastar todo lo que entra y proteger la reinversión del negocio.</p></div></div><div class="grid"><section class="panel"><h3>Define tu etapa</h3><p class="muted-text">Emprendedor: separa el 25% de lo que recibes para generar más demostraciones. JD o Distribuidor: si no tienes salario fijo, toma máximo el 30% para ti y protege el resto para operación, equipo y crecimiento.</p><label class="field"><span>Tipo</span><select id="adminTipo"><option value="emprendedor">Emprendedor</option><option value="jd">Distribuidor Junior / Distribuidor</option></select></label><label class="field"><span>Dinero recibido en COP</span><div class="money-input"><span>$</span><input id="adminMonto" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel"><h3>Distribución sugerida</h3><div class="formula soft" id="adminExplica">El objetivo es convertir cada pago en combustible para más actividad.</div><div class="order-form"><div class="row featured"><span id="adminReservaLabel">Guardar para demostraciones</span><strong id="adminReserva">$ 0</strong></div><div class="row final"><span id="adminDisponibleLabel">Disponible después de separar</span><strong id="adminDisponible">$ 0</strong></div></div></section></div><div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div></section>
 <section class="screen" id="toppers">
 <div class="screen-head"><div><h2>Salón de los Toppers</h2><p>Consulta el histórico de Junio y sigue en vivo el avance de Julio 2026.</p></div></div>
 <section class="panel toppers-hero">
@@ -494,6 +602,7 @@
 <script src="app-v75.js?v=75"></script>
 <script src="sales-simulator-v75.js?v=75"></script>
 <script src="finance-simulator-v793.js?v=793"></script>
+<script src="planning-v801.js?v=801"></script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
