@@ -8,7 +8,7 @@
 <title>Bleu One v8.1 · Actualización financiera Agosto 2026</title>
 <link href="manifest.json" rel="manifest"/>
 <link href="styles-v75.css?v=81" rel="stylesheet"/>
-<link href="planning-v806.css?v=81" rel="stylesheet"/>
+<link href="planning-v811.css?v=811" rel="stylesheet"/>
 </head>
 <body class="locked">
 <div class="app-shell">
@@ -185,7 +185,7 @@
         <span>Tu única misión esta semana</span>
         <strong id="planNombresSemanaMeta">0</strong>
         <b>NOMBRES</b>
-        <small>Indicador principal calculado con la ecuación Bleu: meta mensual ÷ 185.</small>
+        <small>La meta mensual se convierte automáticamente en actividad semanal.</small>
       </section>
     </div>
 
@@ -200,10 +200,11 @@
       <div class="result-title"><div><span class="planning-kicker">DE LA META A LA ACTIVIDAD</span><h3>Embudo mensual estimado</h3></div><span class="badge">VENTA PERSONAL</span></div>
       <div class="funnel-visual" aria-label="Embudo de planificación">
         <div class="funnel-tier tier-1"><div><span>Nombres mensuales</span><strong id="planNombresMesMeta">0</strong><small id="planNombresDiaMeta">0 por día de trabajo</small></div></div>
-        <div class="funnel-tier tier-2"><div><span>Citas agendadas</span><strong id="planCitasMeta">0</strong><small>3 a 4 citas por cada 10 nombres</small></div></div>
-        <div class="funnel-tier tier-3"><div><span>Demostraciones</span><strong id="planDemosMeta">0</strong><small>1 demo efectiva por cada 2 citas</small></div></div>
-        <div class="funnel-tier tier-4"><div><span>Ventas aproximadas</span><strong id="planVentasMeta">0</strong><small>1 venta por cada 3 demos</small></div></div>
-        <div class="funnel-tier tier-5"><div><span>Volumen proyectado</span><strong id="planVolumenMeta">US$ 0</strong><small>Ticket territorial fijo: US$ 1.200</small></div></div>
+        <div class="funnel-tier tier-2"><div><span>Citas agendadas</span><strong id="planCitasMeta">0</strong><small>Conversaciones programadas para avanzar.</small></div></div>
+        <div class="funnel-tier tier-3"><div><span>Demostraciones</span><strong id="planDemosMeta">0</strong><small>Visitas efectivamente realizadas.</small></div></div>
+        <div class="funnel-tier tier-4"><div><span>Ventas aproximadas</span><strong id="planVentasMeta">0</strong><small>Ventas generadas durante la actividad.</small></div></div>
+        <div class="funnel-tier tier-5"><div><span>Ventas aprobadas estimadas</span><strong id="planAprobadasMeta">0</strong><small>Resultado esperado después de posibles cancelaciones.</small></div></div>
+        <div class="funnel-tier tier-6"><div><span>Volumen proyectado</span><strong id="planVolumenMeta">US$ 0</strong><small>Ticket territorial fijo: US$ 1.200</small></div></div>
       </div>
       <div class="funnel-caption">Cada nivel nace del anterior: más nombres trabajados crean más conversaciones, más demostraciones y más ventas.</div>
     </section>
@@ -224,7 +225,8 @@
         <div class="funnel-tier tier-2"><div><span>Citas</span><strong id="planCitasSim">0</strong></div></div>
         <div class="funnel-tier tier-3"><div><span>Demos</span><strong id="planDemosSim">0</strong></div></div>
         <div class="funnel-tier tier-4"><div><span>Ventas</span><strong id="planVentasSim">0</strong></div></div>
-        <div class="funnel-tier tier-5"><div><span>Volumen</span><strong id="planVolumenSim">US$ 0</strong></div></div>
+        <div class="funnel-tier tier-5"><div><span>Ventas aprobadas</span><strong id="planAprobadasSim">0</strong></div></div>
+        <div class="funnel-tier tier-6"><div><span>Volumen</span><strong id="planVolumenSim">US$ 0</strong></div></div>
       </div>
     </section>
 
@@ -244,9 +246,24 @@
     <div class="planning-section-title hero-title"><span>03</span><div><h3>Proyección de ingresos</h3><p>Una lectura simple de lo que puede producir tu venta personal.</p></div></div>
     <div class="grid planning-summary-grid planning-income-grid">
       <section class="panel planning-income-card"><span>Meta de VENTA PERSONAL</span><strong id="planIngresoMetaUsd">US$ 0</strong><small>Volumen mensual seleccionado.</small></section>
-      <section class="panel planning-income-card gold"><span>Ingreso aproximado mensual</span><strong id="planIngresoMetaCop">$ 0</strong><small>Sin mostrar porcentajes internos.</small></section>
+      <section class="panel planning-income-card gold"><span>Ingreso aproximado mensual</span><strong id="planIngresoMetaCop">$ 0</strong><small>Estimación según el nivel seleccionado.</small></section>
       <section class="panel planning-income-card"><span>Potencial anual</span><strong id="planIngresoAnualCop">$ 0</strong><small>Si mantienes el mismo ritmo durante 12 meses.</small></section>
     </div>
+    <section class="panel planning-income-target">
+      <div class="planning-section-title"><span>05</span><div><h3>Planifica desde el ingreso que quieres recibir</h3><p>Escribe tu ingreso mensual deseado y Bleu One convierte esa meta en volumen y actividad semanal.</p></div></div>
+      <div class="grid planning-input-grid">
+        <label class="field"><span>Ingreso mensual deseado en COP</span><div class="money-input"><span>$</span><input id="planIngresoDeseadoCop" inputmode="numeric" placeholder="5.000.000" value="5000000"/></div></label>
+        <section class="planning-income-highlight compact-income"><span>Ingreso que quieres construir</span><strong id="planIngresoDeseadoOut">$ 0</strong><small>Proyección de VENTA PERSONAL.</small></section>
+      </div>
+      <div class="grid planning-summary-grid planning-income-grid planning-income-required">
+        <section class="panel planning-income-card"><span>Volumen mensual requerido</span><strong id="planVolumenRequeridoOut">US$ 0</strong><small>Meta aproximada de venta personal.</small></section>
+        <section class="panel planning-income-card gold"><span>Nombres por semana</span><strong id="planNombresIngresoOut">0</strong><small>Tu indicador principal de actividad.</small></section>
+        <section class="panel planning-income-card"><span>Citas al mes</span><strong id="planCitasIngresoOut">0</strong><small>Agenda necesaria estimada.</small></section>
+        <section class="panel planning-income-card"><span>Demostraciones</span><strong id="planDemosIngresoOut">0</strong><small>Visitas efectivas estimadas.</small></section>
+        <section class="panel planning-income-card"><span>Ventas generadas</span><strong id="planVentasIngresoOut">0</strong><small>Antes de posibles cancelaciones.</small></section>
+        <section class="panel planning-income-card"><span>Ventas aprobadas</span><strong id="planAprobadasIngresoOut">0</strong><small>Resultado final estimado.</small></section>
+      </div>
+    </section>
     <section class="panel"><h3>Importante</h3><div class="formula soft">Los ingresos mostrados son aproximados y corresponden exclusivamente a <strong>VENTA PERSONAL</strong>. Pueden variar según aprobación, devoluciones, comportamiento de pago y plan de compensación vigente.</div></section>
   </div>
 
@@ -262,7 +279,7 @@
   <section class="panel planning-adn"><span>💎 ADN BLEU</span><p id="planAdnText">Las metas no se alcanzan con motivación, sino con actividad organizada.</p><button class="primary-action small-action" id="planAdnNext" type="button">Otra frase</button></section>
 </section>
 
-<section class="screen legacy-planning-screen" id="nombres"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Fórmula: volumen del mes ÷ 185.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
+<section class="screen legacy-planning-screen" id="nombres"><div class="screen-head"><div><h2>Nombres semanales</h2><p>Calcula cuántos nombres necesita traer semanalmente según su meta de volumen mensual.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Meta de volumen mensual en USD</span><div class="money-input"><span>US$</span><input id="metaNombres" inputmode="numeric" placeholder="0" value=""/></div></label></section><section class="panel hero-result"><span>Nombres semanales aproximados</span><strong id="nombresOut">0</strong><small>Resultado semanal recomendado.</small></section><div class="formula soft">Quien sabe cuántos nombres necesita, deja de esperar resultados y empieza a construirlos.</div></div></section>
 <section class="screen" id="ascenso">
 <div class="screen-head"><div><h2>Ascensos</h2><p>Elige tu siguiente meta y revisa tu progreso con claridad.</p></div></div>
 <div class="ascenso-picker" id="ascensoCards"></div>
@@ -603,7 +620,7 @@
 <script src="app-v75.js?v=81"></script>
 <script src="sales-simulator-v75.js?v=81"></script>
 <script src="finance-simulator-v793.js?v=81"></script>
-<script src="planning-v806.js?v=81"></script>
+<script src="planning-v811.js?v=811"></script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>

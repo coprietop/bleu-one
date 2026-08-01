@@ -5,8 +5,8 @@
   const q=id=>document.getElementById(id);
   const RATE=3132.42;
   const TICKET=1200;
-  const WEEKS=4.33;
-  const NAMES_DIVISOR=185;
+  const WEEKS=4;
+  const NAMES_DIVISOR=200;
   const ROLE_RATE={emprendedor:.162,junior:.38,distribuidor:.47};
   const fmtNum=new Intl.NumberFormat('es-CO',{maximumFractionDigits:0});
   const fmtCop=new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
@@ -20,11 +20,12 @@
   }
   function funnelFromNames(namesWeek){
     const namesMonth=Math.max(0,namesWeek)*WEEKS;
-    const appointments=namesMonth*.35;
+    const appointments=namesMonth*.30;
     const demos=appointments/2;
     const sales=demos/3;
-    const volume=sales*TICKET;
-    return {namesWeek,namesMonth,appointments,demos,sales,volume};
+    const approvedSales=sales*.90;
+    const volume=approvedSales*TICKET;
+    return {namesWeek,namesMonth,appointments,demos,sales,approvedSales,volume};
   }
   function scenarioFromGoal(goal){
     const namesWeek=goal>0?goal/NAMES_DIVISOR:0;
@@ -46,7 +47,8 @@
     return '🌱 La meta todavía se construye. Empieza por los nombres.';
   }
   function statusClass(p){return p>=90?'green':p>=65?'yellow':''}
-  function radarCard(label,p){const val=clamp(p);return `<div class="radar-card ${statusClass(val)}"><div class="radar-head"><span>${label}</span><strong>${Math.round(val)}%</strong></div><div class="radar-track"><div class="radar-fill" style="width:${val}%"></div></div></div>`}
+  function statusLabel(p){return p>=100?'Meta lograda':p>=90?'Excelente':p>=65?'Buen ritmo':p>=35?'En marcha':'Por reforzar'}
+  function radarCard(label,p){const val=clamp(p);return `<div class="radar-card ${statusClass(val)}"><div class="radar-head"><span>${label}</span><strong>${statusLabel(val)}</strong></div><div class="radar-track"><div class="radar-fill" style="width:${val}%"></div></div></div>`}
   function adminData(role,monthlyIncome){
     if(role==='emprendedor') return {
       reserve:monthlyIncome*.25, available:monthlyIncome*.75,
@@ -73,16 +75,19 @@
     const sold=clean(q('planVendidoActual')?.value);
     const role=q('planRol')?.value||'emprendedor';
     const customNames=Math.max(0,clean(q('planNombresSemanaSim')?.value));
+    const desiredIncomeCop=clean(q('planIngresoDeseadoCop')?.value);
     const goalFunnel=scenarioFromGoal(goal);
     const custom=funnelFromNames(customNames);
     const recommended=funnelFromNames(goalFunnel.namesWeek*1.15);
     const goalIncomeUsd=income(goal,role);
     const goalIncomeCop=goalIncomeUsd*RATE;
     const customIncomeCop=income(custom.volume,role)*RATE;
-    state={goal,sold,role,customNames,goalFunnel,custom,recommended,goalIncomeCop,customIncomeCop};
+    const requiredVolumeUsd=desiredIncomeCop>0?desiredIncomeCop/RATE/(ROLE_RATE[role]||ROLE_RATE.emprendedor):0;
+    const requiredFunnel=scenarioFromGoal(requiredVolumeUsd);
+    state={goal,sold,role,customNames,goalFunnel,custom,recommended,goalIncomeCop,customIncomeCop,desiredIncomeCop,requiredVolumeUsd,requiredFunnel};
 
     const pct=goal?clamp(sold/goal*100):0;
-    setText('planMetaPct',Math.round(pct)+'%');
+    setText('planMetaPct',pct>=100?'Meta cumplida':pct>=70?'Muy cerca':pct>=35?'En marcha':'En inicio');
     const bar=q('planMetaBar');if(bar)bar.style.width=pct+'%';
     setText('planMetaMessage',progressMessage(pct));
     setText('planNombresSemanaMeta',fmtNum.format(Math.ceil(goalFunnel.namesWeek)));
@@ -91,6 +96,7 @@
     setText('planCitasMeta',fmtNum.format(Math.ceil(goalFunnel.appointments)));
     setText('planDemosMeta',fmtNum.format(Math.ceil(goalFunnel.demos)));
     setText('planVentasMeta',fmtNum.format(Math.ceil(goalFunnel.sales)));
+    setText('planAprobadasMeta',fmtNum.format(Math.ceil(goalFunnel.approvedSales)));
     setText('planVolumenMeta',usd(goalFunnel.volume));
 
     const remain=Math.max(0,goal-sold); const remainFunnel=scenarioFromGoal(remain);
@@ -104,6 +110,7 @@
     setText('planCitasSim',fmtNum.format(Math.ceil(custom.appointments)));
     setText('planDemosSim',fmtNum.format(Math.ceil(custom.demos)));
     setText('planVentasSim',fmtNum.format(Math.ceil(custom.sales)));
+    setText('planAprobadasSim',fmtNum.format(Math.ceil(custom.approvedSales)));
     setText('planVolumenSim',usd(custom.volume));
     setText('planIngresoSimCop',cop(customIncomeCop));
 
@@ -118,6 +125,13 @@
     setText('planIngresoMetaUsd',usd(goal));
     setText('planIngresoMetaCop',cop(goalIncomeCop));
     setText('planIngresoAnualCop',cop(goalIncomeCop*12));
+    setText('planIngresoDeseadoOut',cop(desiredIncomeCop));
+    setText('planVolumenRequeridoOut',usd(requiredVolumeUsd));
+    setText('planNombresIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.namesWeek)));
+    setText('planCitasIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.appointments)));
+    setText('planDemosIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.demos)));
+    setText('planVentasIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.sales)));
+    setText('planAprobadasIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.approvedSales)));
     const adm=adminData(role,goalIncomeCop);
     setText('planAdminIntro',adm.intro);setText('planAdminReserve',cop(adm.reserve));setText('planAdminAvailable',cop(adm.available));
     setText('planAdminReserveLabel',adm.reserveLabel);setText('planAdminAvailableLabel',adm.availableLabel);
@@ -128,7 +142,8 @@
       ['Nombres por semana',Math.ceil(minimum.namesWeek),Math.ceil(recommended.namesWeek),Math.ceil(custom.namesWeek)],
       ['Citas al mes',Math.ceil(minimum.appointments),Math.ceil(recommended.appointments),Math.ceil(custom.appointments)],
       ['Demos al mes',Math.ceil(minimum.demos),Math.ceil(recommended.demos),Math.ceil(custom.demos)],
-      ['Ventas aproximadas',Math.ceil(minimum.sales),Math.ceil(recommended.sales),Math.ceil(custom.sales)],
+      ['Ventas generadas',Math.ceil(minimum.sales),Math.ceil(recommended.sales),Math.ceil(custom.sales)],
+      ['Ventas aprobadas estimadas',Math.ceil(minimum.approvedSales),Math.ceil(recommended.approvedSales),Math.ceil(custom.approvedSales)],
       ['Volumen mensual',usd(minimum.volume),usd(recommended.volume),usd(custom.volume)],
       ['Ingreso aproximado',cop(income(minimum.volume,role)*RATE),cop(income(recommended.volume,role)*RATE),cop(income(custom.volume,role)*RATE)]
     ];
@@ -155,7 +170,7 @@
   document.querySelectorAll('.planning-tab').forEach(btn=>btn.addEventListener('click',()=>activatePlanningTab(btn.dataset.planningTab)));
   const savedTab=(()=>{try{return sessionStorage.getItem('bleuPlanningTab')}catch(e){return null}})();
   activatePlanningTab(['meta','embudo','ingreso','admin'].includes(savedTab)?savedTab:'meta');
-  bindMoney(q('planMetaUsd'),calculate);bindMoney(q('planVendidoActual'),calculate);
+  bindMoney(q('planMetaUsd'),calculate);bindMoney(q('planVendidoActual'),calculate);bindMoney(q('planIngresoDeseadoCop'),calculate);
   q('planRol')?.addEventListener('change',calculate);q('planNombresSemanaSim')?.addEventListener('input',calculate);
   const phrases=['Las metas no se alcanzan con motivación, sino con actividad organizada.','Tu agenda siempre revela tu próximo cheque.','No persigas ventas: construye nombres trabajados.','El ingreso nunca supera por mucho tiempo el nivel de actividad.','Una semana extraordinaria casi siempre fue preparada con nombres días antes.','La claridad convierte una meta grande en una acción de hoy.','Sin nombres no hay paraíso; con nombres trabajados hay futuro.','No midas únicamente ventas: mide las acciones que las producen.','La constancia semanal vence a la intensidad ocasional.','Tu próxima venta comienza mucho antes de tocar una puerta.','La planificación protege tu enfoque cuando la emoción cambia.','Lo que no se agenda, casi siempre se posterga.','Un gran mes se construye una semana a la vez.','El sistema no limita: protege la repetición correcta.','Cada nombre trabajado es una posibilidad que ayer no existía.'];
   let phrase=0;q('planAdnNext')?.addEventListener('click',()=>{phrase=(phrase+1)%phrases.length;setText('planAdnText',phrases[phrase]);});
