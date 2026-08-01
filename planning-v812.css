@@ -54,3 +54,11 @@
 }
 
 .planning-income-target{margin-top:18px}.compact-income{min-height:180px}.planning-income-required{margin-top:16px;grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:900px){.planning-income-required{grid-template-columns:1fr 1fr}}@media(max-width:620px){.planning-income-required{grid-template-columns:1fr}}
+
+
+/* v8.1.2 — Claridad por nivel, ingreso bajo embudo y notas de origen */
+.planning-funnel-income{max-width:760px;margin:20px auto 4px;padding:20px 22px;border-radius:20px;text-align:center;background:linear-gradient(135deg,rgba(245,196,81,.16),rgba(12,39,65,.84));border:1px solid rgba(245,196,81,.28);box-shadow:0 18px 42px rgba(0,0,0,.18)}
+.planning-funnel-income span{display:block;color:#d7e3f2;font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.planning-funnel-income strong{display:block;color:var(--gold);font-size:clamp(30px,5vw,52px);margin:8px 0 4px}.planning-funnel-income small{color:var(--muted)}
+.planning-source-note{margin:16px auto 0;padding:14px 16px;border-radius:16px;background:rgba(73,150,215,.08);border:1px solid rgba(107,173,232,.18);color:#b9cce0;line-height:1.5;font-size:13px}.planning-source-note strong{color:#dcecff}.planning-source-note.compact{max-width:820px}
+.planning-income-controls{display:grid;gap:14px}.planning-admin-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:10px}.planning-admin-heading>div>span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.planning-admin-heading>div>strong{display:block;color:var(--gold);font-size:26px;margin-top:5px}
+@media(max-width:620px){.planning-admin-heading{flex-direction:column}.planning-admin-heading .badge{align-self:flex-start}.planning-funnel-income{padding:17px 14px}}

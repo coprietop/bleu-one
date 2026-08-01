@@ -7,8 +7,8 @@
 <meta content="#05070c" name="theme-color"/>
 <title>Bleu One v8.1 · Actualización financiera Agosto 2026</title>
 <link href="manifest.json" rel="manifest"/>
-<link href="styles-v75.css?v=81" rel="stylesheet"/>
-<link href="planning-v811.css?v=811" rel="stylesheet"/>
+<link href="styles-v75.css?v=814" rel="stylesheet"/>
+<link href="planning-v812.css?v=812" rel="stylesheet"/>
 </head>
 <body class="locked">
 <div class="app-shell">
@@ -143,7 +143,7 @@
 <p class="finance-method-intro">La forma de calcular cambia, pero la tasa fija equivalente se ajusta para representar el mismo plazo y exactamente el mismo costo total estimado.</p>
 <div class="finance-method-table-wrap"><table class="finance-method-table"><thead><tr><th>Concepto</th><th>Interés mes vencido</th><th>Interés fijo equivalente</th></tr></thead><tbody>
 <tr><td>Capital financiado</td><td id="finCmpCapitalMv">$ 0</td><td id="finCmpCapitalFijo">$ 0</td></tr>
-<tr><td>Tasa mensual</td><td>2,10% MV</td><td id="finTasaFija">0,00% fija</td></tr>
+<tr><td>Tasa mensual</td><td>2,15% MV</td><td id="finTasaFija">0,00% fija</td></tr>
 <tr><td>Plazo estimado</td><td id="finCmpPlazoMv">0 meses</td><td id="finCmpPlazoFijo">0 meses</td></tr>
 <tr><td>Cuota estimada</td><td id="finCmpCuotaMv">$ 0</td><td id="finCmpCuotaFijo">$ 0</td></tr>
 <tr><td>Intereses totales</td><td id="finCmpInteresMv">$ 0</td><td id="finCmpInteresFijo">$ 0</td></tr>
@@ -206,7 +206,13 @@
         <div class="funnel-tier tier-5"><div><span>Ventas aprobadas estimadas</span><strong id="planAprobadasMeta">0</strong><small>Resultado esperado después de posibles cancelaciones.</small></div></div>
         <div class="funnel-tier tier-6"><div><span>Volumen proyectado</span><strong id="planVolumenMeta">US$ 0</strong><small>Ticket territorial fijo: US$ 1.200</small></div></div>
       </div>
+      <div class="planning-funnel-income">
+        <span>Ingreso aproximado mensual manteniendo este parámetro</span>
+        <strong id="planIngresoEmbudoOut">$ 0</strong>
+        <small>Proyección de VENTA PERSONAL según el nivel seleccionado en Mi meta.</small>
+      </div>
       <div class="funnel-caption">Cada nivel nace del anterior: más nombres trabajados crean más conversaciones, más demostraciones y más ventas.</div>
+      <div class="planning-source-note"><strong>Importante:</strong> estos nombres están calculados con base en la estadística de programas 4 en 14 bien trabajados. Si vas a complementar con nombres de buzones o stands, proyecta aproximadamente el doble de nombres.</div>
     </section>
 
     <div class="grid planning-input-grid planning-simulator-row">
@@ -228,6 +234,7 @@
         <div class="funnel-tier tier-5"><div><span>Ventas aprobadas</span><strong id="planAprobadasSim">0</strong></div></div>
         <div class="funnel-tier tier-6"><div><span>Volumen</span><strong id="planVolumenSim">US$ 0</strong></div></div>
       </div>
+      <div class="planning-source-note compact"><strong>Referencia:</strong> la proyección parte de programas 4 en 14 bien ejecutados. Para nombres provenientes de buzones o stands, considera trabajar aproximadamente el doble.</div>
     </section>
 
     <section class="panel">
@@ -252,8 +259,11 @@
     <section class="panel planning-income-target">
       <div class="planning-section-title"><span>05</span><div><h3>Planifica desde el ingreso que quieres recibir</h3><p>Escribe tu ingreso mensual deseado y Bleu One convierte esa meta en volumen y actividad semanal.</p></div></div>
       <div class="grid planning-input-grid">
-        <label class="field"><span>Ingreso mensual deseado en COP</span><div class="money-input"><span>$</span><input id="planIngresoDeseadoCop" inputmode="numeric" placeholder="5.000.000" value="5000000"/></div></label>
-        <section class="planning-income-highlight compact-income"><span>Ingreso que quieres construir</span><strong id="planIngresoDeseadoOut">$ 0</strong><small>Proyección de VENTA PERSONAL.</small></section>
+        <div class="planning-income-controls">
+          <label class="field"><span>Tu nivel para esta proyección</span><select id="planIngresoRol"><option value="emprendedor">Emprendedor</option><option value="junior">Distribuidor Junior</option><option value="distribuidor">Distribuidor</option></select></label>
+          <label class="field"><span>Ingreso mensual deseado en COP</span><div class="money-input"><span>$</span><input id="planIngresoDeseadoCop" inputmode="numeric" placeholder="5.000.000" value="5000000"/></div></label>
+        </div>
+        <section class="planning-income-highlight compact-income"><span>Ingreso que quieres construir</span><strong id="planIngresoDeseadoOut">$ 0</strong><small id="planIngresoRoleNote">Proyección de VENTA PERSONAL.</small></section>
       </div>
       <div class="grid planning-summary-grid planning-income-grid planning-income-required">
         <section class="panel planning-income-card"><span>Volumen mensual requerido</span><strong id="planVolumenRequeridoOut">US$ 0</strong><small>Meta aproximada de venta personal.</small></section>
@@ -263,6 +273,7 @@
         <section class="panel planning-income-card"><span>Ventas generadas</span><strong id="planVentasIngresoOut">0</strong><small>Antes de posibles cancelaciones.</small></section>
         <section class="panel planning-income-card"><span>Ventas aprobadas</span><strong id="planAprobadasIngresoOut">0</strong><small>Resultado final estimado.</small></section>
       </div>
+      <div class="planning-source-note"><strong>Sobre los nombres:</strong> la cantidad proyectada corresponde a programas 4 en 14 bien trabajados. Si la actividad se apoya en buzones o stands, calcula aproximadamente el doble de nombres.</div>
     </section>
     <section class="panel"><h3>Importante</h3><div class="formula soft">Los ingresos mostrados son aproximados y corresponden exclusivamente a <strong>VENTA PERSONAL</strong>. Pueden variar según aprobación, devoluciones, comportamiento de pago y plan de compensación vigente.</div></section>
   </div>
@@ -270,8 +281,8 @@
   <div class="planning-pane" data-planning-pane="admin">
     <div class="planning-section-title hero-title"><span>04</span><div><h3>Administración</h3><p>Convierte el ingreso en estabilidad, actividad y crecimiento.</p></div></div>
     <div class="grid planning-summary-grid">
-      <section class="panel"><h3>Administración sugerida</h3><p class="muted-text" id="planAdminIntro"></p><div class="order-form"><div class="row featured"><span id="planAdminReserveLabel">Reserva sugerida</span><strong id="planAdminReserve">$ 0</strong></div><div class="row final"><span id="planAdminAvailableLabel">Disponible sugerido</span><strong id="planAdminAvailable">$ 0</strong></div></div></section>
-      <section class="panel"><h3>Consejos según tu nivel</h3><div id="planAdminAdvice" class="planning-advice-list"></div></section>
+      <section class="panel"><div class="planning-admin-heading"><div><span>Administración sugerida para</span><strong id="planAdminRoleLabel">Emprendedor</strong></div><span class="badge">VENTA PERSONAL</span></div><p class="muted-text" id="planAdminIntro"></p><div class="order-form"><div class="row featured"><span id="planAdminReserveLabel">Reserva sugerida</span><strong id="planAdminReserve">$ 0</strong></div><div class="row final"><span id="planAdminAvailableLabel">Disponible sugerido</span><strong id="planAdminAvailable">$ 0</strong></div></div></section>
+      <section class="panel"><h3 id="planAdminAdviceTitle">Consejos para Emprendedor</h3><div id="planAdminAdvice" class="planning-advice-list"></div></section>
     </div>
     <div class="formula soft">La disciplina financiera no limita el crecimiento: lo protege.</div>
   </div>
@@ -617,10 +628,10 @@
 </section>
 </main>
 </div>
-<script src="app-v75.js?v=81"></script>
+<script src="app-v75.js?v=814"></script>
 <script src="sales-simulator-v75.js?v=81"></script>
-<script src="finance-simulator-v793.js?v=81"></script>
-<script src="planning-v811.js?v=811"></script>
+<script src="finance-simulator-v814.js?v=814"></script>
+<script src="planning-v812.js?v=812"></script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>

@@ -1,4 +1,4 @@
-// Bleu One v8.0.6 — Planificación por submódulos
+// Bleu One v8.1.2 — Planificación, aprobación 85% y roles claros
 (function(){
   const root=document.getElementById('planificacion');
   if(!root) return;
@@ -23,7 +23,7 @@
     const appointments=namesMonth*.30;
     const demos=appointments/2;
     const sales=demos/3;
-    const approvedSales=sales*.90;
+    const approvedSales=sales*.85;
     const volume=approvedSales*TICKET;
     return {namesWeek,namesMonth,appointments,demos,sales,approvedSales,volume};
   }
@@ -63,12 +63,13 @@
       advice:['Protege capital para telemercadeo y desarrollo.','Separa una reserva para impuestos y obligaciones.','No gastes como Distribuidor antes de tener estructura estable.','Invierte en actividades que produzcan nombres y demostraciones.']
     };
     return {
-      reserve:monthlyIncome*.70, available:monthlyIncome*.30,
+      reserve:monthlyIncome*.65, available:monthlyIncome*.35,
       intro:'Administra como empresa: primero estructura, flujo de caja y desarrollo; después consumo personal.',
       reserveLabel:'Protección para empresa y expansión', availableLabel:'Disponible personal sugerido',
       advice:['Separa nómina, operación y dinero personal.','Protege flujo de caja para semanas de menor recaudo.','Invierte en líderes y sistemas duplicables.','Planea con visión anual, no solo con el resultado del mes.']
     };
   }
+  const ROLE_LABEL={emprendedor:'Emprendedor',junior:'Distribuidor Junior',distribuidor:'Distribuidor'};
   let state={};
   function calculate(){
     const goal=clean(q('planMetaUsd')?.value);
@@ -76,15 +77,16 @@
     const role=q('planRol')?.value||'emprendedor';
     const customNames=Math.max(0,clean(q('planNombresSemanaSim')?.value));
     const desiredIncomeCop=clean(q('planIngresoDeseadoCop')?.value);
+    const incomeRole=q('planIngresoRol')?.value||role;
     const goalFunnel=scenarioFromGoal(goal);
     const custom=funnelFromNames(customNames);
     const recommended=funnelFromNames(goalFunnel.namesWeek*1.15);
     const goalIncomeUsd=income(goal,role);
     const goalIncomeCop=goalIncomeUsd*RATE;
     const customIncomeCop=income(custom.volume,role)*RATE;
-    const requiredVolumeUsd=desiredIncomeCop>0?desiredIncomeCop/RATE/(ROLE_RATE[role]||ROLE_RATE.emprendedor):0;
+    const requiredVolumeUsd=desiredIncomeCop>0?desiredIncomeCop/RATE/(ROLE_RATE[incomeRole]||ROLE_RATE.emprendedor):0;
     const requiredFunnel=scenarioFromGoal(requiredVolumeUsd);
-    state={goal,sold,role,customNames,goalFunnel,custom,recommended,goalIncomeCop,customIncomeCop,desiredIncomeCop,requiredVolumeUsd,requiredFunnel};
+    state={goal,sold,role,incomeRole,customNames,goalFunnel,custom,recommended,goalIncomeCop,customIncomeCop,desiredIncomeCop,requiredVolumeUsd,requiredFunnel};
 
     const pct=goal?clamp(sold/goal*100):0;
     setText('planMetaPct',pct>=100?'Meta cumplida':pct>=70?'Muy cerca':pct>=35?'En marcha':'En inicio');
@@ -98,6 +100,7 @@
     setText('planVentasMeta',fmtNum.format(Math.ceil(goalFunnel.sales)));
     setText('planAprobadasMeta',fmtNum.format(Math.ceil(goalFunnel.approvedSales)));
     setText('planVolumenMeta',usd(goalFunnel.volume));
+    setText('planIngresoEmbudoOut',cop(income(goalFunnel.volume,role)*RATE));
 
     const remain=Math.max(0,goal-sold); const remainFunnel=scenarioFromGoal(remain);
     setText('planFaltanteUsd',usd(remain));
@@ -126,6 +129,7 @@
     setText('planIngresoMetaCop',cop(goalIncomeCop));
     setText('planIngresoAnualCop',cop(goalIncomeCop*12));
     setText('planIngresoDeseadoOut',cop(desiredIncomeCop));
+    setText('planIngresoRoleNote','Proyección de VENTA PERSONAL para '+(ROLE_LABEL[incomeRole]||'Emprendedor')+'.');
     setText('planVolumenRequeridoOut',usd(requiredVolumeUsd));
     setText('planNombresIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.namesWeek)));
     setText('planCitasIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.appointments)));
@@ -133,6 +137,8 @@
     setText('planVentasIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.sales)));
     setText('planAprobadasIngresoOut',fmtNum.format(Math.ceil(requiredFunnel.approvedSales)));
     const adm=adminData(role,goalIncomeCop);
+    setText('planAdminRoleLabel',ROLE_LABEL[role]||'Emprendedor');
+    setText('planAdminAdviceTitle','Consejos para '+(ROLE_LABEL[role]||'Emprendedor'));
     setText('planAdminIntro',adm.intro);setText('planAdminReserve',cop(adm.reserve));setText('planAdminAvailable',cop(adm.available));
     setText('planAdminReserveLabel',adm.reserveLabel);setText('planAdminAvailableLabel',adm.availableLabel);
     const advice=q('planAdminAdvice');if(advice)advice.innerHTML=adm.advice.map(x=>`<div class="planning-advice-item">${x}</div>`).join('');
@@ -171,7 +177,9 @@
   const savedTab=(()=>{try{return sessionStorage.getItem('bleuPlanningTab')}catch(e){return null}})();
   activatePlanningTab(['meta','embudo','ingreso','admin'].includes(savedTab)?savedTab:'meta');
   bindMoney(q('planMetaUsd'),calculate);bindMoney(q('planVendidoActual'),calculate);bindMoney(q('planIngresoDeseadoCop'),calculate);
-  q('planRol')?.addEventListener('change',calculate);q('planNombresSemanaSim')?.addEventListener('input',calculate);
+  q('planRol')?.addEventListener('change',()=>{if(q('planIngresoRol'))q('planIngresoRol').value=q('planRol').value;calculate();});
+  q('planIngresoRol')?.addEventListener('change',calculate);
+  q('planNombresSemanaSim')?.addEventListener('input',calculate);
   const phrases=['Las metas no se alcanzan con motivación, sino con actividad organizada.','Tu agenda siempre revela tu próximo cheque.','No persigas ventas: construye nombres trabajados.','El ingreso nunca supera por mucho tiempo el nivel de actividad.','Una semana extraordinaria casi siempre fue preparada con nombres días antes.','La claridad convierte una meta grande en una acción de hoy.','Sin nombres no hay paraíso; con nombres trabajados hay futuro.','No midas únicamente ventas: mide las acciones que las producen.','La constancia semanal vence a la intensidad ocasional.','Tu próxima venta comienza mucho antes de tocar una puerta.','La planificación protege tu enfoque cuando la emoción cambia.','Lo que no se agenda, casi siempre se posterga.','Un gran mes se construye una semana a la vez.','El sistema no limita: protege la repetición correcta.','Cada nombre trabajado es una posibilidad que ayer no existía.'];
   let phrase=0;q('planAdnNext')?.addEventListener('click',()=>{phrase=(phrase+1)%phrases.length;setText('planAdnText',phrases[phrase]);});
   calculate();
