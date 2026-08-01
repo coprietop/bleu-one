@@ -1,4 +1,4 @@
-// Bleu One v8.0.1 — Planificación
+// Bleu One v8.0.5 — Planificación visual
 (function(){
   const root=document.getElementById('planificacion');
   if(!root) return;
@@ -6,7 +6,7 @@
   const RATE=3132.42;
   const TICKET=1200;
   const WEEKS=4.33;
-  const NAMES_DIVISOR=285;
+  const NAMES_DIVISOR=185;
   const ROLE_RATE={emprendedor:.162,junior:.38,distribuidor:.47};
   const fmtNum=new Intl.NumberFormat('es-CO',{maximumFractionDigits:0});
   const fmtCop=new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
