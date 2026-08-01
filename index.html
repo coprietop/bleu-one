@@ -5,9 +5,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <meta content="#05070c" name="theme-color"/>
-<title>Bleu One v8.0.2 · Planificación y Toppers Agosto</title>
+<title>Bleu One v8.1 · Actualización financiera Agosto 2026</title>
 <link href="manifest.json" rel="manifest"/>
-<link href="styles-v75.css?v=802" rel="stylesheet"/>
+<link href="styles-v75.css?v=81" rel="stylesheet"/>
+<link href="planning-v806.css?v=81" rel="stylesheet"/>
 </head>
 <body class="locked">
 <div class="app-shell">
@@ -59,7 +60,7 @@
 </div>
 </section>
 <section class="screen" id="orden">
-<div class="screen-head"><div><h2>Calculadora de Orden de Compra <span class="badge">Actualizada · Con y sin interés</span></h2><p>Ingresa los datos y transcribe manualmente los valores en la orden física.</p></div></div>
+<div class="screen-head"><div><h2>Calculadora de Orden de Compra <span class="badge">Tabla oficial Agosto 2026</span></h2><p>Ingresa los datos y transcribe manualmente los valores en la orden física.</p><div class="finance-official-update"><strong>Actualización vigente:</strong><span>2.15% MV</span><span>29.08% EA</span></div></div></div>
 <div class="grid">
 <section class="panel input-panel">
 <h3>1. Ingresa los datos</h3>
@@ -81,8 +82,8 @@
 <div class="row muted"><span>Fecha depósito adicional</span><strong>Omitir</strong></div>
 <div class="row muted"><span>Depósito adicional</span><strong>Omitir</strong></div>
 <div class="row"><span>Saldo a financiar</span><strong id="saldo">$ 0</strong></div>
-<div class="row"><span>Tasa fija remuneratoria efectiva anual</span><strong>28.32%</strong></div>
-<div class="row"><span>Tasa de interés vigente a la fecha de hoy</span><strong>2.10%</strong></div>
+<div class="row"><span>Tasa fija remuneratoria efectiva anual</span><strong>29.08%</strong></div>
+<div class="row"><span>Tasa de interés vigente a la fecha de hoy</span><strong>2.15%</strong></div>
 <div class="row"><span>Número de cuotas mensuales</span><strong id="cuotasOut">0</strong></div>
 <div class="row final"><span>Pago mínimo mensual</span><strong id="pagoMinimo">$ 0</strong></div>
 </div>
@@ -91,9 +92,9 @@
 </section>
 </div>
 </section>
-<section class="screen" id="cuota"><div class="screen-head"><div><h2>Cuota</h2><p>Calcula cuánto le puedes vender a un cliente según la cuota mensual y el plazo elegido.</p></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Valor de cuota mensual</span><div class="money-input"><span>$</span><input id="cuotaValor" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Meses de financiación</span><select id="cuotaMeses"></select><small>Predeterminado: 27 meses según tabla interna.</small></label></section><section class="panel hero-result"><span>Venta aproximada</span><strong id="cuotaVenta">$ 0</strong><small id="cuotaFormula">Fórmula según tabla.</small></section><div class="formula soft">Una cuota clara evita confusión, y una negociación clara acerca al cliente a la decisión.</div></div></section>
+<section class="screen" id="cuota"><div class="screen-head"><div><h2>Cuota <span class="badge">Tabla oficial Agosto 2026</span></h2><p>Calcula cuánto le puedes vender a un cliente según la cuota mensual y el plazo elegido.</p><div class="finance-official-update compact"><span>2.15% MV</span><span>29.08% EA</span></div></div></div><div class="grid small-grid"><section class="panel"><label class="field"><span>Valor de cuota mensual</span><div class="money-input"><span>$</span><input id="cuotaValor" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Meses de financiación</span><select id="cuotaMeses"></select><small>Predeterminado: 27 meses según tabla interna.</small></label></section><section class="panel hero-result"><span>Venta aproximada</span><strong id="cuotaVenta">$ 0</strong><small id="cuotaFormula">Fórmula según tabla.</small></section><div class="formula soft">Una cuota clara evita confusión, y una negociación clara acerca al cliente a la decisión.</div></div></section>
 <section class="screen" id="simuladorfin">
-<div class="screen-head"><div><h2>Simulador de financiamiento <span class="badge">Análisis profesional</span></h2><p>Proyecta la cuota, el costo total del financiamiento y el impacto real de los abonos extraordinarios.</p></div></div>
+<div class="screen-head"><div><h2>Simulador de financiamiento <span class="badge">Tabla oficial Agosto 2026</span></h2><p>Proyecta la cuota, el costo total del financiamiento y el impacto real de los abonos extraordinarios.</p><div class="finance-official-update compact"><span>2.15% MV</span><span>29.08% EA</span></div></div></div>
 <div class="finance-sim-grid">
 <section class="panel finance-input-panel">
 <div class="result-title"><div><span class="eyebrow">Configuración</span><h3>Datos de la simulación</h3></div><span class="badge">Tiempo real</span></div>
@@ -153,7 +154,7 @@
 <div class="formula soft finance-disclaimer"><strong>Importante:</strong> esta simulación es una proyección aproximada y tiene fines informativos. Los resultados reales dependen de las fechas de aplicación de los pagos, el comportamiento del cliente, abonos extraordinarios, mora, cargos y condiciones contractuales. La última cuota puede ser menor únicamente si los pagos se realizan oportunamente y no existen morosidades ni cargos adicionales.</div>
 </section>
 
-<section class="screen" id="agregados"><div class="screen-head"><div><h2>Agregados</h2><p>Calcula el total del cliente y su pago mensual según la tabla de financiación.</p></div></div><div class="grid"><section class="panel"><h3>Datos del agregado</h3><label class="field"><span>Saldo del cliente</span><div class="money-input"><span>$</span><input id="agSaldo" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Nueva compra <small>(IVA incluido)</small></span><div class="money-input"><span>$</span><input id="agCompra" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Cuota inicial <small>(opcional)</small></span><div class="money-input"><span>$</span><input id="agInicial" inputmode="numeric" placeholder="0" value=""/></div><small>Los agregados no necesitan cuota inicial, pero puedes escribirla si aplica.</small></label><label class="field"><span>Meses de financiación</span><select id="agMeses"></select></label></section><section class="panel"><h3>Resultado del agregado</h3><div class="order-form"><div class="row"><span>Saldo del cliente</span><strong id="agSaldoOut">$ 0</strong></div><div class="row"><span>Nueva compra IVA incluido</span><strong id="agCompraOut">$ 0</strong></div><div class="row"><span>Cuota inicial</span><strong id="agInicialOut">$ 0</strong></div><div class="row featured"><span>Total a financiar</span><strong id="agTotal">$ 0</strong></div><div class="row final"><span>Pago mensual aproximado</span><strong id="agPago">$ 0</strong></div></div><div class="formula" id="agFormula">Selecciona meses y escribe los valores para calcular.</div><div class="formula soft">Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.</div></section></div></section>
+<section class="screen" id="agregados"><div class="screen-head"><div><h2>Agregados <span class="badge">Tabla oficial Agosto 2026</span></h2><p>Calcula el total del cliente y su pago mensual según la tabla de financiación.</p><div class="finance-official-update compact"><span>2.15% MV</span><span>29.08% EA</span></div></div></div><div class="grid"><section class="panel"><h3>Datos del agregado</h3><label class="field"><span>Saldo del cliente</span><div class="money-input"><span>$</span><input id="agSaldo" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Nueva compra <small>(IVA incluido)</small></span><div class="money-input"><span>$</span><input id="agCompra" inputmode="numeric" placeholder="0" value=""/></div></label><label class="field"><span>Cuota inicial <small>(opcional)</small></span><div class="money-input"><span>$</span><input id="agInicial" inputmode="numeric" placeholder="0" value=""/></div><small>Los agregados no necesitan cuota inicial, pero puedes escribirla si aplica.</small></label><label class="field"><span>Meses de financiación</span><select id="agMeses"></select></label></section><section class="panel"><h3>Resultado del agregado</h3><div class="order-form"><div class="row"><span>Saldo del cliente</span><strong id="agSaldoOut">$ 0</strong></div><div class="row"><span>Nueva compra IVA incluido</span><strong id="agCompraOut">$ 0</strong></div><div class="row"><span>Cuota inicial</span><strong id="agInicialOut">$ 0</strong></div><div class="row featured"><span>Total a financiar</span><strong id="agTotal">$ 0</strong></div><div class="row final"><span>Pago mensual aproximado</span><strong id="agPago">$ 0</strong></div></div><div class="formula" id="agFormula">Selecciona meses y escribe los valores para calcular.</div><div class="formula soft">Un agregado bien calculado evita reprocesos y ayuda a que el cliente entienda su nuevo compromiso.</div></section></div></section>
 
 <section class="screen" id="planificacion">
   <div class="screen-head planning-head"><div><span class="planning-kicker">ENFOQUE · ACTIVIDAD · RESULTADO</span><h2>Planificación</h2><p>Convierte una meta mensual en acciones semanales claras y proyecta el resultado de aumentar tu actividad.</p></div></div>
@@ -599,10 +600,10 @@
 </section>
 </main>
 </div>
-<script src="app-v75.js?v=803"></script>
-<script src="sales-simulator-v75.js?v=803"></script>
-<script src="finance-simulator-v793.js?v=803"></script>
-<script src="planning-v805.js?v=805"></script>
+<script src="app-v75.js?v=81"></script>
+<script src="sales-simulator-v75.js?v=81"></script>
+<script src="finance-simulator-v793.js?v=81"></script>
+<script src="planning-v806.js?v=81"></script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>

@@ -1,4 +1,4 @@
-const porcentajes = {2:51.63,3:34.79,4:26.38,5:21.33,6:17.96,7:15.56,8:13.76,9:12.36,10:11.24,11:10.33,12:9.56,13:8.92,14:8.37,15:7.89,16:7.47,17:7.11,18:6.78,19:6.49,20:6.22,21:5.99,22:5.77,23:5.58,24:5.40,25:5.18,26:5.03,27:5.00};
+const porcentajes = {2:51.67,3:34.83,4:26.41,5:21.36,6:17.99,7:15.59,8:13.79,9:12.39,10:11.27,11:10.36,12:9.59,13:8.95,14:8.40,15:7.92,16:7.50,17:7.14,18:6.81,19:6.52,20:6.25,21:6.02,22:5.80,23:5.61,24:5.43,25:5.21,26:5.06,27:5.00};
 const COP_RATE = 3132.42;
 const $ = (id)=>document.getElementById(id);
 const moneyCOP = new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
@@ -297,7 +297,7 @@ document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click'
   window.scrollTo({top:0,behavior:'smooth'});
 }));
 let deferredPrompt; const installBtn=$('installBtn'); window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault(); deferredPrompt=e; installBtn.classList.remove('hidden')}); installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.classList.add('hidden')});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js?v=64',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js?v=81',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})}
 
 const menuToggle=$('menuToggle');
 menuToggle?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));

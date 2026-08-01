@@ -1,4 +1,4 @@
-// Bleu One v8.0.5 — Planificación visual
+// Bleu One v8.0.6 — Planificación por submódulos
 (function(){
   const root=document.getElementById('planificacion');
   if(!root) return;
@@ -138,10 +138,23 @@
     setText('planComparisonTip',tip+' Recuerda: es una proyección de VENTA PERSONAL.');
   }
 
-  document.querySelectorAll('.planning-tab').forEach(btn=>btn.addEventListener('click',()=>{
-    document.querySelectorAll('.planning-tab').forEach(b=>b.classList.toggle('active',b===btn));
-    document.querySelectorAll('.planning-pane').forEach(p=>p.classList.toggle('active',p.dataset.planningPane===btn.dataset.planningTab));
-  }));
+  function activatePlanningTab(tabName){
+    document.querySelectorAll('.planning-tab').forEach(btn=>{
+      const active=btn.dataset.planningTab===tabName;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-selected',active?'true':'false');
+      btn.tabIndex=active?0:-1;
+    });
+    document.querySelectorAll('.planning-pane').forEach(pane=>{
+      const active=pane.dataset.planningPane===tabName;
+      pane.classList.toggle('active',active);
+      pane.hidden=!active;
+    });
+    try{sessionStorage.setItem('bleuPlanningTab',tabName)}catch(e){}
+  }
+  document.querySelectorAll('.planning-tab').forEach(btn=>btn.addEventListener('click',()=>activatePlanningTab(btn.dataset.planningTab)));
+  const savedTab=(()=>{try{return sessionStorage.getItem('bleuPlanningTab')}catch(e){return null}})();
+  activatePlanningTab(['meta','embudo','ingreso','admin'].includes(savedTab)?savedTab:'meta');
   bindMoney(q('planMetaUsd'),calculate);bindMoney(q('planVendidoActual'),calculate);
   q('planRol')?.addEventListener('change',calculate);q('planNombresSemanaSim')?.addEventListener('input',calculate);
   const phrases=['Las metas no se alcanzan con motivación, sino con actividad organizada.','Tu agenda siempre revela tu próximo cheque.','No persigas ventas: construye nombres trabajados.','El ingreso nunca supera por mucho tiempo el nivel de actividad.','Una semana extraordinaria casi siempre fue preparada con nombres días antes.','La claridad convierte una meta grande en una acción de hoy.','Sin nombres no hay paraíso; con nombres trabajados hay futuro.','No midas únicamente ventas: mide las acciones que las producen.','La constancia semanal vence a la intensidad ocasional.','Tu próxima venta comienza mucho antes de tocar una puerta.','La planificación protege tu enfoque cuando la emoción cambia.','Lo que no se agenda, casi siempre se posterga.','Un gran mes se construye una semana a la vez.','El sistema no limita: protege la repetición correcta.','Cada nombre trabajado es una posibilidad que ayer no existía.'];

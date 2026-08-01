@@ -338,3 +338,10 @@ body.locked #somos{min-height:100vh;width:100%;padding:22px;display:grid!importa
 .topper-empty{width:100%;min-height:260px;display:grid;place-content:center;text-align:center;padding:34px;border:1px dashed rgba(245,196,81,.32);border-radius:24px;background:radial-gradient(circle at top,rgba(245,196,81,.12),rgba(5,11,20,.75) 62%)}
 .topper-empty span{font-size:46px}.topper-empty h4{margin:10px 0 6px;color:var(--gold);font-size:26px}.topper-empty p{max-width:620px;margin:0 auto;color:var(--muted);line-height:1.7}
 @media(max-width:700px){.topbar{align-items:flex-start}.topbar-actions{width:100%;justify-content:stretch}.trm-bleu{width:100%;text-align:left;min-width:0}.trm-bleu strong{font-size:16px}.topper-month-tabs{display:flex;overflow-x:auto;gap:8px;padding-bottom:4px}.topper-month-tab{white-space:nowrap}}
+
+/* Bleu One v8.1 · actualización financiera Agosto 2026 */
+.finance-official-update{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding:10px 14px;border-radius:999px;border:1px solid rgba(224,180,72,.38);background:linear-gradient(90deg,rgba(224,180,72,.13),rgba(24,63,112,.2));color:#eaf2ff;font-size:.82rem;box-shadow:0 10px 30px rgba(0,0,0,.16)}
+.finance-official-update strong{color:#f1cd72;letter-spacing:.04em}
+.finance-official-update span{font-weight:900;color:#f7dc8d;padding-left:10px;border-left:1px solid rgba(224,180,72,.26)}
+.finance-official-update.compact{padding:8px 12px;margin-top:10px}
+@media(max-width:640px){.finance-official-update{border-radius:16px;gap:7px}.finance-official-update span{padding-left:7px}}
