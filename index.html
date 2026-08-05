@@ -7,7 +7,7 @@
 <meta content="#05070c" name="theme-color"/>
 <title>Bleu One v8.1 · Actualización financiera Agosto 2026</title>
 <link href="manifest.json" rel="manifest"/>
-<link href="styles-v75.css?v=814" rel="stylesheet"/>
+<link href="styles-v75.css?v=815" rel="stylesheet"/>
 <link href="planning-v812.css?v=812" rel="stylesheet"/>
 </head>
 <body class="locked">
@@ -622,13 +622,53 @@
 <button class="topper-month-tab active" data-month="agosto">Agosto 2026 · En marcha</button>
 </div>
 <div class="topper-month-note" id="topperMonthNote">Agosto está en marcha. El primer ranking se publicará próximamente.</div>
-<div class="topper-tabs"><button class="topper-tab active" data-top="personal">Venta personal</button><button class="topper-tab" data-top="junior">Mejor Distribuidor Junior</button><button class="topper-tab" data-top="distribuidores">Mejor Distribuidor</button></div>
-<section class="panel podium-panel"><div class="result-title"><h3 id="podiumTitle">Venta personal</h3><span class="badge">Top 5</span></div><div class="podium" id="podium"></div><div class="topper-list" id="topperList"></div><div class="formula soft">El reconocimiento honra el resultado. La disciplina construye el camino para volver a estar aquí.</div></section>
+
+<div class="topper-submodule-tabs" role="tablist" aria-label="Secciones de Toppers">
+  <button class="topper-submodule-tab active" data-topper-view="ranking">🏆 Podio Toppers</button>
+  <button class="topper-submodule-tab" data-topper-view="semaforo">🚦 Semáforo Final · Julio</button>
+</div>
+
+<div id="toppersRankingView">
+  <div class="topper-tabs"><button class="topper-tab active" data-top="personal">Venta personal</button><button class="topper-tab" data-top="junior">Mejor Distribuidor Junior</button><button class="topper-tab" data-top="distribuidores">Mejor Distribuidor</button></div>
+  <section class="panel podium-panel"><div class="result-title"><h3 id="podiumTitle">Venta personal</h3><span class="badge">Top 5</span></div><div class="podium" id="podium"></div><div class="topper-list" id="topperList"></div><div class="formula soft">El reconocimiento honra el resultado. La disciplina construye el camino para volver a estar aquí.</div></section>
+</div>
+
+<div id="semaforoFinalView" class="hidden">
+  <section class="panel semaforo-hero">
+    <div>
+      <span class="semaforo-kicker">CIERRE DEFINITIVO · JULIO 2026</span>
+      <h3>Semáforo Final</h3>
+      <p>Una lectura clara del desempeño final del mes, integrada directamente en Bleu One.</p>
+    </div>
+    <div class="semaforo-lights" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  </section>
+
+  <div class="semaforo-tabs" role="tablist" aria-label="Categorías del Semáforo Final">
+    <button class="semaforo-tab active" data-semaforo="personal">Venta personal</button>
+    <button class="semaforo-tab" data-semaforo="distribuciones">Volumen distribuciones</button>
+    <button class="semaforo-tab" data-semaforo="territorios">Territorios directos</button>
+  </div>
+
+  <section class="panel semaforo-panel">
+    <div class="semaforo-head">
+      <div><span class="semaforo-kicker">SEMÁFORO FINAL · JULIO 2026</span><h3 id="semaforoTitle">Venta personal</h3></div>
+      <div class="semaforo-search-wrap"><span>⌕</span><input id="semaforoSearch" type="search" placeholder="Buscar por nombre..." autocomplete="off"/></div>
+    </div>
+    <div class="semaforo-summary" id="semaforoSummary"></div>
+    <div class="semaforo-legend" id="semaforoLegend">
+      <span class="sem-badge gold">Dorado</span><span class="sem-badge green">Verde</span><span class="sem-badge yellow">Amarillo</span><span class="sem-badge orange">Naranja</span><span class="sem-badge red">Rojo</span>
+    </div>
+    <div class="semaforo-table-wrap">
+      <table class="semaforo-table" id="semaforoTable"></table>
+    </div>
+    <div class="formula soft semaforo-note" id="semaforoNote">Datos finales extraídos del cierre oficial de Julio 2026.</div>
+  </section>
+</div>
 <div class="modal hidden" id="topperModal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div class="modal-medal" id="modalMedal">🥇</div><h3 id="modalName">Nombre</h3><p id="modalCity">Ciudad</p><p class="modal-distribution" id="modalDistribution"></p><strong id="modalVolume">US$ 0</strong><small id="modalCategory">Categoría</small></div></div>
 </section>
 </main>
 </div>
-<script src="app-v75.js?v=814"></script>
+<script src="app-v75.js?v=815"></script>
 <script src="sales-simulator-v75.js?v=81"></script>
 <script src="finance-simulator-v814.js?v=814"></script>
 <script src="planning-v812.js?v=812"></script>
